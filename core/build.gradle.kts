@@ -1,4 +1,14 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version("7.1.2")
+}
+
 tasks {
+    shadowJar {
+        archiveBaseName.set("crclans")
+        archiveVersion.set("${project.version}")
+        archiveClassifier.set("")
+    }
+
     processResources {
         filesMatching("**/*.yml") {
             filter<org.apache.tools.ant.filters.ReplaceTokens>(
