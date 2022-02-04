@@ -17,6 +17,8 @@ public interface Channel<T> {
 
     Channel<T> addListener(ChannelListener<T> channelListener);
 
+    void listen(String server, T object);
+
     Set<ChannelListener<T>> getListeners();
 
 }
