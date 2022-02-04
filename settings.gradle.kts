@@ -1,1 +1,3 @@
-rootProject.name = "java-template"
+rootProject.name = "cross-clans"
+
+include("api", "core")
