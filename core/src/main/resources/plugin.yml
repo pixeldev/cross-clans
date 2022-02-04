@@ -1,0 +1,6 @@
+name: CrClans
+version: @version@
+author: CosmoGroup Development
+description: A fully optimized clan system designed for cross-server use, implementing Redis and MariaDB
+main: net.cosmogrp.crclans.CrClansPlugin
+api-version: 1.13
