@@ -15,6 +15,8 @@ subprojects {
 
     repositories {
         mavenLocal()
+        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        maven("https://repo.unnamed.team/repository/unnamed-public/")
         mavenCentral()
     }
 }
