@@ -57,6 +57,7 @@ public class RedisChannel<T> implements Channel<T> {
         JsonElement jsonElement = gson.toJsonTree(message, type.getType());
         JsonObject objectToSend = new JsonObject();
 
+        objectToSend.addProperty("channel", name);
         objectToSend.addProperty("server", serverId);
         objectToSend.add("object", jsonElement);
 
