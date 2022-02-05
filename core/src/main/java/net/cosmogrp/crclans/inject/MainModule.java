@@ -30,7 +30,7 @@ public class MainModule extends AbstractModule {
 
         install(
                 new RedisModule(), new DatabaseModule(),
-                new TranslationModule(),
+                new TranslationModule(), new ListenerModule(),
                 new ClanModule(), new EconomyModule()
         );
     }
