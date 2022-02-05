@@ -1,11 +1,11 @@
 dependencies {
     api("org.jetbrains:annotations:22.0.0")
-    api("net.cosmogrp:storage-sql-dist:0.1.0") {
+    api("net.cosmogrp:storage-sql-dist:0.2.0") {
         exclude("com.zaxxer", "HikariCP")
     }
 
+    api("net.cosmogrp:storage-redis-dist:0.2.0")
     api("com.zaxxer:HikariCP:5.0.1")
-    api("redis.clients:jedis:4.1.1")
 
     api("me.yushust.inject:core:0.4.5-SNAPSHOT")
     api("me.yushust.message:core:6.0.17")
