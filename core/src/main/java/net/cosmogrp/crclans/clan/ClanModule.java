@@ -15,6 +15,7 @@ import net.cosmogrp.storage.sql.identity.SQLMapSerializer;
 import net.cosmogrp.storage.sql.identity.Table;
 import net.cosmogrp.storage.sql.mysql.MySQLElement;
 import net.cosmogrp.storage.sql.mysql.MySQLTable;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jdbi.v3.core.mapper.RowMapper;
 
 import javax.inject.Singleton;
@@ -30,13 +31,14 @@ public class ClanModule extends AbstractModule {
     @Provides @Singleton
     public RemoteModelService<Clan> createService(
             Executor executor,
+            FileConfiguration configuration,
             SQLClient client,
             Gson gson,
             RedisCache redisCache
     ) {
         ModelMeta<Clan> modelMeta = new ModelMeta<>(Clan.class);
         Table table = new MySQLTable(
-                "clans",
+                configuration.getString("server-group") + "-clans",
                 Arrays.asList(
                         new MySQLElement("id", DataType.STRING, SQLConstraint.PRIMARY, SQLConstraint.NOT_NULL),
                         new MySQLElement("name", DataType.STRING),
