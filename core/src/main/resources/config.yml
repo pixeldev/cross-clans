@@ -1,4 +1,6 @@
 server-group: "survival"
+threads: 4
+
 redis:
     host: "localhost"
     port: 6379
@@ -8,6 +10,7 @@ redis:
 database:
     host: "localhost"
     port: 3306
-    database: "clans"
+    database: "survival"
     username: "root"
     password: "mariadbpwd"
+    maximum-pool-size: 10

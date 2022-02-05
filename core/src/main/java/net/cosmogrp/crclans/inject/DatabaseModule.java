@@ -25,6 +25,8 @@ public class DatabaseModule extends AbstractModule {
                 .setPort(section.getInt("port"))
                 .setUsername(section.getString("username"))
                 .setPassword(section.getString("password"))
+                .setMaximumPoolSize(section.getInt("maximum-pool-size"))
+                .setDriverClassName("org.mariadb.jdbc.Driver")
                 .build();
     }
 
