@@ -8,6 +8,7 @@ import net.cosmogrp.crclans.redis.JedisBuilder;
 import net.cosmogrp.crclans.redis.JedisInstance;
 import net.cosmogrp.crclans.redis.Redis;
 import net.cosmogrp.crclans.redis.RedisCache;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -37,6 +38,7 @@ public class RedisModule extends AbstractModule {
         }
 
         return GsonRedis.builder(plugin)
+                .setServerId(Bukkit.getServer().getName())
                 .setParentChannel(configuration.getString("server-group") + "-crclans")
                 .setGson(gson)
                 .setJedis(jedisInstance)
