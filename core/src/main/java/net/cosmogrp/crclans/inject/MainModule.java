@@ -18,7 +18,7 @@ public class MainModule extends AbstractModule {
         bind(Plugin.class).toInstance(plugin);
         bind(FileConfiguration.class).toInstance(plugin.getConfig());
 
-        install(new RedisModule());
+        install(new RedisModule(), new DatabaseModule());
     }
 
 }

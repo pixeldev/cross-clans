@@ -4,3 +4,10 @@ redis:
     port: 6379
     password: ""
     timeout: 2000
+
+database:
+    host: "localhost"
+    port: 3306
+    database: "clans"
+    username: "root"
+    password: "mariadbpwd"
