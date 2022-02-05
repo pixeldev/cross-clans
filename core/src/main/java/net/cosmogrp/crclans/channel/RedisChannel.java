@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import net.cosmogrp.crclans.messenger.Messenger;
+import org.jetbrains.annotations.Nullable;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -53,12 +54,17 @@ public class RedisChannel<T> implements Channel<T> {
     }
 
     @Override
-    public Channel<T> sendMessage(T message) {
+    public Channel<T> sendMessage(T message, @Nullable String targetServer) {
         JsonElement jsonElement = gson.toJsonTree(message, type.getType());
         JsonObject objectToSend = new JsonObject();
 
         objectToSend.addProperty("channel", name);
         objectToSend.addProperty("server", serverId);
+
+        if (targetServer != null) {
+            objectToSend.addProperty("targetServer", targetServer);
+        }
+
         objectToSend.add("object", jsonElement);
 
         try (Jedis jedis = jedisPool.getResource()) {

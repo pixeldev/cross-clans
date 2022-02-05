@@ -39,6 +39,17 @@ public class RedisSubChannelPubsub extends JedisPubSub {
                 .parseString(message)
                 .getAsJsonObject();
 
+        JsonElement targetServerElement = jsonMessage.get("server");
+
+        if (targetServerElement != null) {
+            String targetServer = targetServerElement.getAsString();
+
+            // if the message isn't for this server, ignore it
+            if (!targetServer.equals(serverId)) {
+                return;
+            }
+        }
+
         String subChannel = jsonMessage.get("channel").getAsString();
 
         @SuppressWarnings("unchecked")
