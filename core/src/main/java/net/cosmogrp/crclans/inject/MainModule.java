@@ -31,7 +31,7 @@ public class MainModule extends AbstractModule {
         install(
                 new RedisModule(), new DatabaseModule(),
                 new TranslationModule(),
-                new ClanModule()
+                new ClanModule(), new EconomyModule()
         );
     }
 
