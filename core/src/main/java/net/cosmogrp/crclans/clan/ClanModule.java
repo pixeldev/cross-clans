@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
 import net.cosmogrp.storage.dist.RemoteModelService;
-import net.cosmogrp.storage.model.exception.NoSuchModelDataException;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.redis.RedisModelService;
 import net.cosmogrp.storage.redis.connection.RedisCache;
