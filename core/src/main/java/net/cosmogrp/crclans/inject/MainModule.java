@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.inject;
 import me.yushust.inject.AbstractModule;
 import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ClanModule;
+import net.cosmogrp.crclans.translate.TranslationModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -27,7 +28,11 @@ public class MainModule extends AbstractModule {
                 configuration.getInt("threads")
         ));
 
-        install(new RedisModule(), new DatabaseModule(), new ClanModule());
+        install(
+                new RedisModule(), new DatabaseModule(),
+                new TranslationModule(),
+                new ClanModule()
+        );
     }
 
 }
