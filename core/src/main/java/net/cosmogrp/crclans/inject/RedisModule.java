@@ -44,8 +44,14 @@ public class RedisModule extends AbstractModule {
     }
 
     @Provides @Singleton
-    public RedisCache getRedisCache(Redis redis) {
-        return new RedisCache("crclans", redis.getRawConnection());
+    public RedisCache getRedisCache(
+            FileConfiguration configuration,
+            Redis redis
+    ) {
+        return new RedisCache(
+                configuration.getString("server-group") + "-crclans",
+                redis.getRawConnection()
+        );
     }
 
 }
