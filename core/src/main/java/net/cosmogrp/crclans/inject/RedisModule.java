@@ -7,6 +7,7 @@ import net.cosmogrp.crclans.redis.GsonRedis;
 import net.cosmogrp.crclans.redis.JedisBuilder;
 import net.cosmogrp.crclans.redis.JedisInstance;
 import net.cosmogrp.crclans.redis.Redis;
+import net.cosmogrp.crclans.redis.RedisCache;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -40,6 +41,11 @@ public class RedisModule extends AbstractModule {
                 .setGson(gson)
                 .setJedis(jedisInstance)
                 .build();
+    }
+
+    @Provides @Singleton
+    public RedisCache getRedisCache(Redis redis) {
+        return new RedisCache("crclans", redis.getRawConnection());
     }
 
 }
