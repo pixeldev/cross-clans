@@ -8,6 +8,9 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+
         Injector.create(new MainModule(this))
                 .injectMembers(this);
     }
