@@ -39,7 +39,7 @@ public class VaultEconomyHandler implements EconomyHandler {
     @Override
     public boolean deposit(@Nullable CommandSender source, Player target, double amount) {
         if (delegate == null) {
-            return false;
+            return true;
         }
 
         return delegate.depositPlayer(target, amount)
@@ -49,7 +49,7 @@ public class VaultEconomyHandler implements EconomyHandler {
     @Override
     public boolean withdraw(@Nullable CommandSender source, Player target, double amount) {
         if (delegate == null) {
-            return false;
+            return true;
         }
 
         return delegate.withdrawPlayer(target, amount)
@@ -64,7 +64,7 @@ public class VaultEconomyHandler implements EconomyHandler {
     @Override
     public boolean hasEnough(Player source, double amount) {
         if (delegate == null) {
-            return false;
+            return true;
         }
 
         return delegate.has(source, amount);
