@@ -46,7 +46,7 @@ public class RedisSubChannelPubsub extends JedisPubSub {
             return;
         }
 
-        JsonElement targetServerElement = jsonMessage.get("server");
+        JsonElement targetServerElement = jsonMessage.get("targetServer");
 
         if (targetServerElement != null) {
             String targetServer = targetServerElement.getAsString();
