@@ -20,5 +20,6 @@ tasks {
 
 dependencies {
     api(project(":api"))
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.0.3")
     compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
 }
