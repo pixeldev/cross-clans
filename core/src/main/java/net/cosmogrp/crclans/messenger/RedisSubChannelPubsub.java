@@ -39,6 +39,13 @@ public class RedisSubChannelPubsub extends JedisPubSub {
                 .parseString(message)
                 .getAsJsonObject();
 
+        String serverId = jsonMessage.get("server").getAsString();
+
+        // if the message is from the server we're listening to
+        if (!serverId.equals(this.serverId)) {
+            return;
+        }
+
         JsonElement targetServerElement = jsonMessage.get("server");
 
         if (targetServerElement != null) {
@@ -58,13 +65,6 @@ public class RedisSubChannelPubsub extends JedisPubSub {
 
         // if the channel doesn't exist, we can't do anything
         if (channelObject == null) {
-            return;
-        }
-
-        String serverId = jsonMessage.get("server").getAsString();
-
-        // if the message is from the server we're listening to
-        if (!serverId.equals(this.serverId)) {
             return;
         }
 
