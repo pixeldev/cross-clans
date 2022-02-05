@@ -17,11 +17,15 @@ public interface Redis extends Closeable {
 
     interface Builder {
 
+        Builder setParentChannel(String parentChannel);
+
         Builder setServerId(String id);
 
         Builder setGson(Gson gson);
 
         Builder setJedisPool(JedisPool jedisPool);
+
+        Builder setJedis(JedisInstance jedis);
 
         Builder setListenerConnection(Jedis listenerConnection);
 
