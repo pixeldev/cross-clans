@@ -20,10 +20,10 @@ public class VaultEconomyHandler implements EconomyHandler {
                         .getRegistration(Economy.class);
 
         if (serviceProvider == null) {
-            throw new IllegalStateException("Vault not found!");
+            this.delegate = null;
+        } else {
+            this.delegate = serviceProvider.getProvider();
         }
-
-        this.delegate = serviceProvider.getProvider();
     }
 
     @Override
@@ -38,12 +38,20 @@ public class VaultEconomyHandler implements EconomyHandler {
 
     @Override
     public boolean deposit(@Nullable CommandSender source, Player target, double amount) {
+        if (delegate == null) {
+            return false;
+        }
+
         return delegate.depositPlayer(target, amount)
                 .transactionSuccess();
     }
 
     @Override
     public boolean withdraw(@Nullable CommandSender source, Player target, double amount) {
+        if (delegate == null) {
+            return false;
+        }
+
         return delegate.withdrawPlayer(target, amount)
                 .transactionSuccess();
     }
@@ -55,11 +63,19 @@ public class VaultEconomyHandler implements EconomyHandler {
 
     @Override
     public boolean hasEnough(Player source, double amount) {
+        if (delegate == null) {
+            return false;
+        }
+
         return delegate.has(source, amount);
     }
 
     @Override
     public double getBalance(Player source) {
+        if (delegate == null) {
+            return 0;
+        }
+
         return delegate.getBalance(source);
     }
 
