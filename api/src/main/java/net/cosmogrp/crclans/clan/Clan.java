@@ -1,33 +1,12 @@
 package net.cosmogrp.crclans.clan;
 
 import net.cosmogrp.storage.model.AbstractModel;
-import net.cosmogrp.storage.sql.identity.DataType;
-import net.cosmogrp.storage.sql.identity.SQLConstraint;
-import net.cosmogrp.storage.sql.meta.SQLTable;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@SQLTable(
-        name = "clans",
-        elements = {
-                @SQLTable.Element(
-                        column = "id",
-                        type = DataType.STRING,
-                        constraints = {SQLConstraint.PRIMARY, SQLConstraint.NOT_NULL}
-                ),
-                @SQLTable.Element(
-                        column = "name",
-                        type = DataType.STRING
-                ),
-                @SQLTable.Element(
-                        column = "ownerId",
-                        type = DataType.UUID
-                )
-        }
-)
 public class Clan extends AbstractModel {
 
     private final UUID ownerId;

@@ -3,23 +3,26 @@ package net.cosmogrp.crclans.inject;
 import com.google.gson.Gson;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
-import net.cosmogrp.crclans.redis.GsonRedis;
-import net.cosmogrp.crclans.redis.JedisBuilder;
-import net.cosmogrp.crclans.redis.JedisInstance;
-import net.cosmogrp.crclans.redis.Redis;
-import net.cosmogrp.crclans.redis.RedisCache;
+import net.cosmogrp.storage.redis.connection.GsonRedis;
+import net.cosmogrp.storage.redis.connection.JedisBuilder;
+import net.cosmogrp.storage.redis.connection.JedisInstance;
+import net.cosmogrp.storage.redis.connection.Redis;
+import net.cosmogrp.storage.redis.connection.RedisCache;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import javax.inject.Singleton;
+import java.util.concurrent.Executor;
 
 public class RedisModule extends AbstractModule {
 
     @Provides @Singleton
-    public Redis getJedis(Plugin plugin, Gson gson) {
-        FileConfiguration configuration = plugin.getConfig();
+    public Redis getJedis(
+            FileConfiguration configuration,
+            Executor executor,
+            Gson gson
+    ) {
         ConfigurationSection redisSection =
                 configuration.getConfigurationSection("redis");
 
@@ -33,11 +36,15 @@ public class RedisModule extends AbstractModule {
                     .setPassword("")
                     .build();
         } else {
-            jedisInstance = JedisBuilder.fromConfig(redisSection)
+            jedisInstance = JedisBuilder.builder()
+                    .setTimeout(redisSection.getInt("timeout"))
+                    .setHost(redisSection.getString("host"))
+                    .setPort(redisSection.getInt("port"))
+                    .setPassword(redisSection.getString("password"))
                     .build();
         }
 
-        return GsonRedis.builder(plugin)
+        return GsonRedis.builder(executor)
                 .setServerId(Bukkit.getServer().getName())
                 .setParentChannel(configuration.getString("server-group") + "-crclans")
                 .setGson(gson)
