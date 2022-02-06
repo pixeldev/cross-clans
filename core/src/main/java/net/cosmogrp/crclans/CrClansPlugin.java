@@ -14,8 +14,10 @@ import net.cosmogrp.crclans.command.internal.ClanPartModule;
 import net.cosmogrp.crclans.command.internal.CustomTranslatorProvider;
 import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
 import net.cosmogrp.crclans.inject.MainModule;
+import net.cosmogrp.crclans.server.ServerNameListener;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.Messenger;
 
 import javax.inject.Inject;
 import java.util.Set;
@@ -23,6 +25,7 @@ import java.util.Set;
 public class CrClansPlugin extends JavaPlugin {
 
     @Inject private Set<Listener> listeners;
+    @Inject private ServerNameListener serverNameListener;
 
     @Inject private ClanPartModule clanPartModule;
     @Inject private CustomTranslatorProvider translatorProvider;
@@ -41,6 +44,13 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onEnable(){
+        Messenger messenger = getServer().getMessenger();
+        messenger.registerOutgoingPluginChannel(this, "BungeeCord");
+        messenger.registerIncomingPluginChannel(
+                this, "BungeeCord",
+                serverNameListener
+        );
+
         for (Listener listener : listeners) {
             getServer().getPluginManager().registerEvents(listener, this);
         }
