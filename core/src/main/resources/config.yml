@@ -14,3 +14,10 @@ database:
     username: "root"
     password: "mariadbpwd"
     maximum-pool-size: 10
+
+clans:
+    # expiry time in seconds
+    creation-cost: 100
+    invite-expiry: 600
+    tag-length: 6
+    name-length: 12

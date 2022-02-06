@@ -1,12 +1,15 @@
 package net.cosmogrp.crclans;
 
 import me.fixeddev.commandflow.CommandManager;
+import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder;
+import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilderImpl;
 import me.fixeddev.commandflow.annotated.part.PartInjector;
 import me.fixeddev.commandflow.annotated.part.defaults.DefaultsModule;
 import me.fixeddev.commandflow.brigadier.BrigadierCommandManager;
 import me.fixeddev.commandflow.bukkit.factory.BukkitModule;
 import me.fixeddev.commandflow.translator.DefaultTranslator;
 import me.yushust.inject.Injector;
+import net.cosmogrp.crclans.command.ClanCommand;
 import net.cosmogrp.crclans.command.internal.ClanPartModule;
 import net.cosmogrp.crclans.command.internal.CustomTranslatorProvider;
 import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
@@ -20,9 +23,12 @@ import java.util.Set;
 public class CrClansPlugin extends JavaPlugin {
 
     @Inject private Set<Listener> listeners;
+
     @Inject private ClanPartModule clanPartModule;
     @Inject private CustomTranslatorProvider translatorProvider;
     @Inject private CustomUsageBuilder usageBuilder;
+
+    @Inject private ClanCommand clanCommand;
 
     @Override
     public void onLoad() {
@@ -47,6 +53,11 @@ public class CrClansPlugin extends JavaPlugin {
         partInjector.install(new DefaultsModule());
         partInjector.install(new BukkitModule());
         partInjector.install(clanPartModule);
+
+        AnnotatedCommandTreeBuilder builder =
+                new AnnotatedCommandTreeBuilderImpl(partInjector);
+
+        commandManager.registerCommands(builder.fromClass(clanCommand));
     }
 
     @Override
