@@ -72,7 +72,12 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        Messenger messenger = getServer().getMessenger();
+        messenger.unregisterOutgoingPluginChannel(this, "BungeeCord");
+        messenger.unregisterIncomingPluginChannel(
+                this, "BungeeCord",
+                serverNameListener
+        );
     }
 
 }
