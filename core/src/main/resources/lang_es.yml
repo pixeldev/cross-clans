@@ -1,0 +1,16 @@
+commands:
+    usage: "&cUso correcto: "
+    argument:
+        no-more: "&c¡No se encontraron más argumentos!"
+    command:
+        subcommand-invalid: "&c¡El subcomando que intentas utilizar no existe!"
+        no-permission: "&c¡No tienes suficientes permisos para ejecutar este comando!"
+        error: "&c¡Ha ocurrido un error al ejecutar el comando, intenta de nuevo!"
+    sender:
+        unknown: "&c¡Ha ocurrido un error al ejecutar el comando, intenta de nuevo!"
+        only-player: "&c¡Este comando solo puede ser utilizado por jugadores!"
+    player:
+        unknown-or-offline: "&c¡Ese nombre es inválido o el jugador se encuentra desconectado!"
+        unknown: "&c¡Ese nombre es inválido, por favor introduce uno válido!"
+        offline: "&c¡Este jugador está desconectado!"
+    clustered-player-not-found: "&cNo hay un jugador con ese nombre en el servidor!"
