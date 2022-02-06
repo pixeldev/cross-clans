@@ -45,7 +45,6 @@ public class RedisModule extends AbstractModule {
         }
 
         return GsonRedis.builder(executor)
-                .setServerId(Bukkit.getServer().getName())
                 .setParentChannel(configuration.getString("server-group") + "-crclans")
                 .setGson(gson)
                 .setJedis(jedisInstance)
