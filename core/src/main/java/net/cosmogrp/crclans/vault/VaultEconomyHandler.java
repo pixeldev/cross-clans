@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class VaultEconomyHandler implements EconomyHandler {
 
-    private final Economy delegate;
+    private Economy delegate;
 
-    public VaultEconomyHandler() {
+    public void setup() {
         RegisteredServiceProvider<Economy> serviceProvider =
                 Bukkit.getServicesManager()
                         .getRegistration(Economy.class);

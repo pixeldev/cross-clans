@@ -15,6 +15,7 @@ import net.cosmogrp.crclans.command.internal.CustomTranslatorProvider;
 import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
 import net.cosmogrp.crclans.inject.MainModule;
 import net.cosmogrp.crclans.server.ServerNameListener;
+import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
@@ -32,6 +33,7 @@ public class CrClansPlugin extends JavaPlugin {
     @Inject private CustomUsageBuilder usageBuilder;
 
     @Inject private ClanCommand clanCommand;
+    @Inject private VaultEconomyHandler vaultEconomyHandler;
 
     @Override
     public void onLoad() {
@@ -68,6 +70,8 @@ public class CrClansPlugin extends JavaPlugin {
                 new AnnotatedCommandTreeBuilderImpl(partInjector);
 
         commandManager.registerCommands(builder.fromClass(clanCommand));
+
+        vaultEconomyHandler.setup();
     }
 
     @Override
