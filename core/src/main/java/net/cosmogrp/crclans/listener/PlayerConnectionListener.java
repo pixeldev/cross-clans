@@ -2,8 +2,8 @@ package net.cosmogrp.crclans.listener;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import net.cosmogrp.crclans.server.ServerNameListener;
 import net.cosmogrp.storage.redis.connection.RedisCache;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,12 +23,13 @@ public class PlayerConnectionListener implements Listener {
         Player player = event.getPlayer();
         String playerId = player.getUniqueId().toString();
 
-        @SuppressWarnings("UnstableApiUsage")
-        ByteArrayDataOutput output = ByteStreams.newDataOutput();
-        output.writeUTF(ServerNameListener.CHANNEL);
-        output.writeUTF("GetServer");
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            @SuppressWarnings("UnstableApiUsage")
+            ByteArrayDataOutput output = ByteStreams.newDataOutput();
+            output.writeUTF("GetServer");
 
-        player.sendPluginMessage(plugin, "BungeeCord", output.toByteArray());
+            player.sendPluginMessage(plugin, "BungeeCord", output.toByteArray());
+        }, 10);
 
         redisCache.set(
                 "players-by-name",
