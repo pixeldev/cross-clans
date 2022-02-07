@@ -3,16 +3,19 @@ package net.cosmogrp.crclans.command;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
-import net.cosmogrp.crclans.command.part.Clustered;
-import org.bukkit.OfflinePlayer;
+import net.cosmogrp.crclans.clan.ClanService;
 import org.bukkit.entity.Player;
+
+import javax.inject.Inject;
 
 @Command(names = {"clan", "clans"})
 public class ClanCommand implements CommandClass {
 
-    @Command(names = "")
-    public void run(@Sender Player sender, @Clustered OfflinePlayer target) {
-        sender.sendMessage("success " + target.getName());
+    @Inject private ClanService clanService;
+
+    @Command(names = "create", permission = "clans.create")
+    public void create(@Sender Player sender, String tag) {
+        clanService.createClan(sender, tag);
     }
 
 }

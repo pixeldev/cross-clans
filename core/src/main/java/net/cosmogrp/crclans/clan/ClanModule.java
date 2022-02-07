@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.clan;
 import com.google.gson.Gson;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import me.yushust.inject.scope.Scopes;
 import net.cosmogrp.storage.dist.RemoteModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.redis.RedisModelService;
@@ -28,6 +29,11 @@ import java.util.concurrent.Executor;
 
 public class ClanModule extends AbstractModule {
 
+    @Override
+    public void configure() {
+        bind(ClanService.class).to(SimpleClanService.class).in(Scopes.SINGLETON);
+    }
+
     @Provides @Singleton
     public RemoteModelService<Clan> createService(
             Executor executor,
@@ -41,7 +47,7 @@ public class ClanModule extends AbstractModule {
                 configuration.getString("server-group") + "-clans",
                 Arrays.asList(
                         new MySQLElement("id", DataType.STRING, SQLConstraint.PRIMARY, SQLConstraint.NOT_NULL),
-                        new MySQLElement("name", DataType.STRING),
+                        new MySQLElement("description", DataType.STRING),
                         new MySQLElement("ownerId", DataType.STRING)
                 ));
 
@@ -51,7 +57,7 @@ public class ClanModule extends AbstractModule {
         RowMapper<Clan> mapper = (rs, ctx) -> new Clan(
                 rs.getString("id"),
                 UUID.fromString(rs.getString("ownerId")),
-                rs.getString("name"),
+                rs.getString("description"),
                 new HashSet<>()
         );
 
@@ -59,7 +65,7 @@ public class ClanModule extends AbstractModule {
             Map<String, Object> map = new HashMap<>();
             map.put("id", clan.getId());
             map.put("ownerId", clan.getOwnerId().toString());
-            map.put("name", clan.getDescription());
+            map.put("description", clan.getDescription());
             return map;
         };
 

@@ -17,7 +17,12 @@ database:
 
 clans:
     # expiry time in seconds
-    creation-cost: 100
     invite-expiry: 600
-    tag-length: 6
-    name-length: 12
+    create-cost: 100
+
+    # default pattern with allow a-z and 0-9
+    # with the minimum and maximum length configured
+    # don't recommend changing this unless you know what you're doing
+    tag-pattern: "[a-zA-Z0-9_]{%s,%s}"
+    tag-min-length: 3
+    tag-max-length: 6
