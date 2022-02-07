@@ -16,13 +16,13 @@ public class LocalNotifier implements Notifier {
     public void notify(Set<UUID> targets, String path, Object... parameters) {
         if (targets == null) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                messageHandler.send(player, path, parameters);
+                messageHandler.sendReplacing(player, path, parameters);
             }
         } else {
             for (UUID target : targets) {
                 Player player = Bukkit.getPlayer(target);
                 if (player != null) {
-                    messageHandler.send(player, path, parameters);
+                    messageHandler.sendReplacing(player, path, parameters);
                 }
             }
         }
