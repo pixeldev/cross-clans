@@ -10,12 +10,11 @@ import java.util.UUID;
 public class Clan extends AbstractModel {
 
     private final UUID ownerId;
-    private final String description;
     private final Set<UUID> members;
+    private String description;
 
-    public Clan(String tag, String description, Player owner) {
+    public Clan(String tag , Player owner) {
         super(tag);
-        this.description = description;
         this.ownerId = owner.getUniqueId();
         this.members = new HashSet<>();
     }
@@ -33,6 +32,10 @@ public class Clan extends AbstractModel {
 
     public UUID getOwnerId() {
         return ownerId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDescription() {
