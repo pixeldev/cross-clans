@@ -59,7 +59,7 @@ public class ClanModule extends AbstractModule {
             Map<String, Object> map = new HashMap<>();
             map.put("id", clan.getId());
             map.put("ownerId", clan.getOwnerId().toString());
-            map.put("name", clan.getName());
+            map.put("name", clan.getDescription());
             return map;
         };
 
