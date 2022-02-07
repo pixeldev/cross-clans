@@ -12,8 +12,6 @@ import javax.inject.Inject;
 public class ServerNameListener
         implements PluginMessageListener {
 
-    public static final String CHANNEL = "clans-server-name";
-
     @Inject private RedisCache redisCache;
 
     @Override
@@ -30,8 +28,9 @@ public class ServerNameListener
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subChannel = in.readUTF();
 
-        if (subChannel.equals(CHANNEL)) {
+        if (subChannel.equals("GetServer")) {
             String serverName = in.readUTF();
+
             redisCache.set(
                     "players-by-server",
                     player.getUniqueId().toString(),
