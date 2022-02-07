@@ -2,13 +2,12 @@ package net.cosmogrp.crclans.clan;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.messenger.global.GlobalNotifier;
-import net.cosmogrp.economy.EconomyHandler;
+import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.regex.Pattern;
 
 public class SimpleClanService implements ClanService {
@@ -16,10 +15,7 @@ public class SimpleClanService implements ClanService {
     @Inject private AsyncModelService<Clan> modelService;
     @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
-
-    @Inject
-    @Named("vault")
-    private EconomyHandler vaultEconomy;
+    @Inject private VaultEconomyHandler vaultEconomyHandler;
 
     private final FileConfiguration configuration;
     private final Pattern tagPattern;
@@ -63,7 +59,7 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        if (vaultEconomy.withdraw(
+        if (vaultEconomyHandler.withdraw(
                 owner,
                 configuration.getDouble("clan.create-cost")
         )) {
