@@ -4,11 +4,13 @@ import net.cosmogrp.crclans.messenger.global.GlobalMessage;
 import net.cosmogrp.storage.redis.channel.Channel;
 import net.cosmogrp.storage.redis.channel.ChannelListener;
 
-import javax.inject.Inject;
-
 public class GlobalMessageListener implements ChannelListener<GlobalMessage> {
 
-    @Inject private LocalNotifier localNotifier;
+    private final LocalNotifier localNotifier;
+
+    public GlobalMessageListener(LocalNotifier localNotifier) {
+        this.localNotifier = localNotifier;
+    }
 
     @Override
     public void listen(
