@@ -47,7 +47,7 @@ public class SimpleClanService implements ClanService {
     public void createClan(Player owner, String tag) {
         if (!tagPattern.matcher(tag).matches()) {
             messageHandler.sendReplacing(
-                    owner, "clans.invalid-tag",
+                    owner, "clan.invalid-tag",
                     "%min%", minTagLength,
                     "%max%", maxTagLength
             );
