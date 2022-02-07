@@ -1,15 +1,18 @@
 dependencies {
     api("org.jetbrains:annotations:22.0.0")
-    api("net.cosmogrp:storage-sql-dist:0.2.0") {
+
+    val storageVersion = "0.3.0"
+
+    api("net.cosmogrp:storage-redis-dist:$storageVersion")
+    api("net.cosmogrp:storage-sql-dist:$storageVersion") {
         exclude("com.zaxxer", "HikariCP")
     }
+
     api("com.zaxxer:HikariCP:5.0.1")
 
     arrayOf("trew-dist", "nmessage-dist").forEach {
         api("net.cosmogrp:economy-$it:0.0.1")
     }
-
-    api("net.cosmogrp:storage-redis-dist:0.2.0")
 
     api("me.yushust.inject:core:0.4.5-SNAPSHOT")
     api("me.yushust.message:core:6.0.17")
