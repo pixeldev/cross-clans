@@ -52,6 +52,10 @@ public class VaultEconomyHandler implements EconomyHandler {
             return true;
         }
 
+        if (!delegate.has(target, amount)) {
+            return false;
+        }
+
         return delegate.withdrawPlayer(target, amount)
                 .transactionSuccess();
     }

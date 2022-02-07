@@ -59,25 +59,28 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        if (vaultEconomyHandler.withdraw(
+        if (!vaultEconomyHandler.withdraw(
                 owner,
-                configuration.getDouble("clan.create-cost")
+                configuration.getDouble("clans.create-cost")
         )) {
-            clan = new Clan(tag, owner);
-            modelService.save(clan)
-                    .whenComplete((result, error) -> {
-                        if (error != null) {
-                            messageHandler.send(owner, "clan.create-failed");
-                            return;
-                        }
-
-                        globalNotifier.notify(
-                                "clan.create-success",
-                                "%tag%", tag,
-                                "%creator%", owner.getName()
-                        );
-                    });
+            messageHandler.send(owner, "clan.not-enough-money");
+            return;
         }
+
+        clan = new Clan(tag, owner);
+        modelService.save(clan)
+                .whenComplete((result, error) -> {
+                    if (error != null) {
+                        messageHandler.send(owner, "clan.create-failed");
+                        return;
+                    }
+
+                    globalNotifier.notify(
+                            "clan.create-success",
+                            "%tag%", tag,
+                            "%creator%", owner.getName()
+                    );
+                });
     }
 
     @Override
