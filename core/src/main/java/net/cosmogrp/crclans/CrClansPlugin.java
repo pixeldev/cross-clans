@@ -16,6 +16,7 @@ import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
 import net.cosmogrp.crclans.inject.MainModule;
 import net.cosmogrp.crclans.server.ServerNameListener;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
@@ -71,7 +72,7 @@ public class CrClansPlugin extends JavaPlugin {
 
         commandManager.registerCommands(builder.fromClass(clanCommand));
 
-        vaultEconomyHandler.setup();
+        Bukkit.getScheduler().runTaskLater(this, () -> vaultEconomyHandler.setup(), 1);
     }
 
     @Override
