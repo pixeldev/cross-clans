@@ -14,17 +14,29 @@ public class LocalNotifier implements Notifier {
 
     @Override
     public void notify(Set<UUID> targets, String path, Object... parameters) {
+        notify0(targets, path, parameters);
+    }
+
+    protected boolean notify0(Set<UUID> targets, String path, Object... parameters) {
         if (targets == null) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 messageHandler.sendReplacing(player, path, parameters);
             }
+
+            return false;
         } else {
+            boolean delivered = true;
             for (UUID target : targets) {
                 Player player = Bukkit.getPlayer(target);
-                if (player != null) {
-                    messageHandler.sendReplacing(player, path, parameters);
+
+                if (player == null) {
+                    delivered = false;
+                    continue;
                 }
+
+                messageHandler.sendReplacing(player, path, parameters);
             }
+            return delivered;
         }
     }
 }
