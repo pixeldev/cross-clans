@@ -1,9 +1,9 @@
-package net.cosmogrp.crclans.messenger;
+package net.cosmogrp.crclans.notifier;
 
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
-import net.cosmogrp.crclans.messenger.global.GlobalMessage;
-import net.cosmogrp.crclans.messenger.global.GlobalNotifier;
+import net.cosmogrp.crclans.notifier.global.GlobalMessage;
+import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.storage.redis.channel.Channel;
 import net.cosmogrp.storage.redis.connection.Redis;
 

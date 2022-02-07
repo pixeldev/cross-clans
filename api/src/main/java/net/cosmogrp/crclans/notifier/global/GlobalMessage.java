@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.messenger.global;
+package net.cosmogrp.crclans.notifier.global;
 
 import org.jetbrains.annotations.Nullable;
 

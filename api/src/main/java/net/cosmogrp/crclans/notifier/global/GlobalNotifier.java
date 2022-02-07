@@ -1,6 +1,6 @@
-package net.cosmogrp.crclans.messenger.global;
+package net.cosmogrp.crclans.notifier.global;
 
-import net.cosmogrp.crclans.messenger.LocalNotifier;
+import net.cosmogrp.crclans.notifier.LocalNotifier;
 import net.cosmogrp.storage.redis.channel.Channel;
 
 import javax.inject.Inject;

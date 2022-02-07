@@ -1,6 +1,6 @@
-package net.cosmogrp.crclans.messenger;
+package net.cosmogrp.crclans.notifier;
 
-import net.cosmogrp.crclans.messenger.global.GlobalMessage;
+import net.cosmogrp.crclans.notifier.global.GlobalMessage;
 import net.cosmogrp.storage.redis.channel.Channel;
 import net.cosmogrp.storage.redis.channel.ChannelListener;
 

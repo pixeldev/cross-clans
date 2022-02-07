@@ -3,7 +3,7 @@ package net.cosmogrp.crclans.inject;
 import me.yushust.inject.AbstractModule;
 import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ClanModule;
-import net.cosmogrp.crclans.messenger.NotifierModule;
+import net.cosmogrp.crclans.notifier.NotifierModule;
 import net.cosmogrp.crclans.translate.TranslationModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;

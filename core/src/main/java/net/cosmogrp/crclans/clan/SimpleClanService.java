@@ -1,7 +1,7 @@
 package net.cosmogrp.crclans.clan;
 
 import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.messenger.global.GlobalNotifier;
+import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
