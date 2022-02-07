@@ -5,11 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Set;
 import java.util.UUID;
 
-@Singleton
 public class LocalNotifier implements Notifier {
 
     @Inject protected MessageHandler messageHandler;

@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.inject;
 import me.yushust.inject.AbstractModule;
 import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ClanModule;
+import net.cosmogrp.crclans.messenger.NotifierModule;
 import net.cosmogrp.crclans.translate.TranslationModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -30,7 +31,7 @@ public class MainModule extends AbstractModule {
 
         install(
                 new RedisModule(), new DatabaseModule(),
-                new SerializationModule(),
+                new SerializationModule(), new NotifierModule(),
                 new TranslationModule(), new ListenerModule(),
                 new ClanModule(), new EconomyModule()
         );
