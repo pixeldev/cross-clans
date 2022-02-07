@@ -1,6 +1,7 @@
 package net.cosmogrp.crclans.clan;
 
 import me.yushust.message.MessageHandler;
+import net.cosmogrp.crclans.messenger.global.GlobalNotifier;
 import net.cosmogrp.economy.EconomyHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,6 +15,7 @@ public class SimpleClanService implements ClanService {
 
     @Inject private AsyncModelService<Clan> modelService;
     @Inject private MessageHandler messageHandler;
+    @Inject private GlobalNotifier globalNotifier;
 
     @Inject
     @Named("vault")
@@ -73,12 +75,17 @@ public class SimpleClanService implements ClanService {
                             return;
                         }
 
-                        messageHandler.sendReplacing(
-                                owner,
+                        globalNotifier.notify(
                                 "clan.create-success",
-                                "%tag%", tag
+                                "%tag%", tag,
+                                "%creator%", owner.getName()
                         );
                     });
         }
+    }
+
+    @Override
+    public void deleteClan(Player owner) {
+
     }
 }

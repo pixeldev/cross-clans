@@ -20,4 +20,9 @@ clan:
     invalid-tag: "&c¡El tag del clan debe tener un mínimo de carácteres de &c&n%min% &cy un máximo de &c&n%max% &ccompuesto por letras y números!"
 
     create-failed: "&c¡Ha ocurrido un error al crear el clan, intenta de nuevo!"
-    create-success: "&f¡Has creado el clan &a%tag%&f!"
+    create-success:
+        - " "
+        - " &fSe ha creado un nuevo clan"
+        - " &aTag: &f%tag%"
+        - " &aCreador: &f%creator%"
+        - " "
