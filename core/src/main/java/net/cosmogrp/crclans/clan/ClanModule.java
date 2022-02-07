@@ -44,7 +44,7 @@ public class ClanModule extends AbstractModule {
     ) {
         ModelMeta<Clan> modelMeta = new ModelMeta<>(Clan.class);
         Table table = new MySQLTable(
-                configuration.getString("server-group") + "-clans",
+                configuration.getString("server-group") + "clans",
                 Arrays.asList(
                         new MySQLElement("id", DataType.STRING, SQLConstraint.PRIMARY, SQLConstraint.NOT_NULL),
                         new MySQLElement("description", DataType.STRING),
