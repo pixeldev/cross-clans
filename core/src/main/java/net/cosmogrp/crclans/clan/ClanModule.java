@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
 import me.yushust.inject.scope.Scopes;
-import net.cosmogrp.storage.dist.RemoteModelService;
+import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.redis.RedisModelService;
 import net.cosmogrp.storage.redis.connection.RedisCache;
@@ -35,7 +35,7 @@ public class ClanModule extends AbstractModule {
     }
 
     @Provides @Singleton
-    public RemoteModelService<Clan> createService(
+    public AsyncModelService<Clan> createService(
             Executor executor,
             FileConfiguration configuration,
             SQLClient client,

@@ -2,7 +2,7 @@ package net.cosmogrp.crclans.clan;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.economy.EconomyHandler;
-import net.cosmogrp.storage.dist.RemoteModelService;
+import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class SimpleClanService implements ClanService {
 
-    @Inject private RemoteModelService<Clan> modelService;
+    @Inject private AsyncModelService<Clan> modelService;
     @Inject private MessageHandler messageHandler;
 
     @Inject
