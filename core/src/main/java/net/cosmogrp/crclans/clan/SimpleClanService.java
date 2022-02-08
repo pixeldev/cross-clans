@@ -67,7 +67,7 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        clan = new Clan(tag, owner);
+        clan = Clan.create(owner, tag);
         modelService.save(clan)
                 .whenComplete((result, error) -> {
                     if (error != null) {
