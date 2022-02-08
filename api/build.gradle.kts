@@ -1,14 +1,10 @@
 dependencies {
     api("org.jetbrains:annotations:22.0.0")
 
-    val storageVersion = "0.3.0"
+    val storageVersion = "0.5.0"
 
     api("net.cosmogrp:storage-redis-dist:$storageVersion")
-    api("net.cosmogrp:storage-sql-dist:$storageVersion") {
-        exclude("com.zaxxer", "HikariCP")
-    }
-
-    api("com.zaxxer:HikariCP:5.0.1")
+    api("net.cosmogrp:storage-mongo-legacy-dist:$storageVersion")
 
     arrayOf("trew-dist", "nmessage-dist").forEach {
         api("net.cosmogrp:economy-$it:0.0.1")
