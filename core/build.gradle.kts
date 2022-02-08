@@ -14,13 +14,9 @@ tasks {
         relocate("me.lucko", "$path.lucko")
         relocate("net.kyori", "$path.kyori")
         relocate("com.mojang", "$path.mojang")
-        relocate("com.zaxxer.hikari", "$path.hikari")
         relocate("redis.clients.jedis", "$path.redis")
-        relocate("org.jdbi.v3", "$path.jdbi")
-        relocate("org.mariadb.jdbc", "$path.mariadb")
-        relocate("com.github.benmanes.caffeine", "$path.caffeine")
         relocate("com.google.gson", "$path.gson")
-        relocate("io.leangen.geantyref", "$path.geantyref")
+        relocate("com.mongodb", "$path.mongodb")
     }
 
     processResources {
