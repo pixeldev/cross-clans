@@ -36,7 +36,7 @@ public class ClanModule extends AbstractModule {
                 executor, modelMeta,
                 new RedisModelService<>(executor, modelMeta, gson, redisCache),
                 mongoDatabase,
-                new ClanModelParser()
+                Clan::fromDocument
         );
     }
 
