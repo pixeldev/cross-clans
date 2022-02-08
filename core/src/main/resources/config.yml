@@ -8,12 +8,8 @@ redis:
     timeout: 2000
 
 database:
-    host: "localhost"
-    port: 3306
-    database: "survival"
-    username: "root"
-    password: "mariadbpwd"
-    maximum-pool-size: 10
+    connection: "mongodb://127.0.0.1:27017"
+    name: "clans"
 
 clans:
     # expiry time in seconds

@@ -1,8 +1,10 @@
 package net.cosmogrp.crclans.inject;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
-import net.cosmogrp.storage.sql.connection.SQLClient;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -11,23 +13,21 @@ import javax.inject.Singleton;
 public class DatabaseModule extends AbstractModule {
 
     @Provides @Singleton
-    public SQLClient getClient(FileConfiguration configuration) {
-        ConfigurationSection section =
+    public MongoDatabase createDatabase(FileConfiguration configuration) {
+        ConfigurationSection databaseSection =
                 configuration.getConfigurationSection("database");
 
-        if (section == null) {
-            throw new IllegalStateException("No database section found in config");
+        if (databaseSection == null) {
+            throw new IllegalArgumentException("No database section found in configuration");
         }
 
-        return new SQLClient.Builder("mariadb")
-                .setDatabase(section.getString("database"))
-                .setHost(section.getString("host"))
-                .setPort(section.getInt("port"))
-                .setUsername(section.getString("username"))
-                .setPassword(section.getString("password"))
-                .setMaximumPoolSize(section.getInt("maximum-pool-size"))
-                .setDriverClassName("org.mariadb.jdbc.Driver")
-                .build();
+        String connectionUri = databaseSection.getString(
+                "connection",
+                "mongodb://127.0.0.1:27017"
+        );
+
+        return MongoClients.create(new ConnectionString(connectionUri))
+                .getDatabase(databaseSection.getString("name", "clans"));
     }
 
 }
