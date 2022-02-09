@@ -2,20 +2,24 @@ package net.cosmogrp.crclans.user;
 
 import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.storage.model.AbstractModel;
+import net.cosmogrp.storage.mongo.DocumentCodec;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class User extends AbstractModel {
+public class User extends AbstractModel
+        implements DocumentCodec {
 
     private final UUID playerId;
 
     private String clanTag;
 
-    public User(Player player) {
-        super(player.getUniqueId().toString());
-        this.playerId = player.getUniqueId();
+    private User(UUID playerId, String clanTag) {
+        super(playerId.toString());
+        this.playerId = playerId;
+        this.clanTag = clanTag;
     }
 
     public UUID getPlayerId() {
@@ -36,5 +40,24 @@ public class User extends AbstractModel {
 
     public boolean hasClan() {
         return clanTag != null;
+    }
+
+    public static User create(Player player) {
+        return new User(player.getUniqueId(), null);
+    }
+
+    public static User fromDocument(Document document) {
+        return new User(
+                UUID.fromString(document.getString("_id")),
+                document.getString("clanTag")
+        );
+    }
+
+    @Override
+    public Document toDocument() {
+        Document document = new Document();
+        document.put("_id", playerId.toString());
+        document.put("clanTag", clanTag);
+        return document;
     }
 }
