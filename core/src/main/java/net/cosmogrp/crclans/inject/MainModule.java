@@ -5,6 +5,7 @@ import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ClanModule;
 import net.cosmogrp.crclans.notifier.NotifierModule;
 import net.cosmogrp.crclans.translate.TranslationModule;
+import net.cosmogrp.crclans.user.UserModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -33,7 +34,7 @@ public class MainModule extends AbstractModule {
                 new RedisModule(), new DatabaseModule(),
                 new SerializationModule(), new NotifierModule(),
                 new TranslationModule(), new ListenerModule(),
-                new ClanModule(), new EconomyModule()
+                new ClanModule(), new UserModule(), new EconomyModule()
         );
     }
 
