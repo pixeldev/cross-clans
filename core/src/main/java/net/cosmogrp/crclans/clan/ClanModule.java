@@ -30,7 +30,7 @@ public class ClanModule extends AbstractModule {
     ) {
         ModelMeta<Clan> modelMeta = new ModelMeta<>(Clan.class)
                 .addProperty("redis-table", "clans")
-                .addProperty("collection", configuration.getString("server-group"));
+                .addProperty("collection", configuration.getString("server-group") + ":clans");
 
         return new MongoModelService<>(
                 executor, modelMeta,
