@@ -27,3 +27,7 @@ clan:
         - " &aTag: &f%tag%"
         - " &aCreador: &f%creator%"
         - " "
+
+user:
+    not-found: "&cOcurrió un error al buscar tu información, si este error continúa contacta con un administrador"
+    load-error: "&cNo pudimos obtener tu información, intenta de nuevo"

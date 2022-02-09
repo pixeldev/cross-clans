@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans.user;
 
+import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
@@ -7,6 +8,8 @@ import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.dist.LocalModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.mongo.MongoModelService;
+import net.cosmogrp.storage.redis.RedisModelService;
+import net.cosmogrp.storage.redis.connection.RedisCache;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.inject.Singleton;
@@ -27,6 +30,20 @@ public class UserModule extends AbstractModule {
                 new LocalModelService<>(),
                 mongoDatabase,
                 User::fromDocument
+        );
+    }
+
+    @Provides @Singleton
+    public RedisModelService<User> createRedisService(
+            Executor executor, Gson gson,
+            RedisCache redisCache
+    ) {
+        ModelMeta<User> modelMeta = new ModelMeta<>(User.class)
+                .addProperty("redis-table", "users");
+
+        return new RedisModelService<>(
+                executor, modelMeta,
+                gson, redisCache
         );
     }
 

@@ -42,8 +42,8 @@ public class User extends AbstractModel
         return clanTag != null;
     }
 
-    public static User create(Player player) {
-        return new User(player.getUniqueId(), null);
+    public static User create(UUID playerId) {
+        return new User(playerId, null);
     }
 
     public static User fromDocument(Document document) {
