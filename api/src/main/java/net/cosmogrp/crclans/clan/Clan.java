@@ -87,7 +87,7 @@ public class Clan extends AbstractModel
         Document document = new Document();
         document.put("_id", getId());
         document.put("creation", creation);
-        document.put("ownerId", ownerId);
+        document.put("ownerId", ownerId.toString());
         document.put("description", description);
 
         List<Document> members = new ArrayList<>();
