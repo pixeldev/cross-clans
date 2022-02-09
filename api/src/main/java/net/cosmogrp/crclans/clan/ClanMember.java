@@ -63,7 +63,7 @@ public class ClanMember implements DocumentCodec {
         return new ClanMember(
                 UUID.fromString(document.getString("playerId")),
                 document.getBoolean("moderator"),
-                document.getBoolean("online")
+                false
         );
     }
 
