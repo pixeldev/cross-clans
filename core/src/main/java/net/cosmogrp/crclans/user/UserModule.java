@@ -39,7 +39,8 @@ public class UserModule extends AbstractModule {
             RedisCache redisCache
     ) {
         ModelMeta<User> modelMeta = new ModelMeta<>(User.class)
-                .addProperty("redis-table", "users");
+                .addProperty("redis-table", "users")
+                .addProperty("redis-expire", 300);
 
         return new RedisModelService<>(
                 executor, modelMeta,
