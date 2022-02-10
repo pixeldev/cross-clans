@@ -1,6 +1,7 @@
 package net.cosmogrp.crclans.user;
 
 import me.yushust.message.MessageHandler;
+import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.redis.RedisModelService;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ public class SimpleUserService implements UserService {
     @Inject private AsyncModelService<User> modelService;
     @Inject private RedisModelService<User> redisModelService;
     @Inject private MessageHandler messageHandler;
+    @Inject private LogHandler logHandler;
 
     @Override
     public @Nullable User getUser(Player player) {
@@ -45,13 +47,42 @@ public class SimpleUserService implements UserService {
 
             return null;
         } catch (Throwable e) {
-            e.printStackTrace();
+            logHandler.reportError(
+                    "Failed to load or create user '%s'",
+                    e, playerId.toString()
+            );
+
             return messageHandler.getMessage("user.load-error");
         }
     }
 
     @Override
     public void saveUser(Player player) {
+        UUID playerId = player.getUniqueId();
+        String playerIdString = playerId.toString();
+        User user = modelService.getSync(playerIdString);
 
+        if (user == null) {
+            logHandler.reportError(
+                    "Failed to get user '%s' from cache",
+                    playerIdString
+            );
+
+            return;
+        }
+
+        modelService.save(user)
+                // we need to save it in redis cache, so we don't need to
+                // get it from database when we load it again
+                .thenCompose(savedUser -> redisModelService.save(user))
+                .whenComplete((savedUser, throwable) -> {
+                    if (throwable != null) {
+                        // just report the error, don't care if it fails
+                        logHandler.reportError(
+                                "Failed to save user '%s'",
+                                throwable, playerIdString
+                        );
+                    }
+                });
     }
 }

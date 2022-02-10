@@ -22,4 +22,6 @@ public interface UserService {
      */
     @Nullable String loadOrCreate(UUID playerId);
 
+    void saveUser(Player player);
+
 }
