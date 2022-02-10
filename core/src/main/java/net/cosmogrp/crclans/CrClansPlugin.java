@@ -17,12 +17,14 @@ import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
 import net.cosmogrp.crclans.inject.MainModule;
 import net.cosmogrp.crclans.server.ServerNameListener;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
+import net.cosmogrp.storage.redis.connection.Redis;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.Set;
 
 public class CrClansPlugin extends JavaPlugin {
@@ -37,6 +39,7 @@ public class CrClansPlugin extends JavaPlugin {
     @Inject private ClanCommand clanCommand;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
     @Inject private MongoClient mongoClient;
+    @Inject private Redis redis;
 
     @Override
     public void onLoad() {
@@ -80,6 +83,13 @@ public class CrClansPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         mongoClient.close();
+
+        try {
+            redis.close();
+        } catch (IOException e) {
+            getLogger().severe("Failed to close redis connection");
+        }
+
         Messenger messenger = getServer().getMessenger();
         messenger.unregisterOutgoingPluginChannel(this, "BungeeCord");
         messenger.unregisterIncomingPluginChannel(
