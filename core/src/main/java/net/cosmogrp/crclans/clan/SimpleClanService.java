@@ -1,6 +1,7 @@
 package net.cosmogrp.crclans.clan;
 
 import me.yushust.message.MessageHandler;
+import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
@@ -19,6 +20,7 @@ public class SimpleClanService implements ClanService {
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
     @Inject private UserService userService;
+    @Inject private LogHandler logHandler;
 
     private final FileConfiguration configuration;
     private final Pattern tagPattern;
@@ -101,6 +103,45 @@ public class SimpleClanService implements ClanService {
 
     @Override
     public void deleteClan(Player owner) {
+        User user = userService.getUser(owner);
 
+        if (user == null) {
+            return;
+        }
+
+        if (!user.hasClan()) {
+            messageHandler.send(owner, "clan.not-in-clan");
+            return;
+        }
+
+        Clan clan = modelService.getSync(user.getClanTag());
+
+        if (clan == null) {
+            messageHandler.send(owner, "clan.error-finding-clan");
+            return;
+        }
+
+        if (!clan.isOwner(owner)) {
+            messageHandler.send(owner, "clan.not-owner");
+            return;
+        }
+
+        modelService.delete(clan)
+                .whenComplete((result, error) -> {
+                    if (error != null) {
+                        logHandler.reportError(
+                                "Failed to delete clan '%s'", error,
+                                clan.getId()
+                        );
+
+                        messageHandler.send(owner, "clan.delete-failed");
+                        return;
+                    }
+
+                    // just remove clan from the owner
+                    // we will wait to members get connected to the server
+                    user.setClan(null);
+                    messageHandler.send(owner, "clan.delete-success");
+                });
     }
 }

@@ -18,4 +18,9 @@ public class ClanCommand implements CommandClass {
         clanService.createClan(sender, tag);
     }
 
+    @Command(names = "delete", permission = "clans.delete")
+    public void runDelete(@Sender Player sender) {
+        clanService.deleteClan(sender);
+    }
+
 }

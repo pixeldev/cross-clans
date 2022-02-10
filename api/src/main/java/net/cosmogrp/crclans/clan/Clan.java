@@ -42,6 +42,10 @@ public class Clan extends AbstractModel
         return owner;
     }
 
+    public boolean isOwner(Player player) {
+        return owner.getPlayerId().equals(player.getUniqueId());
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

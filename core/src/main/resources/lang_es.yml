@@ -18,9 +18,16 @@ commands:
 clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
+    not-in-clan: "&c¡No estás en un clan!"
+
+    error-finding-clan: "&c¡Ha ocurrido un error al buscar tu clan, intenta de nuevo!"
+    not-owner: "&c¡Solo el dueño del clan puede hacer eso!"
 
     not-enough-money: "&c¡No tienes suficiente dinero para crear un clan!"
     invalid-tag: "&c¡El tag del clan debe tener un mínimo de carácteres de &c&n%min%&c y un máximo de &c&n%max%&c compuesto por letras y números!"
+
+    delete-success: "&c¡Has disuelto tu clan correctamente!"
+    delete-failed: "&cOcurrió un error al intentar disolver tu clan, ¡intenta de nuevo!"
 
     create-failed: "&c¡Ha ocurrido un error al crear el clan, intenta de nuevo!"
     create-success:
