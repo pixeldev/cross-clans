@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.inject;
 import me.yushust.inject.AbstractModule;
 import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ClanModule;
+import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.NotifierModule;
 import net.cosmogrp.crclans.translate.TranslationModule;
 import net.cosmogrp.crclans.user.UserModule;
@@ -29,6 +30,8 @@ public class MainModule extends AbstractModule {
         bind(Executor.class).toInstance(Executors.newFixedThreadPool(
                 configuration.getInt("threads")
         ));
+
+        bind(LogHandler.class).toInstance(new LogHandler(plugin.getLogger()));
 
         install(
                 new RedisModule(), new DatabaseModule(),
