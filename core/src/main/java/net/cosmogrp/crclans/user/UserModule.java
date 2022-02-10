@@ -17,6 +17,11 @@ import java.util.concurrent.Executor;
 
 public class UserModule extends AbstractModule {
 
+    @Override
+    public void configure() {
+        bind(UserService.class).to(SimpleUserService.class).singleton();
+    }
+
     @Provides @Singleton
     public AsyncModelService<User> createService(
             Executor executor, FileConfiguration configuration,
