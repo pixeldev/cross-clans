@@ -2,6 +2,8 @@ package net.cosmogrp.crclans.clan;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
+import net.cosmogrp.crclans.user.User;
+import net.cosmogrp.crclans.user.UserService;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,6 +18,7 @@ public class SimpleClanService implements ClanService {
     @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
+    @Inject private UserService userService;
 
     private final FileConfiguration configuration;
     private final Pattern tagPattern;
@@ -43,6 +46,17 @@ public class SimpleClanService implements ClanService {
 
     @Override
     public void createClan(Player owner, String tag) {
+        User user = userService.getUser(owner);
+
+        if (user == null) {
+            return;
+        }
+
+        if (user.hasClan()) {
+            messageHandler.send(owner, "clan.already-in-clan");
+            return;
+        }
+
         if (!tagPattern.matcher(tag).matches()) {
             messageHandler.sendReplacing(
                     owner, "clan.invalid-tag",
@@ -68,6 +82,8 @@ public class SimpleClanService implements ClanService {
         }
 
         clan = Clan.create(owner, tag);
+        user.setClan(clan);
+
         modelService.save(clan)
                 .whenComplete((result, error) -> {
                     if (error != null) {

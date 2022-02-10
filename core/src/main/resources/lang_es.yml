@@ -17,6 +17,8 @@ commands:
 
 clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
+    already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
+
     not-enough-money: "&c¡No tienes suficiente dinero para crear un clan!"
     invalid-tag: "&c¡El tag del clan debe tener un mínimo de carácteres de &c&n%min% &cy un máximo de &c&n%max% &ccompuesto por letras y números!"
 
