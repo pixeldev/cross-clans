@@ -20,7 +20,7 @@ clan:
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
 
     not-enough-money: "&c¡No tienes suficiente dinero para crear un clan!"
-    invalid-tag: "&c¡El tag del clan debe tener un mínimo de carácteres de &c&n%min% &cy un máximo de &c&n%max% &ccompuesto por letras y números!"
+    invalid-tag: "&c¡El tag del clan debe tener un mínimo de carácteres de &c&n%min%&c y un máximo de &c&n%max%&c compuesto por letras y números!"
 
     create-failed: "&c¡Ha ocurrido un error al crear el clan, intenta de nuevo!"
     create-success:
