@@ -1,5 +1,7 @@
 package net.cosmogrp.crclans.log;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,7 +14,7 @@ public class LogHandler {
     }
 
     public void reportError(
-            String message, Throwable throwable,
+            String message, @Nullable Throwable throwable,
             String... args
     ) {
         logger.log(Level.WARNING, message, args);
@@ -22,9 +24,11 @@ public class LogHandler {
         }
     }
 
-    public void info(
-            String message, String... args
-    ) {
+    public void reportError(String message, String... args) {
+        reportError(message, null, args);
+    }
+
+    public void info(String message, String... args) {
         logger.log(Level.INFO, message, args);
     }
 }
