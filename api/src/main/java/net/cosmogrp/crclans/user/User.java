@@ -4,7 +4,6 @@ import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import org.bson.Document;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
