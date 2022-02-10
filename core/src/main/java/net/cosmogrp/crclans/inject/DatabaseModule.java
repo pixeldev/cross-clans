@@ -1,6 +1,7 @@
 package net.cosmogrp.crclans.inject;
 
 import com.mongodb.ConnectionString;
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
@@ -13,7 +14,7 @@ import javax.inject.Singleton;
 public class DatabaseModule extends AbstractModule {
 
     @Provides @Singleton
-    public MongoDatabase createDatabase(FileConfiguration configuration) {
+    public MongoClient createClient(FileConfiguration configuration){
         ConfigurationSection databaseSection =
                 configuration.getConfigurationSection("database");
 
@@ -26,8 +27,12 @@ public class DatabaseModule extends AbstractModule {
                 "mongodb://127.0.0.1:27017"
         );
 
-        return MongoClients.create(new ConnectionString(connectionUri))
-                .getDatabase(databaseSection.getString("name", "clans"));
+        return MongoClients.create(new ConnectionString(connectionUri));
+    }
+
+    @Provides @Singleton
+    public MongoDatabase createDatabase(MongoClient client) {
+        return client.getDatabase("cross-clans");
     }
 
 }
