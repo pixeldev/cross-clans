@@ -28,17 +28,30 @@ public class SimpleUserService implements UserService {
 
     @Override
     public @Nullable String loadOrCreate(UUID playerId) {
-        User user = redisModelService.deleteSync(playerId.toString());
+        try {
+            User user = redisModelService.deleteSync(playerId.toString());
 
-        if (user == null) {
-            user = modelService.findSync(playerId.toString());
+            // user hasn't been cached or it has expired
+            if (user == null) {
+                // try to get it from database
+                user = modelService.findSync(playerId.toString());
+            }
+
+            // check again, if it's still null, create a new one
+            if (user == null) {
+                user = User.create(playerId);
+                modelService.saveSync(user);
+            }
+
+            return null;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return messageHandler.getMessage("user.load-error");
         }
+    }
 
-        if (user == null) {
-            user = User.create(playerId);
-            modelService.saveSync(user);
-        }
+    @Override
+    public void saveUser(Player player) {
 
-        return messageHandler.getMessage("user.load-error");
     }
 }
