@@ -10,13 +10,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class Clan extends AbstractModel
         implements DocumentCodec {
 
     private final Date creation;
-    private final UUID ownerId;
+    private final ClanMember owner;
     private final Set<ClanMember> members;
     private final Set<String> allies;
     private final Set<String> enemies;
@@ -25,22 +24,22 @@ public class Clan extends AbstractModel
 
     private Clan(
             String id, Date creation,
-            UUID ownerId, Set<ClanMember> members,
+            ClanMember owner, Set<ClanMember> members,
             Set<String> allies,
             Set<String> enemies,
             String description
     ) {
         super(id);
         this.creation = creation;
-        this.ownerId = ownerId;
+        this.owner = owner;
         this.members = members;
         this.allies = allies;
         this.enemies = enemies;
         this.description = description;
     }
 
-    public UUID getOwnerId() {
-        return ownerId;
+    public ClanMember getOwner() {
+        return owner;
     }
 
     public void setDescription(String description) {
@@ -54,7 +53,7 @@ public class Clan extends AbstractModel
     @Override
     public String toString() {
         return "Clan{" +
-                "ownerId=" + ownerId +
+                "ownerId=" + owner +
                 ", name='" + description + '\'' +
                 ", members=" + members +
                 '}';
@@ -62,7 +61,7 @@ public class Clan extends AbstractModel
 
     public static Clan create(Player owner, String tag) {
         return new Clan(
-                tag, new Date(), owner.getUniqueId(),
+                tag, new Date(), ClanMember.fromPlayer(owner),
                 new HashSet<>(),
                 new HashSet<>(),
                 new HashSet<>(),
@@ -71,13 +70,21 @@ public class Clan extends AbstractModel
     }
 
     public static Clan fromDocument(Document document) {
+        Set<ClanMember> members = new HashSet<>();
+
+        for (Document memberDocument : document.getList(
+                "members", Document.class
+        )) {
+            members.add(ClanMember.fromDocument(memberDocument));
+        }
+
         return new Clan(
                 document.getString("_id"),
                 document.getDate("creation"),
-                document.get("ownerId", UUID.class),
-                new HashSet<>(),
-                new HashSet<>(),
-                new HashSet<>(),
+                ClanMember.fromDocument(document.get("owner", Document.class)),
+                members,
+                new HashSet<>(document.getList("allies", String.class)),
+                new HashSet<>(document.getList("enemies", String.class)),
                 document.getString("description")
         );
     }
@@ -87,7 +94,7 @@ public class Clan extends AbstractModel
         Document document = new Document();
         document.put("_id", getId());
         document.put("creation", creation);
-        document.put("ownerId", ownerId.toString());
+        document.put("owner", owner.toDocument());
         document.put("description", description);
 
         List<Document> members = new ArrayList<>();
