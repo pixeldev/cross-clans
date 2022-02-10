@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans;
 
+import com.mongodb.client.MongoClient;
 import me.fixeddev.commandflow.CommandManager;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilderImpl;
@@ -35,6 +36,7 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Inject private ClanCommand clanCommand;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
+    @Inject private MongoClient mongoClient;
 
     @Override
     public void onLoad() {
@@ -77,6 +79,7 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        mongoClient.close();
         Messenger messenger = getServer().getMessenger();
         messenger.unregisterOutgoingPluginChannel(this, "BungeeCord");
         messenger.unregisterIncomingPluginChannel(
