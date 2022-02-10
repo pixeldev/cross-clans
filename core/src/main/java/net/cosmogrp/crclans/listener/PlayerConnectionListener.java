@@ -62,6 +62,8 @@ public class PlayerConnectionListener implements Listener {
                 "players-by-name",
                 player.getName()
         );
+
+        userService.saveUser(player);
     }
 
 }
