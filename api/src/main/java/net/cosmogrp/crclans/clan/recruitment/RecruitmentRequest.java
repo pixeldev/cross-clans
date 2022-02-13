@@ -6,6 +6,7 @@ import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class RecruitmentRequest implements DocumentCodec {
@@ -28,6 +29,31 @@ public class RecruitmentRequest implements DocumentCodec {
 
     public boolean isExpired() {
         return System.currentTimeMillis() > expiration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecruitmentRequest that = (RecruitmentRequest) o;
+        return expiration == that.expiration && Objects.equals(playerId, that.playerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerId);
+    }
+
+    @Override
+    public String toString() {
+        return "RecruitmentRequest{" +
+                "playerId=" + playerId +
+                ", expiration=" + expiration +
+                '}';
+    }
+
+    public static RecruitmentRequest dummy(UUID playerId) {
+        return new RecruitmentRequest(playerId, -1);
     }
 
     public static RecruitmentRequest create(
