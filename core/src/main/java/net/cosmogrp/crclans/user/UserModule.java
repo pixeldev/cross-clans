@@ -20,6 +20,7 @@ public class UserModule extends AbstractModule {
     @Override
     public void configure() {
         bind(UserService.class).to(SimpleUserService.class).singleton();
+        bind(ClusteredUserRegistry.class).to(SimpleClusteredUserRegistry.class).singleton();
     }
 
     @Provides @Singleton
