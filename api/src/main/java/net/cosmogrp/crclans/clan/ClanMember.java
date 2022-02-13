@@ -2,6 +2,7 @@ package net.cosmogrp.crclans.clan;
 
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
+import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
@@ -60,10 +61,10 @@ public class ClanMember implements DocumentCodec {
                 .build();
     }
 
-    public static ClanMember fromDocument(Document document) {
+    public static ClanMember fromDocument(DocumentReader reader) {
         return new ClanMember(
-                UUID.fromString(document.getString("playerId")),
-                document.getBoolean("moderator"),
+                reader.readUuid("playerId"),
+                reader.readBoolean("moderator"),
                 false
         );
     }

@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.clan;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
+import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
@@ -72,23 +73,15 @@ public class Clan extends AbstractModel
         );
     }
 
-    public static Clan fromDocument(Document document) {
-        Set<ClanMember> members = new HashSet<>();
-
-        for (Document memberDocument : document.getList(
-                "members", Document.class
-        )) {
-            members.add(ClanMember.fromDocument(memberDocument));
-        }
-
+    public static Clan fromDocument(DocumentReader reader) {
         return new Clan(
-                document.getString("_id"),
-                document.getDate("creation"),
-                ClanMember.fromDocument(document.get("owner", Document.class)),
-                members,
-                new HashSet<>(document.getList("allies", String.class)),
-                new HashSet<>(document.getList("enemies", String.class)),
-                document.getString("description")
+                reader.readString("_id"),
+                reader.readDate("creation"),
+                ClanMember.fromDocument(reader.readChild("owner")),
+                reader.readChildren("members", ClanMember::fromDocument),
+                reader.readSet("allies", String.class),
+                reader.readSet("enemies", String.class),
+                reader.readString("description")
         );
     }
 
