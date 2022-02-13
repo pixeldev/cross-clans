@@ -47,13 +47,7 @@ public class SimpleClanService implements ClanService {
     }
 
     @Override
-    public void createClan(Player owner, String tag) {
-        User user = userService.getUser(owner);
-
-        if (user == null) {
-            return;
-        }
-
+    public void createClan(User user, Player owner, String tag) {
         if (user.hasClan()) {
             messageHandler.send(owner, "clan.already-in-clan");
             return;
@@ -102,13 +96,7 @@ public class SimpleClanService implements ClanService {
     }
 
     @Override
-    public void deleteClan(Player owner) {
-        User user = userService.getUser(owner);
-
-        if (user == null) {
-            return;
-        }
-
+    public void deleteClan(User user, Player owner) {
         if (!user.hasClan()) {
             messageHandler.send(owner, "clan.not-in-clan");
             return;
