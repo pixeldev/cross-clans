@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.Collection;
 
 public class SimpleClusteredUserRegistry
         implements ClusteredUserRegistry {
@@ -14,6 +15,11 @@ public class SimpleClusteredUserRegistry
     @Inject private ServerData serverData;
     @Inject private RedisCache redisCache;
     @Inject private Gson gson;
+
+    @Override
+    public Collection<String> getClusteredUsers() {
+        return redisCache.getAllKeys("players");
+    }
 
     @Override
     public @Nullable ClusteredUser find(String name) {

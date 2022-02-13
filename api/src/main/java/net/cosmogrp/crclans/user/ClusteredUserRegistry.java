@@ -3,7 +3,11 @@ package net.cosmogrp.crclans.user;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 public interface ClusteredUserRegistry {
+
+    Collection<String> getClusteredUsers();
 
     @Nullable ClusteredUser find(String name);
 
