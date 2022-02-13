@@ -6,6 +6,8 @@ import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
+import net.cosmogrp.crclans.user.ClusteredUser;
+import net.cosmogrp.crclans.user.ClusteredUserRegistry;
 import net.cosmogrp.storage.redis.connection.RedisCache;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -13,14 +15,15 @@ import org.bukkit.OfflinePlayer;
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class ClusteredOfflinePlayerPart implements PartFactory {
+public class ClusteredUserPart implements PartFactory {
 
-    @Inject private RedisCache redisCache;
+    @Inject private ClusteredUserRegistry clusteredUserRegistry;
 
     @Override
     public CommandPart createPart(
@@ -29,19 +32,18 @@ public class ClusteredOfflinePlayerPart implements PartFactory {
     ) {
         return new ArgumentPart() {
             @Override
-            public List<OfflinePlayer> parseValue(
+            public List<ClusteredUser> parseValue(
                     CommandContext commandContext,
                     ArgumentStack argumentStack,
                     CommandPart commandPart
             ) throws ArgumentParseException {
-                String playerId = redisCache.get("players-by-name", argumentStack.next());
+                ClusteredUser clusteredUser = clusteredUserRegistry.find(argumentStack.next());
 
-                if (playerId == null) {
+                if (clusteredUser == null) {
                     throw new ArgumentParseException("%translatable:clustered-player-not-found%");
                 }
 
-                UUID uuid = UUID.fromString(playerId);
-                return Collections.singletonList(Bukkit.getOfflinePlayer(uuid));
+                return Collections.singletonList(clusteredUser);
             }
 
             @Override
@@ -49,9 +51,8 @@ public class ClusteredOfflinePlayerPart implements PartFactory {
                     CommandContext commandContext,
                     ArgumentStack stack
             ) {
-                Set<String> clusteredPlayers =
-                        redisCache.getAllKeys("players-by-name");
-
+                Collection<String> clusteredPlayers =
+                        clusteredUserRegistry.getClusteredUsers();
                 String next = stack.hasNext() ? stack.next() : "";
                 List<String> suggestions = new ArrayList<>();
 
