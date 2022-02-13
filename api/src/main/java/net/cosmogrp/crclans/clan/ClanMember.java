@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans.clan;
 
+import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import org.bson.Document;
 import org.bukkit.entity.Player;
@@ -53,10 +54,10 @@ public class ClanMember implements DocumentCodec {
 
     @Override
     public Document toDocument() {
-        Document document = new Document();
-        document.put("playerId", playerId.toString());
-        document.put("moderator", moderator);
-        return document;
+        return DocumentBuilder.create()
+                .write("playerId", playerId)
+                .write("moderator", moderator)
+                .build();
     }
 
     public static ClanMember fromDocument(Document document) {

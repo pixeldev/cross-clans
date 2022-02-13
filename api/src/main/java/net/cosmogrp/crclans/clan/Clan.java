@@ -1,14 +1,13 @@
 package net.cosmogrp.crclans.clan;
 
 import net.cosmogrp.storage.model.AbstractModel;
+import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Clan extends AbstractModel
@@ -95,21 +94,13 @@ public class Clan extends AbstractModel
 
     @Override
     public Document toDocument() {
-        Document document = new Document();
-        document.put("_id", getId());
-        document.put("creation", creation);
-        document.put("owner", owner.toDocument());
-        document.put("description", description);
-
-        List<Document> members = new ArrayList<>();
-
-        for (ClanMember member : this.members) {
-            members.add(member.toDocument());
-        }
-
-        document.put("members", members);
-        document.put("allies", allies);
-        document.put("enemies", enemies);
-        return document;
+        return DocumentBuilder.create(this)
+                .write("creation", creation)
+                .write("owner", owner)
+                .write("description", description)
+                .write("members", members)
+                .write("allies", allies)
+                .write("enemies", enemies)
+                .build();
     }
 }
