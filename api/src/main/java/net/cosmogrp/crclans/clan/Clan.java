@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans.clan;
 
+import net.cosmogrp.crclans.clan.recruitment.RecruitmentRequest;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
@@ -19,6 +20,7 @@ public class Clan extends AbstractModel
     private final Set<ClanMember> members;
     private final Set<String> allies;
     private final Set<String> enemies;
+    private final Set<RecruitmentRequest> recruitmentRequests;
 
     private String description;
 
@@ -27,6 +29,7 @@ public class Clan extends AbstractModel
             ClanMember owner, Set<ClanMember> members,
             Set<String> allies,
             Set<String> enemies,
+            Set<RecruitmentRequest> recruitmentRequests,
             String description
     ) {
         super(id);
@@ -35,6 +38,7 @@ public class Clan extends AbstractModel
         this.members = members;
         this.allies = allies;
         this.enemies = enemies;
+        this.recruitmentRequests = recruitmentRequests;
         this.description = description;
     }
 
@@ -69,6 +73,7 @@ public class Clan extends AbstractModel
                 new HashSet<>(),
                 new HashSet<>(),
                 new HashSet<>(),
+                new HashSet<>(),
                 null
         );
     }
@@ -81,6 +86,7 @@ public class Clan extends AbstractModel
                 reader.readChildren("members", ClanMember::fromDocument),
                 reader.readSet("allies", String.class),
                 reader.readSet("enemies", String.class),
+                reader.readChildren("recruitments", RecruitmentRequest::fromDocument),
                 reader.readString("description")
         );
     }
@@ -94,6 +100,7 @@ public class Clan extends AbstractModel
                 .write("members", members)
                 .write("allies", allies)
                 .write("enemies", enemies)
+                .write("recruitments", recruitmentRequests)
                 .build();
     }
 }
