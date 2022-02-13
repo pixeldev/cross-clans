@@ -9,6 +9,8 @@ public interface UserService {
 
     @Nullable User getUser(Player player);
 
+    @Nullable User getUser(UUID playerId);
+
     /**
      * Tries to get the user from redis
      * if it's cached or from the database

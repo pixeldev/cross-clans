@@ -29,6 +29,11 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
+    public @Nullable User getUser(UUID playerId) {
+        return modelService.getSync(playerId.toString());
+    }
+
+    @Override
     public @Nullable String loadOrCreate(UUID playerId) {
         try {
             User user = redisModelService.deleteSync(playerId.toString());
