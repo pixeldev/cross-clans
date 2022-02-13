@@ -1,4 +1,5 @@
 server-group: "survival"
+bungee-server: "server-1"
 threads: 4
 
 redis:
