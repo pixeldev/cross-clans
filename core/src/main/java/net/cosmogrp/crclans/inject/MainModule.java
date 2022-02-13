@@ -5,6 +5,7 @@ import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ClanModule;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.NotifierModule;
+import net.cosmogrp.crclans.server.ServerData;
 import net.cosmogrp.crclans.translate.TranslationModule;
 import net.cosmogrp.crclans.user.UserModule;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,6 +32,7 @@ public class MainModule extends AbstractModule {
                 configuration.getInt("threads")
         ));
 
+        bind(ServerData.class).toInstance(new ServerData(configuration));
         bind(LogHandler.class).toInstance(new LogHandler(plugin.getLogger()));
 
         install(
