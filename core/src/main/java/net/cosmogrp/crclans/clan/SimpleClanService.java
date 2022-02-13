@@ -141,6 +141,8 @@ public class SimpleClanService implements ClanService {
                     // just remove clan from the owner
                     // we will wait to members get connected to the server
                     user.setClan(null);
+
+                    // TODO: remove clan from all online members
                     messageHandler.send(owner, "clan.delete-success");
                 });
     }
