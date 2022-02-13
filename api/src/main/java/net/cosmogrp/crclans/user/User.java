@@ -2,7 +2,9 @@ package net.cosmogrp.crclans.user;
 
 import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.storage.model.AbstractModel;
+import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
+import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,18 +47,17 @@ public class User extends AbstractModel
         return new User(playerId, null);
     }
 
-    public static User fromDocument(Document document) {
+    public static User fromDocument(DocumentReader reader) {
         return new User(
-                UUID.fromString(document.getString("_id")),
-                document.getString("clanTag")
+                reader.readUuid("_id"),
+                reader.readString("clanTag")
         );
     }
 
     @Override
     public Document toDocument() {
-        Document document = new Document();
-        document.put("_id", playerId.toString());
-        document.put("clanTag", clanTag);
-        return document;
+        return DocumentBuilder.create(this)
+                .write("clanTag", clanTag)
+                .build();
     }
 }
