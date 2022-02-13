@@ -7,10 +7,14 @@ import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class Clan extends AbstractModel
         implements DocumentCodec {
@@ -20,7 +24,7 @@ public class Clan extends AbstractModel
     private final Set<ClanMember> members;
     private final Set<String> allies;
     private final Set<String> enemies;
-    private final Set<RecruitmentRequest> recruitmentRequests;
+    private final Map<UUID, RecruitmentRequest> recruitmentRequests;
 
     private String description;
 
@@ -29,7 +33,7 @@ public class Clan extends AbstractModel
             ClanMember owner, Set<ClanMember> members,
             Set<String> allies,
             Set<String> enemies,
-            Set<RecruitmentRequest> recruitmentRequests,
+            Map<UUID, RecruitmentRequest> recruitmentRequests,
             String description
     ) {
         super(id);
@@ -58,6 +62,18 @@ public class Clan extends AbstractModel
         return description;
     }
 
+    public @Nullable RecruitmentRequest getRequest(UUID playerId) {
+        return recruitmentRequests.get(playerId);
+    }
+
+    public void addRequest(RecruitmentRequest request) {
+        recruitmentRequests.put(request.getPlayerId(), request);
+    }
+
+    public void removeRequest(RecruitmentRequest request) {
+        recruitmentRequests.remove(request.getPlayerId());
+    }
+
     @Override
     public String toString() {
         return "Clan{" +
@@ -73,7 +89,7 @@ public class Clan extends AbstractModel
                 new HashSet<>(),
                 new HashSet<>(),
                 new HashSet<>(),
-                new HashSet<>(),
+                new HashMap<>(),
                 null
         );
     }
@@ -86,7 +102,11 @@ public class Clan extends AbstractModel
                 reader.readChildren("members", ClanMember::fromDocument),
                 reader.readSet("allies", String.class),
                 reader.readSet("enemies", String.class),
-                reader.readChildren("recruitments", RecruitmentRequest::fromDocument),
+                reader.readMap(
+                        "recruitments",
+                        RecruitmentRequest::getPlayerId,
+                        RecruitmentRequest::fromDocument
+                ),
                 reader.readString("description")
         );
     }
