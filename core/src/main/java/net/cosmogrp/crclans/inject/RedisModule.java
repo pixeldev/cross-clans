@@ -3,12 +3,12 @@ package net.cosmogrp.crclans.inject;
 import com.google.gson.Gson;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.server.ServerData;
 import net.cosmogrp.storage.redis.connection.GsonRedis;
 import net.cosmogrp.storage.redis.connection.JedisBuilder;
 import net.cosmogrp.storage.redis.connection.JedisInstance;
 import net.cosmogrp.storage.redis.connection.Redis;
 import net.cosmogrp.storage.redis.connection.RedisCache;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -20,6 +20,7 @@ public class RedisModule extends AbstractModule {
     @Provides @Singleton
     public Redis getJedis(
             FileConfiguration configuration,
+            ServerData serverData,
             Executor executor,
             Gson gson
     ) {
@@ -47,6 +48,7 @@ public class RedisModule extends AbstractModule {
         return GsonRedis.builder(executor)
                 .setParentChannel(configuration.getString("server-group") + "-crclans")
                 .setGson(gson)
+                .setServerId(serverData.getRedisServer())
                 .setJedis(jedisInstance)
                 .build();
     }
