@@ -4,11 +4,11 @@ import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
-import net.cosmogrp.crclans.user.UserService;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.regex.Pattern;
@@ -19,7 +19,6 @@ public class SimpleClanService implements ClanService {
     @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
-    @Inject private UserService userService;
     @Inject private LogHandler logHandler;
 
     private final FileConfiguration configuration;
@@ -44,6 +43,11 @@ public class SimpleClanService implements ClanService {
         }
 
         this.tagPattern = Pattern.compile(tagPattern);
+    }
+
+    @Override
+    public @Nullable Clan getClan(String tag) {
+        return modelService.getSync(tag);
     }
 
     @Override
