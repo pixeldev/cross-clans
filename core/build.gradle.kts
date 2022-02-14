@@ -35,5 +35,5 @@ repositories {
 dependencies {
     api(project(":api"))
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
 }
