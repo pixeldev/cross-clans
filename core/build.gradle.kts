@@ -30,10 +30,11 @@ tasks {
 
 repositories {
     maven("https://jitpack.io")
+    maven("https://papermc.io/repo/repository/maven-public/")
 }
 
 dependencies {
     api(project(":api"))
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
 }
