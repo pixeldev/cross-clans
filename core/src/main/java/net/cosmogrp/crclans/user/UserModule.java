@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.dist.LocalModelService;
@@ -21,6 +22,7 @@ public class UserModule extends AbstractModule {
     @Override
     public void configure() {
         bind(UserService.class).to(SimpleUserService.class).singleton();
+        bind(ClanUserService.class).to(SimpleClanUserService.class).singleton();
         bind(ClusteredUserRegistry.class).to(SimpleClusteredUserRegistry.class).singleton();
     }
 
