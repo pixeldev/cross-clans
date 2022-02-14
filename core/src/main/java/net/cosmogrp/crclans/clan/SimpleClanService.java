@@ -4,6 +4,7 @@ import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
+import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,6 +20,7 @@ public class SimpleClanService implements ClanService {
     @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
+    @Inject private ClanUserService clanUserService;
     @Inject private LogHandler logHandler;
 
     private final FileConfiguration configuration;
@@ -101,41 +103,27 @@ public class SimpleClanService implements ClanService {
 
     @Override
     public void deleteClan(User user, Player owner) {
-        if (!user.hasClan()) {
-            messageHandler.send(owner, "clan.not-in-clan");
-            return;
-        }
+        clanUserService.executeAsOwner(
+                owner, user,
+                clan -> modelService
+                        .delete(clan)
+                        .whenComplete((result, error) -> {
+                            if (error != null) {
+                                logHandler.reportError(
+                                        "Failed to delete clan '%s'", error,
+                                        clan.getId()
+                                );
 
-        Clan clan = modelService.getSync(user.getClanTag());
+                                messageHandler.send(owner, "clan.delete-failed");
+                                return;
+                            }
 
-        if (clan == null) {
-            messageHandler.send(owner, "clan.error-finding-clan");
-            return;
-        }
+                            // just remove clan from the owner
+                            // we will wait to members get connected to the server
+                            user.setClan(null);
 
-        if (!clan.isOwner(owner)) {
-            messageHandler.send(owner, "clan.not-owner");
-            return;
-        }
-
-        modelService.delete(clan)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        logHandler.reportError(
-                                "Failed to delete clan '%s'", error,
-                                clan.getId()
-                        );
-
-                        messageHandler.send(owner, "clan.delete-failed");
-                        return;
-                    }
-
-                    // just remove clan from the owner
-                    // we will wait to members get connected to the server
-                    user.setClan(null);
-
-                    // TODO: remove clan from all online members
-                    messageHandler.send(owner, "clan.delete-success");
-                });
+                            // TODO: remove clan from all online members
+                            messageHandler.send(owner, "clan.delete-success");
+                        }));
     }
 }
