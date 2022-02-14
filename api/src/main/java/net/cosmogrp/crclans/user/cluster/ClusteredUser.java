@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.user;
+package net.cosmogrp.crclans.user.cluster;
 
 import net.cosmogrp.crclans.server.ServerData;
 import org.bukkit.Bukkit;

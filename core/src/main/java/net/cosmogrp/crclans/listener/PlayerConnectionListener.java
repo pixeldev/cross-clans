@@ -1,6 +1,6 @@
 package net.cosmogrp.crclans.listener;
 
-import net.cosmogrp.crclans.user.ClusteredUserRegistry;
+import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.crclans.user.UserService;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

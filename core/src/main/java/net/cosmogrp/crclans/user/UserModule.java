@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.dist.LocalModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;

@@ -1,6 +1,6 @@
 package net.cosmogrp.crclans.clan.recruitment;
 
-import net.cosmogrp.crclans.user.ClusteredUser;
+import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;

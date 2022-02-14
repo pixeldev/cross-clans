@@ -6,7 +6,7 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.command.part.ClusteredUserPart;
 import net.cosmogrp.crclans.command.part.UserPart;
 import net.cosmogrp.crclans.command.part.UserSenderPart;
-import net.cosmogrp.crclans.user.ClusteredUser;
+import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import net.cosmogrp.crclans.user.User;
 
 import javax.inject.Inject;

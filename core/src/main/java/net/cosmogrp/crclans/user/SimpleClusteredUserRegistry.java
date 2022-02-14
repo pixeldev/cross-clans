@@ -2,6 +2,8 @@ package net.cosmogrp.crclans.user;
 
 import com.google.gson.Gson;
 import net.cosmogrp.crclans.server.ServerData;
+import net.cosmogrp.crclans.user.cluster.ClusteredUser;
+import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.storage.redis.connection.RedisCache;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

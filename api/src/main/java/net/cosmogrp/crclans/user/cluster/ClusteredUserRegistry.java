@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.user;
+package net.cosmogrp.crclans.user.cluster;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
