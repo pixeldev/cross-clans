@@ -37,5 +37,6 @@ dependencies {
     api(project(":api"))
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.kyori:adventure-text-minimessage:4.10.0-SNAPSHOT")
+    compileOnly("net.kyori:adventure-platform-bukkit:4.0.1")
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
 }
