@@ -5,7 +5,6 @@ import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -39,27 +38,20 @@ public class SimpleClanRecruitmentService
                         }
                     }
 
+                    int time = configuration.getInt("clans.invite-expiry");
                     request = RecruitmentRequest.create(
-                            target,
-                            configuration.getInt("clans.invite-expiry")
+                            target, time
                     );
 
-                    OfflinePlayer targetPlayer = target.asPlayer();
-
-                    if (targetPlayer instanceof Player) {
-
-                    }
-
                     clan.addRequest(request);
+                    globalNotifier.singleNotify(
+                            target.getPlayerId(), "minimessage",
+                            "clan.invited-target",
+                            "%tag%", clan.getId(),
+                            "%time%", time
+                    );
                 }
         );
     }
 
-    @Override
-    public void notifyRecruitment(
-            Player target,
-            RecruitmentMessage message
-    ) {
-        String clanTag = message.getClanTag();
-    }
 }

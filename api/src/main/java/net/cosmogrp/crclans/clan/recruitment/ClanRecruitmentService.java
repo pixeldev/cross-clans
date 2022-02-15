@@ -11,9 +11,4 @@ public interface ClanRecruitmentService {
             ClusteredUser target
     );
 
-    void notifyRecruitment(
-            Player target,
-            RecruitmentMessage message
-    );
-
 }

@@ -4,7 +4,8 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
-import me.yushust.inject.scope.Scopes;
+import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
+import net.cosmogrp.crclans.clan.recruitment.SimpleClanRecruitmentService;
 import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.mongo.MongoModelService;
@@ -19,7 +20,8 @@ public class ClanModule extends AbstractModule {
 
     @Override
     public void configure() {
-        bind(ClanService.class).to(SimpleClanService.class).in(Scopes.SINGLETON);
+        bind(ClanService.class).to(SimpleClanService.class).singleton();
+        bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
     }
 
     @Provides @Singleton
