@@ -4,60 +4,46 @@ import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
 import me.yushust.message.MessageHandler;
 import me.yushust.message.bukkit.BukkitMessageAdapt;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import javax.inject.Singleton;
-import java.util.regex.Pattern;
+
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
 public class TranslationModule extends AbstractModule {
 
-    private final static Pattern HEX_COLOR_PATTERN = Pattern.compile(
-            "&\\[([\\dA-Fa-f])([\\dA-Fa-f])," +
-                    "([\\dA-Fa-f])([\\dA-Fa-f])," +
-                    "([\\dA-Fa-f])([\\dA-Fa-f])]"
-    );
-
-    private final static Pattern SECONDARY_HEX_COLOR_PATTERN = Pattern.compile(
-            "&?#([\\dA-Fa-f]{2})([\\dA-Fa-f]{2})([\\dA-Fa-f]{2})"
-    );
-
-    private final static String BUKKIT_HEX_COLOR =
-            ChatColor.COLOR_CHAR + "x" +
-                    ChatColor.COLOR_CHAR + "$1" +
-                    ChatColor.COLOR_CHAR + "$2" +
-                    ChatColor.COLOR_CHAR + "$3" +
-                    ChatColor.COLOR_CHAR + "$4" +
-                    ChatColor.COLOR_CHAR + "$5" +
-                    ChatColor.COLOR_CHAR + "$6";
-
-    private final static String EZ_HEX_COLOR_REPLACEMENT =
-            "&[$1,$2,$3]";
-
     @Provides @Singleton
-    public MessageHandler getMessageHandler(Plugin plugin) {
+    public BukkitAudiences createAudience(Plugin plugin) {
+        return BukkitAudiences.create(plugin);
+    }
+
+    @Provides
+    @Singleton
+    public MessageHandler getMessageHandler(
+            Plugin plugin,
+            BukkitAudiences audiences
+    ) {
         return MessageHandler.of(
                 BukkitMessageAdapt.newYamlSource(plugin),
                 configurationHandle -> {
-                    configurationHandle.addInterceptor(message -> {
-                        String newMessage = SECONDARY_HEX_COLOR_PATTERN
-                                .matcher(message)
-                                .replaceAll(EZ_HEX_COLOR_REPLACEMENT);
-
-                        newMessage = HEX_COLOR_PATTERN
-                                .matcher(newMessage)
-                                .replaceAll(BUKKIT_HEX_COLOR);
-
-                        return ChatColor.translateAlternateColorCodes(
-                                '&', newMessage
-                        );
-                    });
-
                     configurationHandle.specify(CommandSender.class)
                             .setLinguist(sender -> "es")
-                            .setMessageSender((sender, mode, message) ->
-                                    sender.sendMessage(message));
+                            .setMessageSender((sender, mode, message) -> {
+                                if (mode.equals("minimessage") &&
+                                        sender instanceof Player) {
+                                    audiences.player((Player) sender)
+                                            .sendMessage(MiniMessage.miniMessage()
+                                                    .deserialize(message));
+                                } else {
+                                    sender.sendMessage(translateAlternateColorCodes(
+                                            '&', message
+                                    ));
+                                }
+                            });
                 }
         );
     }
