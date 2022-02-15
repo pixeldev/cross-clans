@@ -30,11 +30,12 @@ tasks {
 
 repositories {
     maven("https://jitpack.io")
-    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
     api(project(":api"))
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly("io.papermc.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("net.kyori:adventure-text-minimessage:4.10.0-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
 }
