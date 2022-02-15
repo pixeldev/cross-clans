@@ -12,7 +12,7 @@ tasks {
         relocate("me.fixeddev.commandflow", "$path.commandflow")
         relocate("me.yushust", "$path.yushust")
         relocate("me.lucko", "$path.lucko")
-        relocate("net.kyori", "$path.kyori")
+        relocate("net.kyori.text", "$path.text")
         relocate("com.mojang", "$path.mojang")
         relocate("redis.clients.jedis", "$path.redis")
         relocate("com.google.gson", "$path.gson")
