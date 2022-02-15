@@ -24,6 +24,13 @@ public interface Notifier {
         notify(Sets.newHashSet(target), null, path, parameters);
     }
 
+    default void singleNotify(
+            UUID target, String mode,
+            String path, Object... parameters
+    ) {
+        notify(Sets.newHashSet(target), mode, path, parameters);
+    }
+
     default void notify(String path, Object... parameters) {
         notify(null, null, path, parameters);
     }
