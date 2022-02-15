@@ -20,6 +20,20 @@ clan:
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
 
+    already-invited: "&c¡Ese jugador ya ha sido invitado a tu clan, por favor espera a que acepte!"
+    invited-target:
+        message:
+            - " "
+            - " &fHas sido invitado al clan &a%tag%"
+            - " &f¡Esta invitación expirará en &a%time% &fsegundos!"
+            - " %accept% &f- %deny%"
+            - " "
+        accept-hover: "&fClic para aceptar"
+        accept-message: "&a&lAceptar"
+        decline-hover: "&fClic para rechazar"
+        decline-message: "&c&lRechazar"
+    invited-sender: "&f¡Has invitado a &a%target% &fa tu clan!"
+
     error-finding-clan: "&c¡Ha ocurrido un error al buscar tu clan, intenta de nuevo!"
     not-owner: "&c¡Solo el dueño del clan puede hacer eso!"
 
