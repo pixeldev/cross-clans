@@ -1,7 +1,3 @@
-repositories {
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
-}
-
 dependencies {
     compileOnly(project(":adapt"))
     implementation("net.kyori:adventure-text-minimessage:4.10.0-SNAPSHOT")

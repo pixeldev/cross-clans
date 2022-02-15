@@ -2,6 +2,7 @@ package net.cosmogrp.crclans.inject;
 
 import me.yushust.inject.AbstractModule;
 import net.cosmogrp.crclans.CrClansPlugin;
+import net.cosmogrp.crclans.adapt.AdaptionModuleFactory;
 import net.cosmogrp.crclans.clan.ClanModule;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.NotifierModule;
@@ -37,6 +38,7 @@ public class MainModule extends AbstractModule {
 
         install(
                 new RedisModule(), new DatabaseModule(),
+                AdaptionModuleFactory.create(),
                 new SerializationModule(), new NotifierModule(),
                 new TranslationModule(), new ListenerModule(),
                 new ClanModule(), new UserModule(), new EconomyModule()

@@ -34,6 +34,12 @@ repositories {
 
 dependencies {
     api(project(":api"))
+
+    implementation(project(":adapt"))
+    arrayOf("1_16_R3").forEach {
+        runtimeOnly(project(":adapt:adapt-v$it"))
+    }
+
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
 }
