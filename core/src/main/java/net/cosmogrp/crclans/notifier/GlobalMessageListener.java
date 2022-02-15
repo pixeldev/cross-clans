@@ -20,6 +20,7 @@ public class GlobalMessageListener implements ChannelListener<GlobalMessage> {
     ) {
         localNotifier.notify(
                 object.getTargets(),
+                object.getMode(),
                 object.getPath(),
                 object.getReplacements()
         );

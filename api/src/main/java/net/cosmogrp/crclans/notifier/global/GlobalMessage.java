@@ -8,21 +8,27 @@ import java.util.UUID;
 public class GlobalMessage {
 
     private final String path;
+    private final String mode;
     private final Object[] replacements;
     private final Set<UUID> targets;
 
     private GlobalMessage(
             String path,
-            Object[] replacements,
+            String mode, Object[] replacements,
             Set<UUID> targets
     ) {
         this.path = path;
+        this.mode = mode;
         this.replacements = replacements;
         this.targets = targets;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getMode() {
+        return mode;
     }
 
     public Object[] getReplacements() {
@@ -33,15 +39,12 @@ public class GlobalMessage {
         return targets;
     }
 
-    public static GlobalMessage everyone(String path, Object... replacements) {
-        return new GlobalMessage(path, replacements, null);
-    }
-
-    public static GlobalMessage targets(
-            Set<UUID> targets,
+    public static GlobalMessage create(
+            @Nullable Set<UUID> targets,
+            @Nullable String mode,
             String path,
             Object... replacements
     ) {
-        return new GlobalMessage(path, replacements, targets);
+        return new GlobalMessage(path, mode, replacements, targets);
     }
 }
