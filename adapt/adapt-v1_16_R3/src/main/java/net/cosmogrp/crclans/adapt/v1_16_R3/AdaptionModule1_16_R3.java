@@ -11,8 +11,6 @@ import org.bukkit.plugin.Plugin;
 
 import javax.inject.Singleton;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
 public class AdaptionModule1_16_R3 extends AbstractModule {
 
     @Provides @Singleton
@@ -30,9 +28,7 @@ public class AdaptionModule1_16_R3 extends AbstractModule {
                             .sendMessage(MiniMessage.miniMessage()
                                     .deserialize(message));
                 } else {
-                    sender.sendMessage(translateAlternateColorCodes(
-                            '&', message
-                    ));
+                    sender.sendMessage(message);
                 }
             }
         };

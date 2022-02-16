@@ -9,8 +9,6 @@ import org.bukkit.entity.Player;
 
 import javax.inject.Singleton;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
 public class AdaptionModule1_17_R1 extends AbstractModule {
 
     @Provides
@@ -22,9 +20,7 @@ public class AdaptionModule1_17_R1 extends AbstractModule {
                 sender.sendMessage(MiniMessage.miniMessage()
                                 .deserialize(message));
             } else {
-                sender.sendMessage(translateAlternateColorCodes(
-                        '&', message
-                ));
+                sender.sendMessage(message);
             }
         };
     }
