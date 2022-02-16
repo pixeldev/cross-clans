@@ -1,7 +1,7 @@
 dependencies {
     api("org.jetbrains:annotations:22.0.0")
 
-    val storageVersion = "0.6.0"
+    val storageVersion = "0.6.1"
 
     api("net.cosmogrp:storage-redis-dist:$storageVersion")
     api("net.cosmogrp:storage-mongo-legacy-dist:$storageVersion")
