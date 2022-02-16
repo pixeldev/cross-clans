@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class SimpleClanService implements ClanService {
@@ -67,7 +68,7 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        Clan clan = modelService.getSync(tag);
+        Clan clan = modelService.getSync(tag.toLowerCase(Locale.ROOT));
 
         if (clan != null) {
             messageHandler.send(owner, "clan.already-exists");
