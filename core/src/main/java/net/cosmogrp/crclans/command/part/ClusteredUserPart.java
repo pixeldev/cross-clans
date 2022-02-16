@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class ClusteredUserPart implements PartFactory {
 
@@ -48,11 +49,11 @@ public class ClusteredUserPart implements PartFactory {
             ) {
                 Collection<String> clusteredPlayers =
                         clusteredUserRegistry.getClusteredUsers();
-                String next = stack.hasNext() ? stack.next() : "";
+                String next = stack.hasNext() ? stack.next().toLowerCase(Locale.ROOT) : "";
                 List<String> suggestions = new ArrayList<>();
 
                 for (String playerName : clusteredPlayers) {
-                    if (playerName.startsWith(next)) {
+                    if (playerName.toLowerCase(Locale.ROOT).startsWith(next)) {
                         suggestions.add(playerName);
                     }
                 }

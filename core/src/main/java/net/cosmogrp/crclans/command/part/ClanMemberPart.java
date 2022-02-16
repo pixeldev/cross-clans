@@ -115,13 +115,12 @@ public class ClanMemberPart implements PartFactory {
 
                 List<String> suggestions = new ArrayList<>();
                 for (ClanMember member : clan.getMembers()) {
-                    String name = member.getPlayerName()
-                            .toLowerCase(Locale.ROOT);
+                    String name = member.getPlayerName();
                     if (commandSender.getName().equals(name)) {
                         continue;
                     }
 
-                    if (name.startsWith(next)) {
+                    if (name.toLowerCase(Locale.ROOT).startsWith(next)) {
                         suggestions.add(name);
                     }
                 }
