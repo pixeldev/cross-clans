@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.command;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.user.User;
@@ -33,6 +34,16 @@ public class ClanCommand implements CommandClass {
             ClusteredUser target
     ) {
         recruitmentService.sendRecruitment(sender, user, target);
+    }
+
+    @Command(names = "accept", permission = "clans.accept")
+    public void runAccept(@Sender Player sender, Clan clan) {
+        recruitmentService.acceptRecruitment(sender, clan);
+    }
+
+    @Command(names = "deny", permission = "clans.deny")
+    public void runDeny(@Sender Player sender, Clan clan) {
+        recruitmentService.denyRecruitment(sender, clan);
     }
 
 }
