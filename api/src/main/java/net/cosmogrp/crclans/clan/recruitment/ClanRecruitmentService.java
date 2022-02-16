@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans.clan.recruitment;
 
+import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import org.bukkit.entity.Player;
@@ -10,5 +11,9 @@ public interface ClanRecruitmentService {
             Player sender, User user,
             ClusteredUser target
     );
+
+    void acceptRecruitment(Player sender, Clan clan);
+
+    void denyRecruitment(Player sender, Clan clan);
 
 }

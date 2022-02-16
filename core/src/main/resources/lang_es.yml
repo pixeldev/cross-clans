@@ -29,6 +29,13 @@ clan:
         - " <click:run_command:/clan accept %tag%><hover:show_text:'<green>¡Clic para aceptar!'><green>Aceptar</hover></click>  <gray>|  <click:run_command:/clan deny %tag%><hover:show_text:'<red>¡Clic para denegar!'><red>Denegar</hover></click>"
         - " "
     invited-sender: "&f¡Has invitado a &a%target% &fa tu clan!"
+    no-invite: "&cNo tienes ninguna invitación de ese clan pendiente."
+    invite-expired: "&c¡La invitación ha expirado!"
+    invite-accepted-target: "&f¡Has aceptado la invitación al clan &a%tag%&f!"
+    invite-accepted-sender: "&f¡%target% ha aceptado tu invitación!"
+    invite-accepted-members: "&f¡&a%target% &fse ha unido a tu clan&f!"
+    invite-deny-target: "&f¡Has denegado la invitación al clan &a%tag%&f!"
+    invite-deny-sender: "&f¡%target% ha denegado tu invitación!"
 
     error-finding-clan: "&c¡Ha ocurrido un error al buscar tu clan, intenta de nuevo!"
     not-owner: "&c¡Solo el dueño del clan puede hacer eso!"
