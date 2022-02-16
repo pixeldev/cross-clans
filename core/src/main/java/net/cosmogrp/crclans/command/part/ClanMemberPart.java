@@ -46,7 +46,6 @@ public class ClanMemberPart implements PartFactory {
                 User user = commandContext.getObject(User.class, USER_CONTEXT_KEY);
 
                 if (user == null) {
-                    System.out.println("e. user null");
                     throw new ArgumentParseException("%translatable:command.error%");
                 }
 
