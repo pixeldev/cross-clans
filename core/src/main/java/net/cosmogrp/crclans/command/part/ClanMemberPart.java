@@ -24,10 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.cosmogrp.crclans.command.part.ClanPart.CLAN_CONTEXT_KEY;
+
 public class ClanMemberPart implements PartFactory {
 
     private static final String USER_CONTEXT_KEY = "user";
-    private static final String CLAN_CONTEXT_KEY = "clan";
     private static final String MEMBER_CONTEXT_KEY = "members";
 
     @Inject private UserService userService;
