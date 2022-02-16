@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,6 +88,10 @@ public class Clan extends AbstractModel
         }
 
         return onlineMembers;
+    }
+
+    public Collection<ClanMember> getMembers() {
+        return members.values();
     }
 
     public @Nullable ClanMember getMember(UUID playerId) {
