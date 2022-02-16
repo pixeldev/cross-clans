@@ -44,6 +44,9 @@ public class Clan extends AbstractModel
         this.enemies = enemies;
         this.recruitmentRequests = recruitmentRequests;
         this.description = description;
+
+        owner.setModerator(true);
+        members.put(owner.getPlayerId(), owner);
     }
 
     public ClanMember getOwner() {
