@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ClanPart implements PartFactory {
 
-
     public static final String CLAN_CONTEXT_KEY = "clan";
 
     @Inject private ClanService clanService;

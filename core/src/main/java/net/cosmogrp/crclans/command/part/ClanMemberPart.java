@@ -61,6 +61,7 @@ public class ClanMemberPart implements PartFactory {
                     throw new ArgumentParseException("%translatable:clan.self-not-found%");
                 }
 
+                commandContext.setObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY, clan);
                 ClanMember clanMember = null;
 
                 for (ClanMember member : clan.getMembers()) {
