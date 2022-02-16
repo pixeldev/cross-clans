@@ -74,15 +74,16 @@ public class SimpleClanRecruitmentService
     }
 
     @Override
-    public void acceptRecruitment(Player sender, Clan clan) {
+    public void acceptRecruitment(
+            Player sender, User user,
+            Clan clan
+    ) {
         RecruitmentRequest request = checkRequest(clan, sender);
 
         if (request == null) {
             return;
         }
 
-        clan.addMember(sender);
-        clan.removeRequest(request);
         messageHandler.sendReplacing(
                 sender, "clan.invite-accepted-target",
                 "%tag%", clan.getId()
@@ -100,11 +101,17 @@ public class SimpleClanRecruitmentService
                 "%target%", sender.getName()
         );
 
+        user.setClan(clan);
+        clan.addMember(sender);
+        clan.removeRequest(request);
+
         clanService.saveClan(sender, clan);
     }
 
     @Override
-    public void denyRecruitment(Player sender, Clan clan) {
+    public void denyRecruitment(
+            Player sender, Clan clan
+    ) {
         RecruitmentRequest request = checkRequest(clan, sender);
 
         if (request == null) {

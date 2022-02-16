@@ -37,8 +37,11 @@ public class ClanCommand implements CommandClass {
     }
 
     @Command(names = "accept", permission = "clans.accept")
-    public void runAccept(@Sender Player sender, Clan clan) {
-        recruitmentService.acceptRecruitment(sender, clan);
+    public void runAccept(
+            @Sender Player sender, @Sender User user,
+            Clan clan
+    ) {
+        recruitmentService.acceptRecruitment(sender, user, clan);
     }
 
     @Command(names = "deny", permission = "clans.deny")

@@ -12,7 +12,10 @@ public interface ClanRecruitmentService {
             ClusteredUser target
     );
 
-    void acceptRecruitment(Player sender, Clan clan);
+    void acceptRecruitment(
+            Player sender, User user,
+            Clan clan
+    );
 
     void denyRecruitment(Player sender, Clan clan);
 
