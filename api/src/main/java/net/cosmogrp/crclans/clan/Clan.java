@@ -74,8 +74,16 @@ public class Clan extends AbstractModel
         recruitmentRequests.remove(request.getPlayerId());
     }
 
-    public Set<UUID> getMembersIds() {
-        return members.keySet();
+    public Set<UUID> getOnlineMembers() {
+        Set<UUID> onlineMembers = new HashSet<>();
+
+        for (ClanMember member : members.values()) {
+            if (member.isOnline()) {
+                onlineMembers.add(member.getPlayerId());
+            }
+        }
+
+        return onlineMembers;
     }
 
     public @Nullable ClanMember getMember(UUID playerId) {

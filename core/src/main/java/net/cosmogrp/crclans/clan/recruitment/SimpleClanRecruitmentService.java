@@ -96,7 +96,7 @@ public class SimpleClanRecruitmentService
         );
 
         globalNotifier.notify(
-                clan.getMembersIds(),
+                clan.getOnlineMembers(),
                 "clan.invite-accepted-members",
                 "%target%", sender.getName()
         );
