@@ -42,12 +42,15 @@ public class SimpleUserService implements UserService {
             if (user == null) {
                 // try to get it from database
                 user = modelService.findSync(playerId.toString());
-            }
 
-            // check again, if it's still null, create a new one
-            if (user == null) {
-                user = User.create(playerId);
-                modelService.saveSync(user);
+                // check again, if it's still null, create a new one
+                if (user == null) {
+                    user = User.create(playerId);
+                    modelService.saveSync(user);
+                }
+            } else {
+                // add to local cache if already exists
+                modelService.saveInCache(user);
             }
 
             return null;
