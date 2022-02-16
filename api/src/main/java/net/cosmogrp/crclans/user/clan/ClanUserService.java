@@ -16,4 +16,9 @@ public interface ClanUserService {
             Consumer<Clan> consumer
     );
 
+    void computeAsOwner(
+            Player player, User user,
+            Consumer<Clan> consumer
+    );
+
 }

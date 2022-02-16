@@ -37,17 +37,34 @@ public class SimpleClanUserService
             Player player, User user,
             Consumer<Clan> consumer
     ) {
+        executeAsOwner0(player, user, consumer);
+    }
+
+    @Override
+    public void computeAsOwner(Player player, User user, Consumer<Clan> consumer) {
+        Clan clan = executeAsOwner0(player, user, consumer);
+
+        if (clan != null) {
+            clanService.saveClan(player, clan);
+        }
+    }
+
+    private @Nullable Clan executeAsOwner0(
+            Player player, User user,
+            Consumer<Clan> consumer
+    ) {
         Clan clan = getClan(player, user);
 
         if (clan == null) {
-            return;
+            return null;
         }
 
         if (!clan.isOwner(player)) {
             messageHandler.send(player, "clan.not-owner");
-            return;
+            return null;
         }
 
         consumer.accept(clan);
+        return clan;
     }
 }
