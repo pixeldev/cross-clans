@@ -12,21 +12,28 @@ import java.util.UUID;
 public class ClanMember implements DocumentCodec {
 
     private final UUID playerId;
+    private final String playerName;
     private boolean moderator;
     private boolean online;
 
     private ClanMember(
             UUID playerId,
+            String playerName,
             boolean moderator,
             boolean online
     ) {
         this.playerId = playerId;
+        this.playerName = playerName;
         this.moderator = moderator;
         this.online = online;
     }
 
     public UUID getPlayerId() {
         return playerId;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     public boolean isModerator() {
@@ -73,6 +80,7 @@ public class ClanMember implements DocumentCodec {
     public Document toDocument() {
         return DocumentBuilder.create()
                 .write("playerId", playerId)
+                .write("playerName", playerName)
                 .write("moderator", moderator)
                 .build();
     }
@@ -80,6 +88,7 @@ public class ClanMember implements DocumentCodec {
     public static ClanMember fromDocument(DocumentReader reader) {
         return new ClanMember(
                 reader.readUuid("playerId"),
+                reader.readString("playerName"),
                 reader.readBoolean("moderator"),
                 false
         );
@@ -88,6 +97,7 @@ public class ClanMember implements DocumentCodec {
     public static ClanMember fromPlayer(Player player) {
         return new ClanMember(
                 player.getUniqueId(),
+                player.getName(),
                 false,
                 player.isOnline()
         );
