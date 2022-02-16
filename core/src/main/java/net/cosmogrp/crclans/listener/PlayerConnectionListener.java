@@ -1,5 +1,7 @@
 package net.cosmogrp.crclans.listener;
 
+import net.cosmogrp.crclans.user.User;
+import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.crclans.user.UserService;
 import org.bukkit.entity.Player;
@@ -14,6 +16,7 @@ import javax.inject.Inject;
 public class PlayerConnectionListener implements Listener {
 
     @Inject private UserService userService;
+    @Inject private ClanUserService clanUserService;
     @Inject private ClusteredUserRegistry clusteredUserRegistry;
 
     @EventHandler
@@ -34,7 +37,11 @@ public class PlayerConnectionListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         clusteredUserRegistry.delete(player);
-        userService.saveUser(player);
+        User user = userService.saveUser(player);;
+
+        if (user != null) {
+            clanUserService.disconnect(user);
+        }
     }
 
 }

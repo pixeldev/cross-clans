@@ -11,6 +11,8 @@ public interface ClanUserService {
 
     @Nullable Clan getClan(Player player, User user);
 
+    void disconnect(User user);
+
     void disbandClan(Player player, User user);
 
     void leaveClan(Player player, User user);

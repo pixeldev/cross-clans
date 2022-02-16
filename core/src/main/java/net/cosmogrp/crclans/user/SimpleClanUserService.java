@@ -40,6 +40,38 @@ public class SimpleClanUserService
     }
 
     @Override
+    public void disconnect(User user) {
+        String clanTag = user.getClanTag();
+
+        if (clanTag == null) {
+            return;
+        }
+
+        Clan clan = clanService.getClan(clanTag);
+
+        if (clan == null) {
+            logHandler.reportError(
+                    "Failed to find clan '%s' in user save",
+                    clanTag
+            );
+            return;
+        }
+
+        ClanMember member = clan.getMember(user.getPlayerId());
+
+        if (member == null) {
+            logHandler.reportError(
+                    "Failed to find member '%s' in clan '%s'",
+                    user.getPlayerId().toString(), clanTag
+            );
+            return;
+        }
+
+        member.setOnline(false);
+        clanService.saveClan(clan);
+    }
+
+    @Override
     public void disbandClan(Player player, User user) {
         executeAsOwner(
                 player, user,
