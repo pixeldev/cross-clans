@@ -75,7 +75,7 @@ public class Clan extends AbstractModel
         recruitmentRequests.remove(request.getPlayerId());
     }
 
-    public Collection<UUID> getMembersIds() {
+    public Set<UUID> getMembersIds() {
         return members.keySet();
     }
 
