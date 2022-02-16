@@ -16,6 +16,9 @@ commands:
     clustered-player-not-found: "&cNo hay un jugador con ese nombre en el servidor!"
     clan:
         not-found: "&c¡No se encontró el clan!"
+        not-in-clan: "&cDebes pertenecer a un clan para hacer esto"
+        self-not-found: "&c¡No se encontró tu clan!"
+        member-not-found: "&c¡No se encontró un miembro en tu clan con ese nombre!"
 
 clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
