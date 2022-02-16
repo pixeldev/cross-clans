@@ -18,6 +18,8 @@ import java.util.List;
 
 public class UserSenderPart implements PartFactory {
 
+    public static final String USER_CONTEXT_KEY = "user";
+
     @Inject private UserService userService;
 
     @Override
@@ -52,6 +54,7 @@ public class UserSenderPart implements PartFactory {
                         }
 
                         commandContext.setValue(this, user);
+                        commandContext.setObject(User.class, USER_CONTEXT_KEY, user);
                     } else {
                         throw new ArgumentParseException("%translatable:sender.only-player%");
                     }
