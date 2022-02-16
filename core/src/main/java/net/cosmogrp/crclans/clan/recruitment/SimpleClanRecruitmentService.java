@@ -44,6 +44,11 @@ public class SimpleClanRecruitmentService
                     );
 
                     clan.addRequest(request);
+                    messageHandler.sendReplacing(
+                            sender, "clan.invited-sender",
+                            "%target%", target.asPlayer().getName()
+                    );
+
                     globalNotifier.singleNotifyIn(
                             target.getPlayerId(), "minimessage",
                             "clan.invited-target",
