@@ -1,11 +1,14 @@
 package net.cosmogrp.crclans.command;
 
+import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.clan.Clan;
+import net.cosmogrp.crclans.clan.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
+import net.cosmogrp.crclans.command.part.ClanPart;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
@@ -28,6 +31,19 @@ public class ClanCommand implements CommandClass {
     @Command(names = "delete", permission = "clans.delete")
     public void runDelete(@Sender Player sender, @Sender User user) {
         clanUserService.disbandClan(sender, user);
+    }
+
+    @Command(names = "kick", permission = "clans.kick")
+    public void runKick(
+            CommandContext commandContext,
+            @Sender Player sender, @Sender User user,
+            ClanMember clanMember
+    ) {
+        clanUserService.kickMember(
+                sender, user,
+                commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
+                clanMember
+        );
     }
 
     @Command(names = "leave", permission = "clans.leave")
