@@ -3,6 +3,8 @@ package net.cosmogrp.crclans.command.internal;
 import me.fixeddev.commandflow.annotated.part.AbstractModule;
 import me.fixeddev.commandflow.annotated.part.Key;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.cosmogrp.crclans.clan.Clan;
+import net.cosmogrp.crclans.command.part.ClanPart;
 import net.cosmogrp.crclans.command.part.ClusteredUserPart;
 import net.cosmogrp.crclans.command.part.UserPart;
 import net.cosmogrp.crclans.command.part.UserSenderPart;
@@ -16,11 +18,13 @@ public class ClanPartModule extends AbstractModule {
     @Inject private ClusteredUserPart clusteredUserPart;
     @Inject private UserPart userPart;
     @Inject private UserSenderPart userSenderPart;
+    @Inject private ClanPart clanPart;
 
     @Override
     public void configure() {
         bindFactory(ClusteredUser.class, clusteredUserPart);
         bindFactory(User.class, userPart);
+        bindFactory(Clan.class, clanPart);
         bindFactory(new Key(User.class, Sender.class), userSenderPart);
     }
 }

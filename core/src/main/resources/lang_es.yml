@@ -14,6 +14,8 @@ commands:
         unknown: "&c¡Ese nombre es inválido, por favor introduce uno válido!"
         offline: "&c¡Este jugador está desconectado!"
     clustered-player-not-found: "&cNo hay un jugador con ese nombre en el servidor!"
+    clan:
+        not-found: "&c¡No se encontró el clan!"
 
 clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
