@@ -4,13 +4,18 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.user.clan.ClanKickChannelListener;
+import net.cosmogrp.crclans.user.clan.ClanKickMessage;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
+import net.cosmogrp.crclans.user.clan.SimpleClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.storage.dist.CachedRemoteModelService;
 import net.cosmogrp.storage.dist.LocalModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.mongo.MongoModelService;
 import net.cosmogrp.storage.redis.RedisModelService;
+import net.cosmogrp.storage.redis.channel.Channel;
+import net.cosmogrp.storage.redis.connection.Redis;
 import net.cosmogrp.storage.redis.connection.RedisCache;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -26,7 +31,18 @@ public class UserModule extends AbstractModule {
         bind(ClusteredUserRegistry.class).to(SimpleClusteredUserRegistry.class).singleton();
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
+    public Channel<ClanKickMessage> createKickChannel(
+            Redis redis, ClanKickChannelListener listener
+    ) {
+        return redis.getMessenger()
+                .getChannel("kick", ClanKickMessage.class)
+                .addListener(listener);
+    }
+
+    @Provides
+    @Singleton
     public CachedRemoteModelService<User> createService(
             Executor executor, FileConfiguration configuration,
             MongoDatabase mongoDatabase
@@ -42,7 +58,8 @@ public class UserModule extends AbstractModule {
         );
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public RedisModelService<User> createRedisService(
             Executor executor, Gson gson,
             RedisCache redisCache
