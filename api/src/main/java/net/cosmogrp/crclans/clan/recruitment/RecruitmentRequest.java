@@ -52,10 +52,6 @@ public class RecruitmentRequest implements DocumentCodec {
                 '}';
     }
 
-    public static RecruitmentRequest dummy(UUID playerId) {
-        return new RecruitmentRequest(playerId, -1);
-    }
-
     public static RecruitmentRequest create(
             ClusteredUser user,
             long expirationInSeconds
