@@ -20,7 +20,6 @@ public class SimpleClanService implements ClanService {
     @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
-    @Inject private ClanUserService clanUserService;
     @Inject private LogHandler logHandler;
 
     private final FileConfiguration configuration;
@@ -99,32 +98,6 @@ public class SimpleClanService implements ClanService {
                             "%creator%", owner.getName()
                     );
                 });
-    }
-
-    @Override
-    public void deleteClan(User user, Player owner) {
-        clanUserService.executeAsOwner(
-                owner, user,
-                clan -> modelService
-                        .delete(clan)
-                        .whenComplete((result, error) -> {
-                            if (error != null) {
-                                logHandler.reportError(
-                                        "Failed to delete clan '%s'", error,
-                                        clan.getId()
-                                );
-
-                                messageHandler.send(owner, "clan.delete-failed");
-                                return;
-                            }
-
-                            // just remove clan from the owner
-                            // we will wait to members get connected to the server
-                            user.setClan(null);
-
-                            // TODO: remove clan from all online members
-                            messageHandler.send(owner, "clan.delete-success");
-                        }));
     }
 
     @Override

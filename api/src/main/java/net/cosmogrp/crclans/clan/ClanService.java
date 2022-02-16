@@ -10,8 +10,6 @@ public interface ClanService {
 
     void createClan(User user, Player owner, String tag);
 
-    void deleteClan(User user, Player owner);
-
     void saveClan(Player player, Clan clan);
 
     void saveClan(Clan clan);

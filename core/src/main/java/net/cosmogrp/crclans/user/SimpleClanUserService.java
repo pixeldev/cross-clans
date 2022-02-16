@@ -4,8 +4,10 @@ import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.crclans.clan.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
+import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +20,8 @@ public class SimpleClanUserService
     @Inject private ClanService clanService;
     @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
+    @Inject private AsyncModelService<Clan> modelService;
+    @Inject private LogHandler logHandler;
 
     @Override
     public @Nullable Clan getClan(Player player, User user) {
@@ -33,6 +37,32 @@ public class SimpleClanUserService
         }
 
         return clan;
+    }
+
+    @Override
+    public void disbandClan(Player player, User user) {
+        executeAsOwner(
+                player, user,
+                clan -> modelService
+                        .delete(clan)
+                        .whenComplete((result, error) -> {
+                            if (error != null) {
+                                logHandler.reportError(
+                                        "Failed to delete clan '%s'", error,
+                                        clan.getId()
+                                );
+
+                                messageHandler.send(player, "clan.delete-failed");
+                                return;
+                            }
+
+                            // just remove clan from the owner
+                            // we will wait to members get connected to the server
+                            user.setClan(null);
+
+                            // TODO: remove clan from all online members
+                            messageHandler.send(player, "clan.delete-success");
+                        }));
     }
 
     @Override
