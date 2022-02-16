@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ public class Clan extends AbstractModel
 
     private final Date creation;
     private final ClanMember owner;
-    private final Set<ClanMember> members;
+    private final Map<UUID, ClanMember> members;
     private final Set<String> allies;
     private final Set<String> enemies;
     private final Map<UUID, RecruitmentRequest> recruitmentRequests;
@@ -30,7 +31,7 @@ public class Clan extends AbstractModel
 
     private Clan(
             String id, Date creation,
-            ClanMember owner, Set<ClanMember> members,
+            ClanMember owner, Map<UUID, ClanMember> members,
             Set<String> allies,
             Set<String> enemies,
             Map<UUID, RecruitmentRequest> recruitmentRequests,
@@ -74,6 +75,29 @@ public class Clan extends AbstractModel
         recruitmentRequests.remove(request.getPlayerId());
     }
 
+    public Collection<UUID> getMembersIds() {
+        return members.keySet();
+    }
+
+    public @Nullable ClanMember getMember(UUID playerId) {
+        return members.get(playerId);
+    }
+
+    public void addMember(Player member) {
+        members.put(
+                member.getUniqueId(),
+                ClanMember.fromPlayer(member)
+        );
+    }
+
+    public boolean isMember(UUID playerId) {
+        return members.containsKey(playerId);
+    }
+
+    public ClanMember removeMember(UUID playerId) {
+        return members.remove(playerId);
+    }
+
     @Override
     public String toString() {
         return "Clan{" +
@@ -86,7 +110,7 @@ public class Clan extends AbstractModel
     public static Clan create(Player owner, String tag) {
         return new Clan(
                 tag, new Date(), ClanMember.fromPlayer(owner),
-                new HashSet<>(),
+                new HashMap<>(),
                 new HashSet<>(),
                 new HashSet<>(),
                 new HashMap<>(),
@@ -99,7 +123,11 @@ public class Clan extends AbstractModel
                 reader.readString("_id"),
                 reader.readDate("creation"),
                 ClanMember.fromDocument(reader.readChild("owner")),
-                reader.readChildren("members", ClanMember::fromDocument),
+                reader.readMap(
+                        "members",
+                        ClanMember::getPlayerId,
+                        ClanMember::fromDocument
+                ),
                 reader.readSet("allies", String.class),
                 reader.readSet("enemies", String.class),
                 reader.readMap(
