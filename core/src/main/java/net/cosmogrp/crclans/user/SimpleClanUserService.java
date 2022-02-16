@@ -84,7 +84,7 @@ public class SimpleClanUserService
                                         clan.getId()
                                 );
 
-                                messageHandler.send(player, "clan.delete-failed");
+                                messageHandler.send(player, "clan.disband-failed");
                                 return;
                             }
 
@@ -93,7 +93,7 @@ public class SimpleClanUserService
                             user.setClan(null);
 
                             // TODO: remove clan from all online members
-                            messageHandler.send(player, "clan.delete-success");
+                            messageHandler.send(player, "clan.disband-success");
                         }));
     }
 
