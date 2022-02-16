@@ -12,4 +12,8 @@ public interface ClanService {
 
     void deleteClan(User user, Player owner);
 
+    void saveClan(Player player, Clan clan);
+
+    void saveClan(Clan clan);
+
 }

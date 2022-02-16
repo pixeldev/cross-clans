@@ -126,4 +126,32 @@ public class SimpleClanService implements ClanService {
                             messageHandler.send(owner, "clan.delete-success");
                         }));
     }
+
+    @Override
+    public void saveClan(Player player, Clan clan) {
+        modelService.save(clan)
+                .whenComplete((result, error) -> {
+                    if (error != null) {
+                        logHandler.reportError(
+                                "Failed to save clan '%s'",
+                                error, clan.getId()
+                        );
+
+                        messageHandler.send(player, "clan.save-failed");
+                    }
+                });
+    }
+
+    @Override
+    public void saveClan(Clan clan) {
+        modelService.save(clan)
+                .whenComplete((result, error) -> {
+                    if (error != null) {
+                        logHandler.reportError(
+                                "Failed to save clan '%s'",
+                                error, clan.getId()
+                        );
+                    }
+                });
+    }
 }
