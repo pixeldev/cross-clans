@@ -6,7 +6,7 @@ import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
-import net.cosmogrp.storage.AsyncModelService;
+import net.cosmogrp.storage.dist.CachedRemoteModelService;
 import net.cosmogrp.storage.dist.LocalModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.mongo.MongoModelService;
@@ -27,7 +27,7 @@ public class UserModule extends AbstractModule {
     }
 
     @Provides @Singleton
-    public AsyncModelService<User> createService(
+    public CachedRemoteModelService<User> createService(
             Executor executor, FileConfiguration configuration,
             MongoDatabase mongoDatabase
     ) {

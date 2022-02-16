@@ -2,7 +2,7 @@ package net.cosmogrp.crclans.user;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.log.LogHandler;
-import net.cosmogrp.storage.AsyncModelService;
+import net.cosmogrp.storage.dist.CachedRemoteModelService;
 import net.cosmogrp.storage.redis.RedisModelService;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class SimpleUserService implements UserService {
 
-    @Inject private AsyncModelService<User> modelService;
+    @Inject private CachedRemoteModelService<User> modelService;
     @Inject private RedisModelService<User> redisModelService;
     @Inject private MessageHandler messageHandler;
     @Inject private LogHandler logHandler;
