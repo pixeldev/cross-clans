@@ -30,7 +30,14 @@ public class PlayerConnectionListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        clusteredUserRegistry.create(event.getPlayer());
+        Player player = event.getPlayer();
+        clusteredUserRegistry.create(player);
+
+        User user = userService.getUser(player);
+
+        if (user != null) {
+            clanUserService.connect(player, user);
+        }
     }
 
     @EventHandler

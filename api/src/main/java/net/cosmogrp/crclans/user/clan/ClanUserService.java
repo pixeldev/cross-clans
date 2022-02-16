@@ -9,9 +9,11 @@ import java.util.function.Consumer;
 
 public interface ClanUserService {
 
-    @Nullable Clan getClan(Player player, User user);
+    void connect(Player player, User user);
 
     void disconnect(User user);
+
+    @Nullable Clan getClan(Player player, User user);
 
     void disbandClan(Player player, User user);
 

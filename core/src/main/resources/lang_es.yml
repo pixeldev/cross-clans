@@ -51,8 +51,11 @@ clan:
     not-enough-money: "&c¡No tienes suficiente dinero para crear un clan!"
     invalid-tag: "&c¡El tag del clan debe tener un mínimo de carácteres de &c&n%min%&c y un máximo de &c&n%max%&c compuesto por letras y números!"
 
+    kick-offline-notify: "&f¡Fuiste expulsado del clan al que pertenecías!"
+
     disband-success: "&c¡Has disuelto tu clan correctamente!"
     disband-failed: "&cOcurrió un error al intentar disolver tu clan, ¡intenta de nuevo!"
+    disband-offline-notify: "&f¡El clan al que pertenecías ha sido disuelto!"
 
     create-failed: "&c¡Ha ocurrido un error al crear el clan, intenta de nuevo!"
     create-success:

@@ -40,6 +40,39 @@ public class SimpleClanUserService
     }
 
     @Override
+    public void connect(Player player, User user) {
+        String clanTag = user.getClanTag();
+
+        if (clanTag == null) {
+            return;
+        }
+
+        Clan clan = clanService.getClan(clanTag);
+
+        // in most cases this happens if clan has
+        // been disbanded and player wasn't
+        // online when it happened
+        if (clan == null) {
+            user.setClan(null);
+            messageHandler.send(player, "clan.disband-offline-notify");
+            return;
+        }
+
+        ClanMember member = clan.getMember(user.getPlayerId());
+
+        // in most cases this happens if player
+        // has been kicked from clan
+        if (member == null) {
+            user.setClan(null);
+            messageHandler.send(player, "clan.kick-offline-notify");
+            return;
+        }
+
+        member.setOnline(true);
+        clanService.saveClan(clan);
+    }
+
+    @Override
     public void disconnect(User user) {
         String clanTag = user.getClanTag();
 
