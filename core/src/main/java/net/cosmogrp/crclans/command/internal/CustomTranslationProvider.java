@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import javax.inject.Inject;
 
-public class CustomTranslatorProvider
+public class CustomTranslationProvider
         implements TranslationProvider {
 
     @Inject private MessageHandler messageHandler;

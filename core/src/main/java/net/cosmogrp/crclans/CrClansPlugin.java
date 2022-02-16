@@ -12,7 +12,7 @@ import me.fixeddev.commandflow.translator.DefaultTranslator;
 import me.yushust.inject.Injector;
 import net.cosmogrp.crclans.command.ClanCommand;
 import net.cosmogrp.crclans.command.internal.ClanPartModule;
-import net.cosmogrp.crclans.command.internal.CustomTranslatorProvider;
+import net.cosmogrp.crclans.command.internal.CustomTranslationProvider;
 import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
 import net.cosmogrp.crclans.inject.MainModule;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
@@ -30,7 +30,7 @@ public class CrClansPlugin extends JavaPlugin {
     @Inject private Set<Listener> listeners;
 
     @Inject private ClanPartModule clanPartModule;
-    @Inject private CustomTranslatorProvider translatorProvider;
+    @Inject private CustomTranslationProvider translatorProvider;
     @Inject private CustomUsageBuilder usageBuilder;
 
     @Inject private ClanCommand clanCommand;
