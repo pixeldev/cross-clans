@@ -24,6 +24,7 @@ clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
+    not-mod: "&c¡Debes ser moderador del clan para poder hacer esto!"
 
     already-member: "&c¡Ese jugador ya es miembro de este clan!"
     already-invited: "&c¡Ese jugador ya ha sido invitado a tu clan, por favor espera a que acepte!"
@@ -55,6 +56,10 @@ clan:
     invalid-tag: "&c¡El tag del clan debe tener un mínimo de carácteres de &c&n%min%&c y un máximo de &c&n%max%&c compuesto por letras y números!"
 
     kick-offline-notify: "&f¡Fuiste expulsado del clan al que pertenecías!"
+    kick-mod: "&cNo puedes expulsar a un moderador del clan"
+    kick-success-target: "&f¡Has sido expulsado del clan &a%tag%&f!"
+    kick-success-sender: "&f¡Has expulsado a &a%target% &fcorrectamente!"
+    kick-success-members: "&f¡&a%target% &fha sido expulsado del clan por &a%sender%&f!"
 
     disband-success: "&c¡Has disuelto tu clan correctamente!"
     disband-failed: "&cOcurrió un error al intentar disolver tu clan, ¡intenta de nuevo!"
