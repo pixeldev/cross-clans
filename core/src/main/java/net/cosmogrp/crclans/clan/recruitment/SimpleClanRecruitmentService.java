@@ -23,7 +23,7 @@ public class SimpleClanRecruitmentService
             Player sender, User user,
             ClusteredUser target
     ) {
-        clanUserService.executeAsOwner(
+        clanUserService.computeAsOwner(
                 sender, user,
                 clan -> {
                     RecruitmentRequest request =
