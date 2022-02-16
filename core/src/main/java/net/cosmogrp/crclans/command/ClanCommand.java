@@ -7,6 +7,7 @@ import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.user.User;
+import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import org.bukkit.entity.Player;
 
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 public class ClanCommand implements CommandClass {
 
     @Inject private ClanService clanService;
+    @Inject private ClanUserService clanUserService;
     @Inject private ClanRecruitmentService recruitmentService;
 
     @Command(names = "create", permission = "clans.create")
@@ -25,7 +27,12 @@ public class ClanCommand implements CommandClass {
 
     @Command(names = "delete", permission = "clans.delete")
     public void runDelete(@Sender Player sender, @Sender User user) {
-        clanService.deleteClan(user, sender);
+        clanUserService.disbandClan(sender, user);
+    }
+
+    @Command(names = "leave", permission = "clans.leave")
+    public void runLeave(@Sender Player sender, @Sender User user) {
+        clanUserService.leaveClan(sender, user);
     }
 
     @Command(names = "invite", permission = "clans.invite")
