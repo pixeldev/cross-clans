@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
+import java.util.UUID;
 
 public class SimpleClanRecruitmentService
         implements ClanRecruitmentService {
@@ -26,8 +27,17 @@ public class SimpleClanRecruitmentService
         clanUserService.computeAsOwner(
                 sender, user,
                 clan -> {
+                    UUID targetId = target.getPlayerId();
+
+                    if (clan.isMember(targetId)) {
+                        messageHandler.send(
+                                sender, "clan.already-member"
+                        );
+                        return;
+                    }
+
                     RecruitmentRequest request =
-                            clan.getRequest(target.getPlayerId());
+                            clan.getRequest(targetId);
 
                     if (request != null) {
                         if (request.isExpired()) {

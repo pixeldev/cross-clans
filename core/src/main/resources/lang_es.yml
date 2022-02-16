@@ -20,6 +20,7 @@ clan:
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
 
+    already-member: "&c¡Ese jugador ya es miembro de este clan!"
     already-invited: "&c¡Ese jugador ya ha sido invitado a tu clan, por favor espera a que acepte!"
     invited-target:
         - " "
