@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface Notifier {
 
-    void notify(
+    void notifyIn(
             @Nullable Set<UUID> targets,
             @Nullable String mode,
             String path, Object... parameters
@@ -17,26 +17,26 @@ public interface Notifier {
     default void notify(
             @Nullable Set<UUID> targets,
             String path, Object... parameters) {
-        notify(targets, null, path, parameters);
+        notifyIn(targets, null, path, parameters);
     }
 
     default void singleNotify(UUID target, String path, Object... parameters) {
-        notify(Sets.newHashSet(target), null, path, parameters);
+        notifyIn(Sets.newHashSet(target), null, path, parameters);
     }
 
-    default void singleNotify(
+    default void singleNotifyIn(
             UUID target, String mode,
             String path, Object... parameters
     ) {
-        notify(Sets.newHashSet(target), mode, path, parameters);
+        notifyIn(Sets.newHashSet(target), mode, path, parameters);
     }
 
     default void notify(String path, Object... parameters) {
-        notify(null, null, path, parameters);
+        notifyIn(null, null, path, parameters);
     }
 
-    default void notify(String mode, String path, Object... parameters) {
-        notify(null, mode, path, parameters);
+    default void notifyIn(String mode, String path, Object... parameters) {
+        notifyIn(null, mode, path, parameters);
     }
 
 }

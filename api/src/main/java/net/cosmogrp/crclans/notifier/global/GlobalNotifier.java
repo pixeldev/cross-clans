@@ -13,7 +13,7 @@ public class GlobalNotifier extends LocalNotifier {
     @Inject private Channel<GlobalMessage> channel;
 
     @Override
-    public void notify(
+    public void notifyIn(
             @Nullable Set<UUID> targets,
             @Nullable String mode,
             String path, Object... parameters

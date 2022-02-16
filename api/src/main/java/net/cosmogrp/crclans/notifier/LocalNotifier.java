@@ -14,7 +14,7 @@ public class LocalNotifier implements Notifier {
     @Inject protected MessageHandler messageHandler;
 
     @Override
-    public void notify(
+    public void notifyIn(
             @Nullable Set<UUID> targets,
             @Nullable String mode,
             String path, Object... parameters

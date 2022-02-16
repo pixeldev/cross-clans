@@ -18,7 +18,7 @@ public class GlobalMessageListener implements ChannelListener<GlobalMessage> {
             String server,
             GlobalMessage object
     ) {
-        localNotifier.notify(
+        localNotifier.notifyIn(
                 object.getTargets(),
                 object.getMode(),
                 object.getPath(),
