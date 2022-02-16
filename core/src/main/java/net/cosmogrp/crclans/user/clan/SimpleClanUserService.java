@@ -71,16 +71,22 @@ public class SimpleClanUserService
         }
 
         UUID targetId = target.getPlayerId();
+        String targetName = target.getPlayerName();
+
         clan.removeMember(targetId);
-        messageHandler.send(player, "clan.kick-success-sender");
+        messageHandler.send(
+                player, "clan.kick-success-sender",
+                "%target%", targetName
+        );
+
         globalNotifier.notify(
                 clan.getOnlineMembers(), "clan.kick-success-members",
                 "%sender%", player.getName(),
-                "%target%", target.getPlayerName()
+                "%target%", targetName
         );
 
         ClusteredUser clusteredTarget =
-                clusteredUserRegistry.find(target.getPlayerName());
+                clusteredUserRegistry.find(targetName);
 
         if (clusteredTarget != null) {
             String clanTag = clan.getId();
@@ -93,6 +99,8 @@ public class SimpleClanUserService
                     clusteredTarget.getServerData().getRedisServer()
             );
         }
+
+        clanService.saveClan(player, clan);
     }
 
     @Override
