@@ -2,7 +2,9 @@ package net.cosmogrp.crclans.user;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.Clan;
+import net.cosmogrp.crclans.clan.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +17,7 @@ public class SimpleClanUserService
 
     @Inject private ClanService clanService;
     @Inject private MessageHandler messageHandler;
+    @Inject private GlobalNotifier globalNotifier;
 
     @Override
     public @Nullable Clan getClan(Player player, User user) {
@@ -30,6 +33,44 @@ public class SimpleClanUserService
         }
 
         return clan;
+    }
+
+    @Override
+    public void leaveClan(Player player, User user) {
+        Clan clan = getClan(player, user);
+
+        if (clan == null) {
+            return;
+        }
+
+        if (clan.isOwner(player)) {
+            messageHandler.send(player, "clan.cannot-leave-own-clan");
+            return;
+        }
+
+        ClanMember clanMember = clan.removeMember(user.getPlayerId());
+
+        if (clanMember == null) {
+            messageHandler.send(player, "clan.error-leaving-clan");
+            return;
+        }
+
+        user.setClan(null);
+
+        messageHandler.sendReplacing(
+                player, "clan.left-clan-sender",
+                "%tag%", clan.getId()
+        );
+
+        globalNotifier.notify(
+                clan.getOnlineMembers(),
+                clanMember.isModerator() ?
+                        "clan.moderator-left-clan-members"
+                        : "clan.left-clan-members",
+                "%target%", player.getName()
+        );
+
+        clanService.saveClan(player, clan);
     }
 
     @Override

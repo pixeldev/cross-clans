@@ -11,6 +11,8 @@ public interface ClanUserService {
 
     @Nullable Clan getClan(Player player, User user);
 
+    void leaveClan(Player player, User user);
+
     void executeAsOwner(
             Player player, User user,
             Consumer<Clan> consumer
