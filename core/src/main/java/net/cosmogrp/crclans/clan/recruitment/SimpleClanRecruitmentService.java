@@ -78,6 +78,11 @@ public class SimpleClanRecruitmentService
             Player sender, User user,
             Clan clan
     ) {
+        if (user.hasClan()) {
+            messageHandler.send(sender, "clan.already-in-clan");
+            return;
+        }
+
         RecruitmentRequest request = checkRequest(clan, sender);
 
         if (request == null) {
