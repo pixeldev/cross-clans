@@ -6,6 +6,7 @@ import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class ClanMember implements DocumentCodec {
@@ -51,6 +52,21 @@ public class ClanMember implements DocumentCodec {
                 ", moderator=" + moderator +
                 ", online=" + online +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClanMember that = (ClanMember) o;
+        return moderator == that.moderator &&
+                online == that.online &&
+                Objects.equals(playerId, that.playerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerId);
     }
 
     @Override
