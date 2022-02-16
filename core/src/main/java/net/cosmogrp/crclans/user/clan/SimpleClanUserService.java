@@ -74,7 +74,7 @@ public class SimpleClanUserService
         String targetName = target.getPlayerName();
 
         clan.removeMember(targetId);
-        messageHandler.send(
+        messageHandler.sendReplacing(
                 player, "clan.kick-success-sender",
                 "%target%", targetName
         );
