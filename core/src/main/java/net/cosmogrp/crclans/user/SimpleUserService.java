@@ -65,7 +65,7 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
-    public void saveUser(Player player) {
+    public User saveUser(Player player) {
         UUID playerId = player.getUniqueId();
         String playerIdString = playerId.toString();
         User user = modelService.getSync(playerIdString);
@@ -76,7 +76,7 @@ public class SimpleUserService implements UserService {
                     playerIdString
             );
 
-            return;
+            return null;
         }
 
         modelService.save(user)
@@ -92,5 +92,7 @@ public class SimpleUserService implements UserService {
                         );
                     }
                 });
+
+        return user;
     }
 }
