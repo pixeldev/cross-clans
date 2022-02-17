@@ -59,7 +59,21 @@ public class ClanCommand implements CommandClass {
         );
     }
 
+    @Command(names = "demote", permission = "clans.demote")
+    public void runDemote(
+            CommandContext commandContext,
+            @Sender Player sender, @Sender User user,
+            ClanMember clanMember
+    ) {
+        clanUserService.demoteMember(
+                sender, user,
+                commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
+                clanMember
+        );
+    }
+
     @Command(names = "leave", permission = "clans.leave")
+
     public void runLeave(@Sender Player sender, @Sender User user) {
         clanUserService.leaveClan(sender, user);
     }
