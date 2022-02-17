@@ -1,6 +1,7 @@
 package net.cosmogrp.crclans.clan;
 
 import net.cosmogrp.crclans.clan.recruitment.RecruitmentRequest;
+import net.cosmogrp.crclans.server.ServerLocation;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
@@ -28,6 +29,7 @@ public class Clan extends AbstractModel
     private final Map<UUID, RecruitmentRequest> recruitmentRequests;
 
     private String description;
+    private ServerLocation homeLocation;
 
     private Clan(
             String id, Date creation,
@@ -35,7 +37,7 @@ public class Clan extends AbstractModel
             Set<String> allies,
             Set<String> enemies,
             Map<UUID, RecruitmentRequest> recruitmentRequests,
-            String description
+            String description, ServerLocation homeLocation
     ) {
         super(id);
         this.creation = creation;
@@ -45,6 +47,7 @@ public class Clan extends AbstractModel
         this.enemies = enemies;
         this.recruitmentRequests = recruitmentRequests;
         this.description = description;
+        this.homeLocation = homeLocation;
 
         owner.setModerator(true);
         members.put(owner.getPlayerId(), owner);
@@ -56,6 +59,14 @@ public class Clan extends AbstractModel
 
     public boolean isOwner(Player player) {
         return owner.getPlayerId().equals(player.getUniqueId());
+    }
+
+    public @Nullable ServerLocation getHome() {
+        return homeLocation;
+    }
+
+    public void setHome(ServerLocation homeLocation) {
+        this.homeLocation = homeLocation;
     }
 
     public void setDescription(String description) {
@@ -129,7 +140,7 @@ public class Clan extends AbstractModel
                 new HashSet<>(),
                 new HashSet<>(),
                 new HashMap<>(),
-                null
+                null, null
         );
     }
 
@@ -150,7 +161,8 @@ public class Clan extends AbstractModel
                         RecruitmentRequest::getPlayerId,
                         RecruitmentRequest::fromDocument
                 ),
-                reader.readString("description")
+                reader.readString("description"),
+                ServerLocation.fromDocument(reader.readChild("home"))
         );
     }
 
@@ -164,6 +176,7 @@ public class Clan extends AbstractModel
                 .write("allies", allies)
                 .write("enemies", enemies)
                 .write("recruitments", recruitmentRequests)
+                .write("home", homeLocation)
                 .build();
     }
 }
