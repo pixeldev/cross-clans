@@ -46,6 +46,19 @@ public class ClanCommand implements CommandClass {
         );
     }
 
+    @Command(names = "promote", permission = "clans.promote")
+    public void runPromote(
+            CommandContext commandContext,
+            @Sender Player sender, @Sender User user,
+            ClanMember clanMember
+    ) {
+        clanUserService.promoteMember(
+                sender, user,
+                commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
+                clanMember
+        );
+    }
+
     @Command(names = "leave", permission = "clans.leave")
     public void runLeave(@Sender Player sender, @Sender User user) {
         clanUserService.leaveClan(sender, user);
