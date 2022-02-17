@@ -85,6 +85,8 @@ public class SimpleClanUserService
                 "%target%", targetName
         );
 
+        clanService.saveClan(player, clan);
+
         ClusteredUser clusteredTarget =
                 clusteredUserRegistry.find(targetName);
 
@@ -99,8 +101,6 @@ public class SimpleClanUserService
                     clusteredTarget.getServerData().getRedisServer()
             );
         }
-
-        clanService.saveClan(player, clan);
     }
 
     @Override
