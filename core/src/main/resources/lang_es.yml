@@ -31,6 +31,11 @@ clan:
     promote-success-target: "&f¡Has sido ascendido por &a%sender% &fa moderador!"
     not-mod: "&c¡Debes ser moderador del clan para poder hacer esto!"
 
+    demote-not-mod: "&c¡Ese miembro no es moderador!"
+    demote-success-sender: "&f¡Has quitado a &a%target% &fde moderador!"
+    demote-success-members: "&f¡&a%target% &ffue descendido por &a%sender%&f!"
+    demote-success-target: "&f¡Has sido descendido por &a%sender%&f!"
+
     already-member: "&c¡Ese jugador ya es miembro de este clan!"
     already-invited: "&c¡Ese jugador ya ha sido invitado a tu clan, por favor espera a que acepte!"
     invited-target:

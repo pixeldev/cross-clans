@@ -140,6 +140,42 @@ public class SimpleClanUserService
     }
 
     @Override
+    public void demoteMember(
+            Player player, User user,
+            Clan clan, ClanMember target
+    ) {
+        if (!clan.isOwner(player)) {
+            messageHandler.send(player, "clan.not-owner");
+            return;
+        }
+
+        if (target.isModerator()) {
+            messageHandler.send(player, "clan.demote-not-mod");
+            return;
+        }
+
+        target.setModerator(false);
+        messageHandler.sendReplacing(
+                player, "clan.demote-success-sender",
+                "%target%", target.getPlayerName()
+        );
+
+        globalNotifier.notify(
+                clan.getOnlineMembers(), "clan.demote-success-members",
+                "%sender%", player.getName(),
+                "%target%", target.getPlayerName()
+        );
+
+        globalNotifier.singleNotify(
+                target.getPlayerId(),
+                "clan.demote-success-target",
+                "%sender%", player.getName()
+        );
+
+        clanService.saveClan(player, clan);
+    }
+
+    @Override
     public boolean notifyKick(UUID targetId, String clanId) {
         Player player = Bukkit.getPlayer(targetId);
 

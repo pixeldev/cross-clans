@@ -23,8 +23,13 @@ public interface ClanUserService {
     );
 
     void promoteMember(
-            Player player, User user, Clan clan,
-            ClanMember target
+            Player player, User user,
+            Clan clan, ClanMember target
+    );
+
+    void demoteMember(
+            Player player, User user,
+            Clan clan, ClanMember target
     );
 
     boolean notifyKick(UUID targetId, String clanId);
