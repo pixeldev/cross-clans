@@ -149,7 +149,7 @@ public class SimpleClanUserService
             return;
         }
 
-        if (target.isModerator()) {
+        if (!target.isModerator()) {
             messageHandler.send(player, "clan.demote-not-mod");
             return;
         }
