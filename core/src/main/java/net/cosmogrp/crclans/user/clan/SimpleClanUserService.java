@@ -65,7 +65,7 @@ public class SimpleClanUserService
             return;
         }
 
-        if (target.isModerator()) {
+        if (target.isModerator() && !clan.isOwner(player)) {
             messageHandler.send(player, "clan.kick-mod");
             return;
         }
