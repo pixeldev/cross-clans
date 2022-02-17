@@ -24,6 +24,11 @@ clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
+
+    already-mod: "&c¡Ese jugador ya es moderador!"
+    promote-success-sender: "&f¡Has ascendido a &a%target% &fa moderador!"
+    promote-success-members: "&f¡&a%target% &ffue ascendido por &a%sender% &fa moderador!"
+    promote-success-target: "&f¡Has sido ascendido por &a%sender% &fa moderador!"
     not-mod: "&c¡Debes ser moderador del clan para poder hacer esto!"
 
     already-member: "&c¡Ese jugador ya es miembro de este clan!"

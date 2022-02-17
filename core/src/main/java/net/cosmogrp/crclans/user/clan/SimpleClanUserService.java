@@ -104,6 +104,42 @@ public class SimpleClanUserService
     }
 
     @Override
+    public void promoteMember(
+            Player player, User user,
+            Clan clan, ClanMember target
+    ) {
+        if (!clan.isOwner(player)) {
+            messageHandler.send(player, "clan.not-owner");
+            return;
+        }
+
+        if (target.isModerator()) {
+            messageHandler.send(player, "clan.already-mod");
+            return;
+        }
+
+        target.setModerator(true);
+        messageHandler.sendReplacing(
+                player, "clan.promote-success-sender",
+                "%target%", target.getPlayerName()
+        );
+
+        globalNotifier.notify(
+                clan.getOnlineMembers(), "clan.promote-success-members",
+                "%sender%", player.getName(),
+                "%target%", target.getPlayerName()
+        );
+
+        globalNotifier.singleNotify(
+                target.getPlayerId(),
+                "clan.promote-success-target",
+                "%sender%", player.getName()
+        );
+
+        clanService.saveClan(player, clan);
+    }
+
+    @Override
     public boolean notifyKick(UUID targetId, String clanId) {
         Player player = Bukkit.getPlayer(targetId);
 
