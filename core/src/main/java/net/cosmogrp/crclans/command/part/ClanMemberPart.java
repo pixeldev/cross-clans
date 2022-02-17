@@ -52,7 +52,7 @@ public class ClanMemberPart implements PartFactory {
                 String clanTag = user.getClanTag();
 
                 if (clanTag == null) {
-                    throw new ArgumentParseException("%translatable:command.not-in-clan%");
+                    throw new ArgumentParseException("%translatable:clan.not-in-clan%");
                 }
 
                 Clan clan = clanService.getClan(clanTag);
