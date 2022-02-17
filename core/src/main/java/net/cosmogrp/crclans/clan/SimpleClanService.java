@@ -4,7 +4,6 @@ import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
-import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -89,6 +88,11 @@ public class SimpleClanService implements ClanService {
         modelService.save(clan)
                 .whenComplete((result, error) -> {
                     if (error != null) {
+                        logHandler.reportError(
+                                "Failed to save clan '%s' in creation ",
+                                error, tag
+                        );
+
                         messageHandler.send(owner, "clan.create-failed");
                         return;
                     }
