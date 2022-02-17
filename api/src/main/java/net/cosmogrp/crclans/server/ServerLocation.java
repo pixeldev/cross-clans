@@ -53,7 +53,7 @@ public class ServerLocation implements DocumentCodec {
     public static ServerLocation fromDocument(DocumentReader reader) {
         return new ServerLocation(
                 reader.readString("serverName"),
-                PlayerAxis.fromDocument(reader.readChild("playerAxis"))
+                reader.readChild("playerAxis", PlayerAxis::fromDocument)
         );
     }
 

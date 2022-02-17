@@ -148,7 +148,7 @@ public class Clan extends AbstractModel
         return new Clan(
                 reader.readString("_id"),
                 reader.readDate("creation"),
-                ClanMember.fromDocument(reader.readChild("owner")),
+                reader.readChild("owner", ClanMember::fromDocument),
                 reader.readMap(
                         "members",
                         ClanMember::getPlayerId,
@@ -162,7 +162,7 @@ public class Clan extends AbstractModel
                         RecruitmentRequest::fromDocument
                 ),
                 reader.readString("description"),
-                ServerLocation.fromDocument(reader.readChild("home"))
+                reader.readChild("home", ServerLocation::fromDocument)
         );
     }
 
