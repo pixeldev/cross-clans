@@ -2,6 +2,7 @@ package net.cosmogrp.crclans.clan.recruitment;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.Clan;
+import net.cosmogrp.crclans.clan.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
@@ -28,49 +29,62 @@ public class SimpleClanRecruitmentService
             Player sender, User user,
             ClusteredUser target
     ) {
-        clanUserService.computeAsOwner(
-                sender, user,
-                clan -> {
-                    UUID targetId = target.getPlayerId();
+        Clan clan = clanUserService.getClan(sender, user);
 
-                    if (clan.isMember(targetId)) {
-                        messageHandler.send(
-                                sender, "clan.already-member"
-                        );
-                        return;
-                    }
+        if (clan == null) {
+            return;
+        }
 
-                    RecruitmentRequest request =
-                            clan.getRequest(targetId);
+        ClanMember clanMember = clan.getMember(sender.getUniqueId());
 
-                    if (request != null) {
-                        if (request.isExpired()) {
-                            clan.removeRequest(request);
-                        } else {
-                            messageHandler.send(sender, "clan.already-invited");
-                            return;
-                        }
-                    }
+        if (clanMember == null) {
+            // this should never happen
+            return;
+        }
 
-                    int time = configuration.getInt("clans.invite-expiry");
-                    request = RecruitmentRequest.create(
-                            target, time
-                    );
+        if (!clanMember.isModerator()) {
+            messageHandler.send(sender, "clan.not-mod");
+            return;
+        }
 
-                    clan.addRequest(request);
-                    messageHandler.sendReplacing(
-                            sender, "clan.invited-sender",
-                            "%target%", target.asPlayer().getName()
-                    );
+        UUID targetId = target.getPlayerId();
 
-                    globalNotifier.singleNotifyIn(
-                            target.getPlayerId(), "minimessage",
-                            "clan.invited-target",
-                            "%tag%", clan.getId(),
-                            "%time%", time
-                    );
-                }
+        if (clan.isMember(targetId)) {
+            messageHandler.send(sender, "clan.already-member");
+            return;
+        }
+
+        RecruitmentRequest request =
+                clan.getRequest(targetId);
+
+        if (request != null) {
+            if (request.isExpired()) {
+                clan.removeRequest(request);
+            } else {
+                messageHandler.send(sender, "clan.already-invited");
+                return;
+            }
+        }
+
+        int time = configuration.getInt("clans.invite-expiry");
+        request = RecruitmentRequest.create(
+                target, time
         );
+
+        clan.addRequest(request);
+        messageHandler.sendReplacing(
+                sender, "clan.invited-sender",
+                "%target%", target.asPlayer().getName()
+        );
+
+        globalNotifier.singleNotifyIn(
+                target.getPlayerId(), "minimessage",
+                "clan.invited-target",
+                "%tag%", clan.getId(),
+                "%time%", time
+        );
+
+        clanService.saveClan(sender, clan);
     }
 
     @Override
