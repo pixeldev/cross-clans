@@ -33,6 +33,10 @@ tasks {
             )
         }
     }
+
+    compileJava {
+        options.compilerArgs.add("-parameters")
+    }
 }
 
 repositories {
