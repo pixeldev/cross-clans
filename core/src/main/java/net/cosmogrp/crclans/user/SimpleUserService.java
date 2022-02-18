@@ -79,10 +79,10 @@ public class SimpleUserService implements UserService {
             return null;
         }
 
-        modelService.save(user)
-                // we need to save it in redis cache, so we don't need to
-                // get it from database when we load it again
-                .thenCompose(savedUser -> redisModelService.save(user))
+        // we need to save it in redis cache, so we don't need to
+        // get it from database when we load it again
+        redisModelService.save(user)
+                .thenCompose(savedUser -> modelService.save(user))
                 .whenComplete((savedUser, throwable) -> {
                     if (throwable != null) {
                         // just report the error, don't care if it fails
