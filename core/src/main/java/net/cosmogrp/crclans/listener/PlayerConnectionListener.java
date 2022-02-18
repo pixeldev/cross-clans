@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans.listener;
 
+import net.cosmogrp.crclans.server.ServerSender;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
@@ -18,6 +19,7 @@ public class PlayerConnectionListener implements Listener {
     @Inject private UserService userService;
     @Inject private ClanUserService clanUserService;
     @Inject private ClusteredUserRegistry clusteredUserRegistry;
+    @Inject private ServerSender serverSender;
 
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent event) {
@@ -38,6 +40,8 @@ public class PlayerConnectionListener implements Listener {
         if (user != null) {
             clanUserService.connect(player, user);
         }
+
+        serverSender.checkTeleport(player);
     }
 
     @EventHandler
