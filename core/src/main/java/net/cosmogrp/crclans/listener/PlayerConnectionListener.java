@@ -28,18 +28,18 @@ public class PlayerConnectionListener implements Listener {
                 .whenComplete((user, throwable) -> {
                     if (user != null) {
                         clanUserService.connect(player, user);
+                        clusteredUserRegistry.create(player);
                     }
                 });
 
-        clusteredUserRegistry.create(player);
         serverSender.checkTeleport(player);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        clusteredUserRegistry.delete(player);
         User user = userService.saveUser(player);
+        clusteredUserRegistry.delete(player);
 
         if (user != null) {
             clanUserService.disconnect(user);
