@@ -30,6 +30,13 @@ public class ServerLocation implements DocumentCodec {
         return playerAxis;
     }
 
+    public static ServerLocation create(
+            String serverName,
+            PlayerAxis playerAxis
+    ) {
+        return new ServerLocation(serverName, playerAxis);
+    }
+
     public static ServerLocation centered(
             ServerData serverData,
             Player player
