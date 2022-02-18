@@ -6,6 +6,8 @@ import net.cosmogrp.crclans.clan.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
+import net.cosmogrp.crclans.server.ServerData;
+import net.cosmogrp.crclans.server.ServerLocation;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
@@ -23,6 +25,7 @@ import java.util.function.Consumer;
 public class SimpleClanUserService
         implements ClanUserService {
 
+    @Inject private ServerData serverData;
     @Inject private ClanService clanService;
     @Inject private UserService userService;
     @Inject private MessageHandler messageHandler;
@@ -46,6 +49,20 @@ public class SimpleClanUserService
         }
 
         return clan;
+    }
+
+    @Override
+    public void setHome(Player player, User user) {
+        computeAsOwner(player, user, clan -> {
+            clan.setHome(ServerLocation.centered(serverData, player));
+
+            messageHandler.send(player, "clan.set-home-sender");
+
+            globalNotifier.notify(
+                    clan.getOnlineMembers(),
+                    "clan.set-home-members"
+            );
+        });
     }
 
     @Override

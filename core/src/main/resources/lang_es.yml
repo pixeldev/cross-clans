@@ -25,6 +25,9 @@ clan:
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
 
+    set-home-sender: "&f¡Has establecido la localización de la casa de tu clan!"
+    set-home-members: "&f¡Se ha establecido la localización de la casa de tu clan!"
+
     already-mod: "&c¡Ese jugador ya es moderador!"
     promote-success-sender: "&f¡Has ascendido a &a%target% &fa moderador!"
     promote-success-members: "&f¡&a%target% &ffue ascendido por &a%sender% &fa moderador!"

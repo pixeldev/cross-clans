@@ -17,6 +17,8 @@ public interface ClanUserService {
 
     @Nullable Clan getClan(Player player, User user);
 
+    void setHome(Player player, User user);
+
     void kickMember(
             Player player, User user,
             Clan clan, ClanMember target
