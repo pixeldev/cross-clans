@@ -4,11 +4,14 @@ import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.storage.dist.CachedRemoteModelService;
 import net.cosmogrp.storage.redis.RedisModelService;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class SimpleUserService implements UserService {
 
@@ -16,6 +19,7 @@ public class SimpleUserService implements UserService {
     @Inject private RedisModelService<User> redisModelService;
     @Inject private MessageHandler messageHandler;
     @Inject private LogHandler logHandler;
+    @Inject private Plugin plugin;
 
     @Override
     public @Nullable User getUser(Player player) {
@@ -34,34 +38,44 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
-    public @Nullable String loadOrCreate(UUID playerId) {
-        try {
-            User user = redisModelService.deleteSync(playerId.toString());
+    public CompletableFuture<User> loadOrCreate(Player player) {
+        UUID playerId = player.getUniqueId();
+        return redisModelService.delete(playerId.toString())
+                .thenCompose(user -> {
+                    // user hasn't been cached or it has expired
+                    if (user == null) {
+                        // try to get it from database
+                        user = modelService.findSync(playerId.toString());
 
-            // user hasn't been cached or it has expired
-            if (user == null) {
-                // try to get it from database
-                user = modelService.findSync(playerId.toString());
+                        // check again, if it's still null, create a new one
+                        if (user == null) {
+                            user = User.create(playerId);
+                            modelService.saveSync(user);
+                        }
+                    } else {
+                        // add to local cache if already exists
+                        modelService.saveInCache(user);
+                    }
 
-                // check again, if it's still null, create a new one
-                if (user == null) {
-                    user = User.create(playerId);
-                    modelService.saveSync(user);
-                }
-            } else {
-                // add to local cache if already exists
-                modelService.saveInCache(user);
-            }
+                    return CompletableFuture.completedFuture(user);
+                })
+                .whenComplete((user, throwable) -> {
+                    if (throwable != null) {
+                        logHandler.reportError(
+                                "Failed to load or create user '%s'",
+                                throwable, playerId.toString()
+                        );
 
-            return null;
-        } catch (Throwable e) {
-            logHandler.reportError(
-                    "Failed to load or create user '%s'",
-                    e, playerId.toString()
-            );
-
-            return messageHandler.getMessage("user.load-error");
-        }
+                        Bukkit.getScheduler().runTask(
+                                plugin,
+                                () -> player.kickPlayer(
+                                        messageHandler.get(
+                                                player,
+                                                "user.load-error"
+                                        )
+                                ));
+                    }
+                });
     }
 
     @Override
