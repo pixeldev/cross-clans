@@ -20,6 +20,7 @@ import net.cosmogrp.storage.redis.connection.Redis;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.Messenger;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -49,6 +50,9 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onEnable(){
+        Messenger messenger = Bukkit.getMessenger();
+        messenger.registerOutgoingPluginChannel(this, "BungeeCord");
+
         for (Listener listener : listeners) {
             getServer().getPluginManager().registerEvents(listener, this);
         }
@@ -72,6 +76,7 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Bukkit.getMessenger().unregisterOutgoingPluginChannel(this);
         mongoClient.close();
 
         try {
