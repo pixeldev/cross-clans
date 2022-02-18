@@ -28,6 +28,11 @@ public class ClanCommand implements CommandClass {
         clanService.createClan(user, sender, tag);
     }
 
+    @Command(names = "sethome", permission = "clans.sethome")
+    public void runSetHome(@Sender Player sender, @Sender User user) {
+        clanUserService.setHome(sender, user);
+    }
+
     @Command(names = "delete", permission = "clans.delete")
     public void runDelete(@Sender Player sender, @Sender User user) {
         clanUserService.disbandClan(sender, user);
@@ -73,7 +78,6 @@ public class ClanCommand implements CommandClass {
     }
 
     @Command(names = "leave", permission = "clans.leave")
-
     public void runLeave(@Sender Player sender, @Sender User user) {
         clanUserService.leaveClan(sender, user);
     }
