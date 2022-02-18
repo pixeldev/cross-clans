@@ -60,7 +60,7 @@ public class SimpleUserService implements UserService {
                     return CompletableFuture.completedFuture(user);
                 })
                 .whenComplete((user, throwable) -> {
-                    if (throwable != null) {
+                    if (throwable != null || user == null) {
                         logHandler.reportError(
                                 "Failed to load or create user '%s'",
                                 throwable, playerId.toString()
