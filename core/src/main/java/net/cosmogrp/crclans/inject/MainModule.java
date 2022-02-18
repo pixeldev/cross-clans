@@ -6,7 +6,9 @@ import net.cosmogrp.crclans.adapt.AdaptionModuleFactory;
 import net.cosmogrp.crclans.clan.ClanModule;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.NotifierModule;
+import net.cosmogrp.crclans.server.BungeeServerSender;
 import net.cosmogrp.crclans.server.ServerData;
+import net.cosmogrp.crclans.server.ServerSender;
 import net.cosmogrp.crclans.translate.TranslationModule;
 import net.cosmogrp.crclans.user.UserModule;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,6 +36,7 @@ public class MainModule extends AbstractModule {
         ));
 
         bind(ServerData.class).toInstance(new ServerData(configuration));
+        bind(ServerSender.class).to(BungeeServerSender.class).singleton();
         bind(LogHandler.class).toInstance(new LogHandler(plugin.getLogger()));
 
         install(

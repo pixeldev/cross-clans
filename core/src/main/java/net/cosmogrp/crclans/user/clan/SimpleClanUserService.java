@@ -8,6 +8,7 @@ import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.server.ServerData;
 import net.cosmogrp.crclans.server.ServerLocation;
+import net.cosmogrp.crclans.server.ServerSender;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
@@ -33,6 +34,7 @@ public class SimpleClanUserService
     @Inject private AsyncModelService<Clan> modelService;
     @Inject private ClusteredUserRegistry clusteredUserRegistry;
     @Inject private LogHandler logHandler;
+    @Inject private ServerSender serverSender;
     @Inject private Channel<ClanKickMessage> kickChannel;
 
     @Override
@@ -63,6 +65,25 @@ public class SimpleClanUserService
                     "clan.set-home-members"
             );
         });
+    }
+
+    @Override
+    public void teleportToHome(Player player, User user) {
+        Clan clan = getClan(player, user);
+
+        if (clan == null) {
+            return;
+        }
+
+        ServerLocation home = clan.getHome();
+
+        if (home == null) {
+            messageHandler.send(player, "clan.no-home");
+            return;
+        }
+
+        messageHandler.send(player, "clan.teleport-home");
+        serverSender.teleport(player, home);
     }
 
     @Override

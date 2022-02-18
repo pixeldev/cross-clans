@@ -19,6 +19,8 @@ public interface ClanUserService {
 
     void setHome(Player player, User user);
 
+    void teleportToHome(Player player, User user);
+
     void kickMember(
             Player player, User user,
             Clan clan, ClanMember target
