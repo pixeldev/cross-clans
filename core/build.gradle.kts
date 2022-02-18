@@ -17,6 +17,13 @@ tasks {
         relocate("redis.clients.jedis", "$path.redis")
         relocate("com.google.gson", "$path.gson")
         relocate("com.mongodb", "$path.mongodb")
+        relocate("io.papermc.lib", "$path.paperlib")
+        relocate("net.kyori.adventure.text.minimessage", "$path.minimessage")
+        relocate("org.bson", "$path.bson")
+        relocate("org.apache.commons.pool2", "$path.pool2")
+        relocate("org.json", "$path.json")
+        relocate("net.cosmogrp.economy", "$path.economy")
+        relocate("net.cosmogrp.storage", "$path.storage")
     }
 
     processResources {
