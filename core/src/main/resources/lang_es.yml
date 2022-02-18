@@ -35,6 +35,7 @@ clan:
     demote-success-sender: "&f¡Has quitado a &a%target% &fde moderador!"
     demote-success-members: "&f¡&a%target% &ffue descendido por &a%sender%&f!"
     demote-success-target: "&f¡Has sido descendido por &a%sender%&f!"
+    cannot-demote-owner: "&c¡No puedes quitarte el lider del clan!"
 
     already-member: "&c¡Ese jugador ya es miembro de este clan!"
     already-invited: "&c¡Ese jugador ya ha sido invitado a tu clan, por favor espera a que acepte!"

@@ -58,7 +58,11 @@ public class Clan extends AbstractModel
     }
 
     public boolean isOwner(Player player) {
-        return owner.getPlayerId().equals(player.getUniqueId());
+        return isOwner(player.getUniqueId());
+    }
+
+    public boolean isOwner(UUID playerId) {
+        return owner.getPlayerId().equals(playerId);
     }
 
     public @Nullable ServerLocation getHome() {

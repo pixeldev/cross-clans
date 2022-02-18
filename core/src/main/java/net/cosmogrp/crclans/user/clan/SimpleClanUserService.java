@@ -149,6 +149,11 @@ public class SimpleClanUserService
             return;
         }
 
+        if (clan.isOwner(target.getPlayerId())) {
+            messageHandler.send(player, "clan.cannot-demote-owner");
+            return;
+        }
+
         if (!target.isModerator()) {
             messageHandler.send(player, "clan.demote-not-mod");
             return;
