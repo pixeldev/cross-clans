@@ -2,12 +2,14 @@ package net.cosmogrp.crclans.command.part;
 
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.annotated.part.PartFactory;
+import me.fixeddev.commandflow.bukkit.BukkitCommandManager;
 import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
+import org.bukkit.command.CommandSender;
 
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
@@ -52,7 +54,16 @@ public class ClusteredUserPart implements PartFactory {
                 String next = stack.hasNext() ? stack.next().toLowerCase(Locale.ROOT) : "";
                 List<String> suggestions = new ArrayList<>();
 
+                CommandSender commandSender = commandContext.getObject(
+                        CommandSender.class,
+                        BukkitCommandManager.SENDER_NAMESPACE
+                );
+
                 for (String playerName : clusteredPlayers) {
+                    if (commandSender.getName().equals(playerName)) {
+                        continue;
+                    }
+
                     if (playerName.toLowerCase(Locale.ROOT).startsWith(next)) {
                         suggestions.add(playerName);
                     }
