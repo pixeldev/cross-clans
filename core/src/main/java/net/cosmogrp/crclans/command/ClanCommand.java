@@ -38,7 +38,7 @@ public class ClanCommand implements CommandClass {
         clanUserService.teleportToHome(sender, user);
     }
 
-    @Command(names = "delete", permission = "clans.delete")
+    @Command(names = "disband", permission = "clans.disband")
     public void runDelete(@Sender Player sender, @Sender User user) {
         clanUserService.disbandClan(sender, user);
     }
