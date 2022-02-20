@@ -29,6 +29,8 @@ clan:
     set-home-members: "&f¡Se ha establecido la localización de la casa de tu clan!"
     no-home: "&c¡La casa del clan no ha sido establecida aún!"
     teleport-home: "&f¡Has sido teletransportado a la casa del clan!"
+    del-home-sender: "&f¡Has borrado la localización de la casa de tu clan!"
+    del-home-members: "&f¡Se ha borrado la localización de la casa de tu clan!"
 
     already-mod: "&c¡Ese jugador ya es moderador!"
     promote-success-sender: "&f¡Has ascendido a &a%target% &fa moderador!"

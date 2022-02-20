@@ -68,6 +68,20 @@ public class SimpleClanUserService
     }
 
     @Override
+    public void delHome(Player player, User user) {
+        computeAsOwner(player, user, clan -> {
+            clan.setHome(null);
+
+            messageHandler.send(player, "clan.del-home-sender");
+
+            globalNotifier.notify(
+                    clan.getOnlineMembers(),
+                    "clan.del-home-members"
+            );
+        });
+    }
+
+    @Override
     public void teleportToHome(Player player, User user) {
         Clan clan = getClan(player, user);
 
