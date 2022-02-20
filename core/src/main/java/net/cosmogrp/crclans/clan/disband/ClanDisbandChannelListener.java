@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.user.clan;
+package net.cosmogrp.crclans.clan.disband;
 
 import net.cosmogrp.storage.redis.channel.Channel;
 import net.cosmogrp.storage.redis.channel.ChannelListener;
@@ -10,7 +10,7 @@ import java.util.UUID;
 public class ClanDisbandChannelListener
         implements ChannelListener<ClanDisbandMessage> {
 
-    @Inject private ClanUserService clanUserService;
+    @Inject private ClanDisbandService clanDisbandService;
 
     @Override
     public void listen(
@@ -19,6 +19,6 @@ public class ClanDisbandChannelListener
             ClanDisbandMessage object
     ) {
         Set<UUID> onlineMembers = object.getOnlineMembers();
-        clanUserService.notifyDisband(onlineMembers);
+        clanDisbandService.notifyDisband(onlineMembers);
     }
 }

@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.user.clan;
+package net.cosmogrp.crclans.clan.mod;
 
 import net.cosmogrp.storage.redis.channel.Channel;
 import net.cosmogrp.storage.redis.channel.ChannelListener;
@@ -8,7 +8,7 @@ import javax.inject.Inject;
 public class ClanKickChannelListener
         implements ChannelListener<ClanKickMessage> {
 
-    @Inject private ClanUserService clanUserService;
+    @Inject private ClanModerationService clanModerationService;
 
     @Override
     public void listen(
@@ -16,7 +16,7 @@ public class ClanKickChannelListener
             String server,
             ClanKickMessage object
     ) {
-        clanUserService.notifyKick(
+        clanModerationService.notifyKick(
                 object.getTarget(),
                 object.getClanId()
         );

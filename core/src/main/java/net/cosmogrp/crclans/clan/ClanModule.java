@@ -4,12 +4,18 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
+import net.cosmogrp.crclans.clan.disband.ClanDisbandMessage;
+import net.cosmogrp.crclans.clan.mod.ClanKickChannelListener;
+import net.cosmogrp.crclans.clan.mod.ClanKickMessage;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.clan.recruitment.SimpleClanRecruitmentService;
 import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.mongo.MongoModelService;
 import net.cosmogrp.storage.redis.RedisModelService;
+import net.cosmogrp.storage.redis.channel.Channel;
+import net.cosmogrp.storage.redis.connection.Redis;
 import net.cosmogrp.storage.redis.connection.RedisCache;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -22,6 +28,26 @@ public class ClanModule extends AbstractModule {
     public void configure() {
         bind(ClanService.class).to(SimpleClanService.class).singleton();
         bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
+    }
+
+    @Provides
+    @Singleton
+    public Channel<ClanKickMessage> createKickChannel(
+            Redis redis, ClanKickChannelListener listener
+    ) {
+        return redis.getMessenger()
+                .getChannel("kick", ClanKickMessage.class)
+                .addListener(listener);
+    }
+
+    @Provides
+    @Singleton
+    public Channel<ClanDisbandMessage> createDisbandChannel(
+            Redis redis, ClanDisbandChannelListener listener
+    ) {
+        return redis.getMessenger()
+                .getChannel("disband", ClanDisbandMessage.class)
+                .addListener(listener);
     }
 
     @Provides @Singleton

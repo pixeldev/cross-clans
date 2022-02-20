@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.user.clan;
+package net.cosmogrp.crclans.clan.disband;
 
 import java.util.Set;
 import java.util.UUID;
