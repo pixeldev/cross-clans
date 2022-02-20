@@ -6,6 +6,7 @@ import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -41,6 +42,8 @@ public interface ClanUserService {
     boolean notifyKick(UUID targetId, String clanId);
 
     void disbandClan(Player player, User user);
+
+    boolean notifyDisband(Set<UUID> onlineMembers);
 
     void leaveClan(Player player, User user);
 

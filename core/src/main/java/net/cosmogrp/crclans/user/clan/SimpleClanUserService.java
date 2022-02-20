@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -35,6 +36,8 @@ public class SimpleClanUserService
     @Inject private ClusteredUserRegistry clusteredUserRegistry;
     @Inject private LogHandler logHandler;
     @Inject private ServerSender serverSender;
+
+    @Inject private Channel<ClanDisbandMessage> disbandChannel;
     @Inject private Channel<ClanKickMessage> kickChannel;
 
     @Override
@@ -340,10 +343,44 @@ public class SimpleClanUserService
                             // just remove clan from the owner
                             // we will wait to members get connected to the server
                             user.setClan(null);
+                            clan.removeMember(user.getPlayerId());
 
-                            // TODO: remove clan from all online members
                             messageHandler.send(player, "clan.disband-success");
+
+                            Set<UUID> onlineMembers = clan.getOnlineMembers();
+
+                            if (notifyDisband(onlineMembers)) {
+                                return;
+                            }
+
+                            disbandChannel.sendMessage(new ClanDisbandMessage(onlineMembers));
                         }));
+    }
+
+    @Override
+    public boolean notifyDisband(Set<UUID> onlineMembers) {
+        boolean success = true;
+
+        for (UUID uuid : onlineMembers) {
+            Player player = Bukkit.getPlayer(uuid);
+
+            if (player == null) {
+                success = false;
+                continue;
+            }
+
+            User user = userService.getUser(uuid);
+
+            if (user == null) {
+                success = false;
+                continue;
+            }
+
+            user.setClan(null);
+            messageHandler.send(player, "clan.disband-members");
+        }
+
+        return success;
     }
 
     @Override

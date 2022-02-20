@@ -81,6 +81,7 @@ clan:
 
     disband-success: "&c¡Has disuelto tu clan correctamente!"
     disband-failed: "&cOcurrió un error al intentar disolver tu clan, ¡intenta de nuevo!"
+    disband-members: "&c¡Tu clan ha sido disuelto!"
     disband-offline-notify: "&f¡El clan al que pertenecías ha sido disuelto!"
 
     create-failed: "&c¡Ha ocurrido un error al crear el clan, intenta de nuevo!"
