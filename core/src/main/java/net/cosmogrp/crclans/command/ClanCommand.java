@@ -7,10 +7,12 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.clan.Clan;
 import net.cosmogrp.crclans.clan.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
+import net.cosmogrp.crclans.clan.home.ClanHomeService;
+import net.cosmogrp.crclans.clan.mod.ClanModerationService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.command.part.ClanPart;
 import net.cosmogrp.crclans.user.User;
-import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import org.bukkit.entity.Player;
 
@@ -20,8 +22,10 @@ import javax.inject.Inject;
 public class ClanCommand implements CommandClass {
 
     @Inject private ClanService clanService;
-    @Inject private ClanUserService clanUserService;
     @Inject private ClanRecruitmentService recruitmentService;
+    @Inject private ClanHomeService clanHomeService;
+    @Inject private ClanDisbandService clanDisbandService;
+    @Inject private ClanModerationService clanModerationService;
 
     @Command(names = "create", permission = "clans.create")
     public void create(@Sender Player sender, @Sender User user, String tag) {
@@ -30,22 +34,22 @@ public class ClanCommand implements CommandClass {
 
     @Command(names = "sethome", permission = "clans.sethome")
     public void runSetHome(@Sender Player sender, @Sender User user) {
-        clanUserService.setHome(sender, user);
+        clanHomeService.setHome(sender, user);
     }
 
     @Command(names = "delhome", permission = "clans.delhome")
     public void runDelHome(@Sender Player sender, @Sender User user) {
-        clanUserService.delHome(sender, user);
+        clanHomeService.delHome(sender, user);
     }
 
     @Command(names = "home", permission = "clans.home")
     public void runHome(@Sender Player sender, @Sender User user) {
-        clanUserService.teleportToHome(sender, user);
+        clanHomeService.teleportToHome(sender, user);
     }
 
     @Command(names = "disband", permission = "clans.disband")
     public void runDelete(@Sender Player sender, @Sender User user) {
-        clanUserService.disbandClan(sender, user);
+        clanDisbandService.disbandClan(sender, user);
     }
 
     @Command(names = "kick", permission = "clans.kick")
@@ -54,7 +58,7 @@ public class ClanCommand implements CommandClass {
             @Sender Player sender, @Sender User user,
             ClanMember clanMember
     ) {
-        clanUserService.kickMember(
+        clanModerationService.kickMember(
                 sender, user,
                 commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
                 clanMember
@@ -67,7 +71,7 @@ public class ClanCommand implements CommandClass {
             @Sender Player sender, @Sender User user,
             ClanMember clanMember
     ) {
-        clanUserService.promoteMember(
+        clanModerationService.promoteMember(
                 sender, user,
                 commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
                 clanMember
@@ -80,7 +84,7 @@ public class ClanCommand implements CommandClass {
             @Sender Player sender, @Sender User user,
             ClanMember clanMember
     ) {
-        clanUserService.demoteMember(
+        clanModerationService.demoteMember(
                 sender, user,
                 commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
                 clanMember
@@ -89,7 +93,7 @@ public class ClanCommand implements CommandClass {
 
     @Command(names = "leave", permission = "clans.leave")
     public void runLeave(@Sender Player sender, @Sender User user) {
-        clanUserService.leaveClan(sender, user);
+        clanDisbandService.leaveClan(sender, user);
     }
 
     @Command(names = "invite", permission = "clans.invite")
