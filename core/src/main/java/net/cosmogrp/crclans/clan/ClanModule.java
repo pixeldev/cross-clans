@@ -6,8 +6,14 @@ import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandMessage;
+import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
+import net.cosmogrp.crclans.clan.disband.SimpleClanDisbandService;
+import net.cosmogrp.crclans.clan.home.ClanHomeService;
+import net.cosmogrp.crclans.clan.home.SimpleClanHomeService;
 import net.cosmogrp.crclans.clan.mod.ClanKickChannelListener;
 import net.cosmogrp.crclans.clan.mod.ClanKickMessage;
+import net.cosmogrp.crclans.clan.mod.ClanModerationService;
+import net.cosmogrp.crclans.clan.mod.SimpleClanModerationService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.clan.recruitment.SimpleClanRecruitmentService;
 import net.cosmogrp.storage.AsyncModelService;
@@ -28,6 +34,9 @@ public class ClanModule extends AbstractModule {
     public void configure() {
         bind(ClanService.class).to(SimpleClanService.class).singleton();
         bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
+        bind(ClanModerationService.class).to(SimpleClanModerationService.class).singleton();
+        bind(ClanHomeService.class).to(SimpleClanHomeService.class).singleton();
+        bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
     }
 
     @Provides
