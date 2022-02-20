@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.user.clan.ClanDisbandChannelListener;
+import net.cosmogrp.crclans.user.clan.ClanDisbandMessage;
 import net.cosmogrp.crclans.user.clan.ClanKickChannelListener;
 import net.cosmogrp.crclans.user.clan.ClanKickMessage;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
@@ -38,6 +40,16 @@ public class UserModule extends AbstractModule {
     ) {
         return redis.getMessenger()
                 .getChannel("kick", ClanKickMessage.class)
+                .addListener(listener);
+    }
+
+    @Provides
+    @Singleton
+    public Channel<ClanDisbandMessage> createDisbandChannel(
+            Redis redis, ClanDisbandChannelListener listener
+    ) {
+        return redis.getMessenger()
+                .getChannel("disband", ClanDisbandMessage.class)
                 .addListener(listener);
     }
 
