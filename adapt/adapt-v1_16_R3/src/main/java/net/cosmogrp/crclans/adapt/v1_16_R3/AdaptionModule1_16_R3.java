@@ -5,6 +5,7 @@ import me.yushust.inject.Provides;
 import me.yushust.message.send.MessageSender;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -22,13 +23,22 @@ public class AdaptionModule1_16_R3 extends AbstractModule {
 
             @Override
             public void send(CommandSender sender, String mode, String message) {
-                if (mode.equals("minimessage") &&
-                        sender instanceof Player) {
-                    audiences.player((Player) sender)
+                switch (mode) {
+                    case "minimessage" ->  audiences.player((Player) sender)
                             .sendMessage(MiniMessage.miniMessage()
                                     .deserialize(message));
-                } else {
-                    sender.sendMessage(message);
+                    case "notify" -> {
+                        sender.sendMessage(message);
+
+                        if (sender instanceof Player player) {
+                            player.playSound(
+                                    player.getLocation(),
+                                    Sound.BLOCK_NOTE_BLOCK_PLING,
+                                    1, 1
+                            );
+                        }
+                    }
+                    default -> sender.sendMessage(message);
                 }
             }
         };

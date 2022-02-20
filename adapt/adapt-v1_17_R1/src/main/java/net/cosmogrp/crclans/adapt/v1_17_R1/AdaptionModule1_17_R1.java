@@ -3,6 +3,8 @@ package net.cosmogrp.crclans.adapt.v1_17_R1;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
 import me.yushust.message.send.MessageSender;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,12 +17,20 @@ public class AdaptionModule1_17_R1 extends AbstractModule {
     @Singleton
     public MessageSender<CommandSender> createMessageSender() {
         return (sender, mode, message) -> {
-            if (mode.equals("minimessage") &&
-                    sender instanceof Player) {
-                sender.sendMessage(MiniMessage.miniMessage()
-                                .deserialize(message));
-            } else {
-                sender.sendMessage(message);
+            switch (mode) {
+                case "minimessage" -> sender.sendMessage(
+                        MiniMessage.miniMessage()
+                                .deserialize(message)
+                );
+                case "notify" -> {
+                    sender.sendMessage(message);
+                    sender.playSound(Sound.sound(
+                            org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING,
+                            Sound.Source.NEUTRAL,
+                            1, 1
+                    ));
+                }
+                default -> sender.sendMessage(message);
             }
         };
     }
