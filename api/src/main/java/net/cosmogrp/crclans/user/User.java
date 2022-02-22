@@ -16,6 +16,7 @@ public class User extends AbstractModel
     private final UUID playerId;
 
     private String clanTag;
+    private ChatType chatType;
 
     private User(UUID playerId, String clanTag) {
         super(playerId.toString());
@@ -25,6 +26,14 @@ public class User extends AbstractModel
 
     public UUID getPlayerId() {
         return playerId;
+    }
+
+    public @Nullable ChatType getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(ChatType chatType) {
+        this.chatType = chatType;
     }
 
     public void setClan(@Nullable Clan clan) {
