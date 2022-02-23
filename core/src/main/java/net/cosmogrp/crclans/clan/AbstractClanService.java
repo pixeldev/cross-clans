@@ -50,6 +50,32 @@ public abstract class AbstractClanService<T extends Model>
     }
 
     @Override
+    public void delete(String tag) {
+        modelService.delete(tag)
+                .whenComplete((result, error) -> {
+                    if (error != null) {
+                        logHandler.reportError(
+                                "Failed to delete clan '%s'",
+                                error, tag
+                        );
+                    }
+                });
+    }
+
+    @Override
+    public void create(T data) {
+        modelService.save(data)
+                .whenComplete((result, error) -> {
+                    if (error != null) {
+                        logHandler.reportError(
+                                "Failed to create clan '%s'",
+                                error, data.getId()
+                        );
+                    }
+                });
+    }
+
+    @Override
     public void save(Player player, T data) {
         modelService.save(data)
                 .whenComplete((result, error) -> {

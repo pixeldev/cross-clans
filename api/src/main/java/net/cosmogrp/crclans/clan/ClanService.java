@@ -10,6 +10,10 @@ public interface ClanService<T extends Model> {
 
     @Nullable T getData(String tag);
 
+    void delete(String tag);
+
+    void create(T data);
+
     void save(Player player, T data);
 
     void save(T data);
