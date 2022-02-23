@@ -5,6 +5,7 @@ import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -50,6 +51,13 @@ public class ClanMemberData extends AbstractModel
 
     public boolean isMember(UUID uuid) {
         return members.containsKey(uuid);
+    }
+
+    public void addMember(Player player) {
+        members.put(
+                player.getUniqueId(),
+                ClanMember.fromPlayer(player)
+        );
     }
 
     public @Nullable ClanMember removeMember(UUID uuid) {
