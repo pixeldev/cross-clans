@@ -1,7 +1,6 @@
 package net.cosmogrp.crclans.clan.member;
 
 import net.cosmogrp.crclans.clan.AbstractClanService;
-import net.cosmogrp.crclans.clan.ClanDataService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
@@ -13,12 +12,12 @@ import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class SimpleClanMemberService
         extends AbstractClanService<ClanMemberData>
         implements ClanMemberService {
 
-    @Inject private ClanDataService dataService;
     @Inject private UserService userService;
 
     @Inject private GlobalNotifier globalNotifier;
@@ -87,36 +86,35 @@ public class SimpleClanMemberService
             Player player, User user,
             ClanMemberData data, ClanMember target
     ) {
-        dataService.computeAsOwner(
-                player, user,
-                clanData -> {
-                    if (target.isModerator()) {
-                        messageHandler.send(player, "clan.already-mod");
-                        return;
-                    }
+        if (!checkOwner(player, data)) {
+            return;
+        }
 
-                    target.setModerator(true);
-                    messageHandler.sendReplacing(
-                            player, "clan.promote-success-sender",
-                            "%target%", target.getPlayerName()
-                    );
+        if (target.isModerator()) {
+            messageHandler.send(player, "clan.already-mod");
+            return;
+        }
 
-                    globalNotifier.notify(
-                            data.getOnlineIdMembers(),
-                            "clan.promote-success-members",
-                            "%sender%", player.getName(),
-                            "%target%", target.getPlayerName()
-                    );
-
-                    globalNotifier.singleNotify(
-                            target.getPlayerId(),
-                            "clan.promote-success-target",
-                            "%sender%", player.getName()
-                    );
-
-                    save(player, data);
-                }
+        target.setModerator(true);
+        messageHandler.sendReplacing(
+                player, "clan.promote-success-sender",
+                "%target%", target.getPlayerName()
         );
+
+        globalNotifier.notify(
+                data.getOnlineIdMembers(),
+                "clan.promote-success-members",
+                "%sender%", player.getName(),
+                "%target%", target.getPlayerName()
+        );
+
+        globalNotifier.singleNotify(
+                target.getPlayerId(),
+                "clan.promote-success-target",
+                "%sender%", player.getName()
+        );
+
+        save(player, data);
     }
 
     @Override
@@ -124,41 +122,40 @@ public class SimpleClanMemberService
             Player player, User user,
             ClanMemberData data, ClanMember target
     ) {
-        dataService.computeAsOwner(
-                player, user,
-                clanData -> {
-                    if (clanData.isOwner(target.getPlayerId())) {
-                        messageHandler.send(player, "clan.cannot-demote-owner");
-                        return;
-                    }
+        if (!checkOwner(player, data)) {
+            return;
+        }
 
-                    if (!target.isModerator()) {
-                        messageHandler.send(player, "clan.demote-not-mod");
-                        return;
-                    }
+        if (data.isOwner(target.getPlayerId())) {
+            messageHandler.send(player, "clan.cannot-demote-owner");
+            return;
+        }
 
-                    target.setModerator(false);
-                    messageHandler.sendReplacing(
-                            player, "clan.demote-success-sender",
-                            "%target%", target.getPlayerName()
-                    );
+        if (!target.isModerator()) {
+            messageHandler.send(player, "clan.demote-not-mod");
+            return;
+        }
 
-                    globalNotifier.notify(
-                            data.getOnlineIdMembers(),
-                            "clan.demote-success-members",
-                            "%sender%", player.getName(),
-                            "%target%", target.getPlayerName()
-                    );
-
-                    globalNotifier.singleNotify(
-                            target.getPlayerId(),
-                            "clan.demote-success-target",
-                            "%sender%", player.getName()
-                    );
-
-                    save(player, data);
-                }
+        target.setModerator(false);
+        messageHandler.sendReplacing(
+                player, "clan.demote-success-sender",
+                "%target%", target.getPlayerName()
         );
+
+        globalNotifier.notify(
+                data.getOnlineIdMembers(),
+                "clan.demote-success-members",
+                "%sender%", player.getName(),
+                "%target%", target.getPlayerName()
+        );
+
+        globalNotifier.singleNotify(
+                target.getPlayerId(),
+                "clan.demote-success-target",
+                "%sender%", player.getName()
+        );
+
+        save(player, data);
     }
 
     @Override
@@ -180,6 +177,40 @@ public class SimpleClanMemberService
                 player, "clan.kick-success-target",
                 "%tag%", clanId
         );
+
+        return true;
+    }
+
+    @Override
+    public void computeAsOwner(
+            Player player, User user,
+            Consumer<ClanMemberData> action
+    ) {
+        String tag = user.getClanTag();
+
+        if (tag == null) {
+            messageHandler.send(player, "clan.not-in-clan");
+            return;
+        }
+
+        ClanMemberData memberData = getData(player, tag);
+
+        if (memberData == null) {
+            return;
+        }
+
+        if (checkOwner(player, memberData)) {
+            action.accept(memberData);
+        }
+    }
+
+    private boolean checkOwner(
+            Player player, ClanMemberData memberData
+    ) {
+        if (!memberData.isOwner(player)) {
+            messageHandler.send(player, "clan.not-owner");
+            return false;
+        }
 
         return true;
     }

@@ -1,10 +1,12 @@
 package net.cosmogrp.crclans.clan.member;
 
+import net.cosmogrp.crclans.clan.ClanData;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public interface ClanMemberService
         extends ClanService<ClanMemberData> {
@@ -25,5 +27,10 @@ public interface ClanMemberService
     );
 
     boolean notifyKick(UUID targetId, String clanId);
+
+    void computeAsOwner(
+            Player player, User user,
+            Consumer<ClanMemberData> action
+    );
 
 }
