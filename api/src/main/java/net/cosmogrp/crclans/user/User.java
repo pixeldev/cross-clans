@@ -1,6 +1,6 @@
 package net.cosmogrp.crclans.user;
 
-import net.cosmogrp.crclans.clan.Clan;
+import net.cosmogrp.crclans.clan.ClanData;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
@@ -36,7 +36,7 @@ public class User extends AbstractModel
         this.chatType = chatType;
     }
 
-    public void setClan(@Nullable Clan clan) {
+    public void setClan(@Nullable ClanData clan) {
         if (clan == null) {
             this.clanTag = null;
         } else {
