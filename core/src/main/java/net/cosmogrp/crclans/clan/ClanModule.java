@@ -2,16 +2,23 @@ package net.cosmogrp.crclans.clan;
 
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.clan.chat.ClanChatService;
+import net.cosmogrp.crclans.clan.chat.SimpleClanChatService;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandMessage;
+import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
+import net.cosmogrp.crclans.clan.disband.SimpleClanDisbandService;
 import net.cosmogrp.crclans.clan.home.ClanHomeData;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
+import net.cosmogrp.crclans.clan.home.SimpleClanHomeService;
 import net.cosmogrp.crclans.clan.member.ClanKickChannelListener;
 import net.cosmogrp.crclans.clan.member.ClanKickMessage;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
+import net.cosmogrp.crclans.clan.member.SimpleClanMemberService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
+import net.cosmogrp.crclans.clan.recruitment.SimpleClanRecruitmentService;
 import net.cosmogrp.storage.redis.channel.Channel;
 import net.cosmogrp.storage.redis.connection.Redis;
 
@@ -39,6 +46,13 @@ public class ClanModule extends AbstractModule {
                         ClanMemberData::fromDocument, ClanMemberData.class
                 )
         );
+
+        bind(ClanChatService.class).to(SimpleClanChatService.class).singleton();
+        bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
+        bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
+        bind(ClanHomeService.class).to(SimpleClanHomeService.class).singleton();
+        bind(ClanDataService.class).to(SimpleClanDataService.class).singleton();
+        bind(ClanMemberService.class).to(SimpleClanMemberService.class).singleton();
     }
 
     @Provides
