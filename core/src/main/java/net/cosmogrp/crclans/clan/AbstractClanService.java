@@ -50,16 +50,8 @@ public abstract class AbstractClanService<T extends Model>
     }
 
     @Override
-    public void delete(String tag) {
-        modelService.delete(tag)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        logHandler.reportError(
-                                "Failed to delete clan '%s'",
-                                error, tag
-                        );
-                    }
-                });
+    public void deleteSync(String tag) {
+        modelService.deleteSync(tag);
     }
 
     @Override

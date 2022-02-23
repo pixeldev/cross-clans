@@ -10,7 +10,7 @@ public interface ClanService<T extends Model> {
 
     @Nullable T getData(String tag);
 
-    void delete(String tag);
+    void deleteSync(String tag);
 
     void create(T data);
 
