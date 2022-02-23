@@ -17,8 +17,36 @@ public abstract class AbstractClanService<T extends Model>
     @Inject protected CachedRemoteModelService<T> modelService;
 
     @Override
+    public @Nullable T getData(Player player, String tag) {
+        try {
+            T data = modelService.getSync(tag);
+
+            if (data == null) {
+                messageHandler.send(player, "clan.error-finding-data");
+            }
+
+            return data;
+        } catch (Exception e) {
+            logHandler.reportError(
+                    "Failed to get clan '%s'",
+                    e, tag
+            );
+            messageHandler.send(player, "clan.error-finding-data");
+            return null;
+        }
+    }
+
+    @Override
     public @Nullable T getData(String tag) {
-        return modelService.getSync(tag);
+        try {
+            return modelService.getSync(tag);
+        } catch (Exception e) {
+            logHandler.reportError(
+                    "Failed to get clan '%s'",
+                    e, tag
+            );
+            return null;
+        }
     }
 
     @Override

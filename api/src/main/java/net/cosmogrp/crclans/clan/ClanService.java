@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ClanService<T extends Model> {
 
+    @Nullable T getData(Player player, String tag);
+
     @Nullable T getData(String tag);
 
     void save(Player player, T data);
