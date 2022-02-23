@@ -83,6 +83,13 @@ public class ClanMemberData extends AbstractModel
         );
     }
 
+    public void addMember(ClanMember clanMember) {
+        members.put(
+                clanMember.getPlayerId(),
+                clanMember
+        );
+    }
+
     public @Nullable ClanMember removeMember(UUID uuid) {
         return members.remove(uuid);
     }
