@@ -1,20 +1,21 @@
 package net.cosmogrp.crclans.clan.disband;
 
 import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.clan.Clan;
+import net.cosmogrp.crclans.clan.home.ClanHomeService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
 import net.cosmogrp.crclans.user.clan.ClanUserService;
-import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.redis.channel.Channel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,24 +26,32 @@ public class SimpleClanDisbandService
     @Inject private GlobalNotifier globalNotifier;
     @Inject private LogHandler logHandler;
 
-    @Inject private AsyncModelService<Clan> modelService;
     @Inject private ClanUserService clanUserService;
     @Inject private UserService userService;
-    @Inject private ClanService clanService;
 
     @Inject private Channel<ClanDisbandMessage> disbandChannel;
 
+    private final ClanMemberService memberService;
+    private final Map<String, ClanService<?>> services;
+
+    @Inject
+    public SimpleClanDisbandService(Map<String, ClanService<?>> services) {
+        this.services = services;
+        this.memberService = (ClanMemberService)
+                services.get(ClanMemberService.KEY);
+    }
+
     @Override
     public void disbandClan(Player player, User user) {
-        clanUserService.executeAsOwner(
+        memberService.computeAsOwner(
                 player, user,
-                clan -> modelService
-                        .delete(clan)
+                memberData -> modelService
+                        .delete(memberData)
                         .whenComplete((result, error) -> {
                             if (error != null) {
                                 logHandler.reportError(
                                         "Failed to delete clan '%s'", error,
-                                        clan.getId()
+                                        memberData.getId()
                                 );
 
                                 messageHandler.send(player, "clan.disband-failed");
@@ -52,11 +61,11 @@ public class SimpleClanDisbandService
                             // just remove clan from the owner
                             // we will wait to members get connected to the server
                             user.setClan(null);
-                            clan.removeMember(user.getPlayerId());
+                            memberData.removeMember(user.getPlayerId());
 
                             messageHandler.send(player, "clan.disband-success");
 
-                            Set<UUID> onlineMembers = clan.getOnlineMembers();
+                            Set<UUID> onlineMembers = memberData.getOnlineMembers();
 
                             if (notifyDisband(onlineMembers)) {
                                 return;
@@ -127,7 +136,7 @@ public class SimpleClanDisbandService
                 "%target%", player.getName()
         );
 
-        clanService.saveClan(player, clan);
+        clanService.save(player, clan);
     }
 
 }

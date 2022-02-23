@@ -2,6 +2,7 @@ package net.cosmogrp.crclans.clan.recruitment;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.AbstractClanService;
+import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
@@ -13,17 +14,24 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.Map;
 import java.util.UUID;
 
 public class SimpleClanRecruitmentService
         extends AbstractClanService<ClanRecruitmentData>
         implements ClanRecruitmentService {
 
-    @Inject private ClanMemberService memberService;
-
     @Inject private GlobalNotifier globalNotifier;
     @Inject private MessageHandler messageHandler;
     @Inject private FileConfiguration configuration;
+
+    private final ClanMemberService memberService;
+
+    @Inject
+    public SimpleClanRecruitmentService(Map<String, ClanService<?>> services) {
+        this.memberService = (ClanMemberService)
+                services.get(ClanMemberService.KEY);
+    }
 
     @Override
     public void sendRecruitment(

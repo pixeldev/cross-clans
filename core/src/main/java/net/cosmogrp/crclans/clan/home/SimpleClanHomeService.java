@@ -1,6 +1,7 @@
 package net.cosmogrp.crclans.clan.home;
 
 import net.cosmogrp.crclans.clan.AbstractClanService;
+import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.server.ServerData;
@@ -10,17 +11,24 @@ import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
+import java.util.Map;
 
 public class SimpleClanHomeService
         extends AbstractClanService<ClanHomeData>
         implements ClanHomeService {
 
-    @Inject private ClanMemberService memberService;
-
     @Inject private GlobalNotifier globalNotifier;
 
     @Inject private ServerSender serverSender;
     @Inject private ServerData serverData;
+
+    private final ClanMemberService memberService;
+
+    @Inject
+    public SimpleClanHomeService(Map<String, ClanService<?>> services) {
+        this.memberService = (ClanMemberService)
+                services.get(ClanMemberService.KEY);
+    }
 
     @Override
     public void setHome(Player player, User user) {
