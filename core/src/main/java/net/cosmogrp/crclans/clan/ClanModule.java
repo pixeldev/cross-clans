@@ -2,7 +2,6 @@ package net.cosmogrp.crclans.clan;
 
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
-import me.yushust.inject.key.TypeReference;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandMessage;
 import net.cosmogrp.crclans.clan.home.ClanHomeData;
@@ -40,17 +39,6 @@ public class ClanModule extends AbstractModule {
                         ClanMemberData::fromDocument, ClanMemberData.class
                 )
         );
-
-        multibind(new TypeReference<ClanService<?>>() {})
-                .asMap(String.class)
-                .bind(ClanDataService.KEY)
-                .to(ClanDataService.class)
-                .bind(ClanRecruitmentService.KEY)
-                .to(ClanRecruitmentService.class)
-                .bind(ClanHomeService.KEY)
-                .to(ClanHomeService.class)
-                .bind(ClanMemberService.KEY)
-                .to(ClanMemberService.class);
     }
 
     @Provides
