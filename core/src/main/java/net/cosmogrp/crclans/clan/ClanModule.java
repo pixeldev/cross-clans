@@ -10,13 +10,10 @@ import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
 import net.cosmogrp.crclans.clan.disband.SimpleClanDisbandService;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
 import net.cosmogrp.crclans.clan.home.SimpleClanHomeService;
-import net.cosmogrp.crclans.clan.mod.ClanKickChannelListener;
-import net.cosmogrp.crclans.clan.mod.ClanKickMessage;
-import net.cosmogrp.crclans.clan.mod.ClanModerationService;
-import net.cosmogrp.crclans.clan.mod.SimpleClanModerationService;
+import net.cosmogrp.crclans.clan.member.ClanKickChannelListener;
+import net.cosmogrp.crclans.clan.member.ClanKickMessage;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.clan.recruitment.SimpleClanRecruitmentService;
-import net.cosmogrp.storage.AsyncModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.mongo.MongoModelService;
 import net.cosmogrp.storage.redis.RedisModelService;
@@ -32,9 +29,7 @@ public class ClanModule extends AbstractModule {
 
     @Override
     public void configure() {
-        bind(ClanService.class).to(SimpleClanService.class).singleton();
         bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
-        bind(ClanModerationService.class).to(SimpleClanModerationService.class).singleton();
         bind(ClanHomeService.class).to(SimpleClanHomeService.class).singleton();
         bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
     }
