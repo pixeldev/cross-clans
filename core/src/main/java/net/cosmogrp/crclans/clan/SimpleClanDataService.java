@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 import java.util.Locale;
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class SimpleClanDataService
@@ -94,31 +93,5 @@ public class SimpleClanDataService
                             "%creator%", owner.getName()
                     );
                 });
-    }
-
-    @Override
-    public void computeAsOwner(
-            Player player, User user,
-            Consumer<ClanData> action
-    ) {
-        String tag = user.getClanTag();
-
-        if (tag == null) {
-            messageHandler.send(player, "clan.not-in-clan");
-            return;
-        }
-
-        ClanData clan = getData(player, tag);
-
-        if (clan == null) {
-            return;
-        }
-
-        if (!clan.isOwner(player)) {
-            messageHandler.send(player, "clan.not-owner");
-            return;
-        }
-
-        action.accept(clan);
     }
 }
