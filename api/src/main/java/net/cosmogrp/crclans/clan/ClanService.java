@@ -1,17 +1,15 @@
 package net.cosmogrp.crclans.clan;
 
-import net.cosmogrp.crclans.user.User;
+import net.cosmogrp.storage.model.Model;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-public interface ClanService {
+public interface ClanService<T extends Model> {
 
-    @Nullable Clan getClan(String tag);
+    @Nullable T getData(String tag);
 
-    void createClan(User user, Player owner, String tag);
+    void save(Player player, T data);
 
-    void saveClan(Player player, Clan clan);
-
-    void saveClan(Clan clan);
+    void save(T data);
 
 }
