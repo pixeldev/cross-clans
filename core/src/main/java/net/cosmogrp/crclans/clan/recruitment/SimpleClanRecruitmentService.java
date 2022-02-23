@@ -2,8 +2,6 @@ package net.cosmogrp.crclans.clan.recruitment;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.AbstractClanService;
-import net.cosmogrp.crclans.clan.ClanData;
-import net.cosmogrp.crclans.clan.ClanDataService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
@@ -21,7 +19,6 @@ public class SimpleClanRecruitmentService
         extends AbstractClanService<ClanRecruitmentData>
         implements ClanRecruitmentService {
 
-    @Inject private ClanDataService dataService;
     @Inject private ClanMemberService memberService;
 
     @Inject private GlobalNotifier globalNotifier;
@@ -126,6 +123,12 @@ public class SimpleClanRecruitmentService
                 "%tag%", tag
         );
 
+        globalNotifier.singleNotify(
+                memberData.getOwner().getPlayerId(),
+                "clan.invite-accepted-sender",
+                "%target%", sender.getName()
+        );
+
         globalNotifier.notify(
                 memberData.getOnlineIdMembers(),
                 "clan.invite-accepted-members",
@@ -152,9 +155,10 @@ public class SimpleClanRecruitmentService
         }
 
         String tag = data.getId();
-        ClanData clanData = dataService.getData(tag);
+        ClanMemberData memberData = memberService
+                .getData(sender, tag);
 
-        if (clanData == null) {
+        if (memberData == null) {
             return;
         }
 
@@ -164,7 +168,7 @@ public class SimpleClanRecruitmentService
                 "%tag%", tag
         );
 
-        ClanMember owner = clanData.getOwner();
+        ClanMember owner = memberData.getOwner();
 
         if (owner.isOnline()) {
             globalNotifier.singleNotify(
