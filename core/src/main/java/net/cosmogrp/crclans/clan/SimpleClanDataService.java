@@ -81,7 +81,7 @@ public class SimpleClanDataService
 
         CompletableFuture.runAsync(() -> {
             for (ClanService<?> service : services.values()) {
-                service.createSync(tag);
+                service.createSync(owner, tag);
             }
         }, executor)
                 .whenComplete((result, error) -> {
