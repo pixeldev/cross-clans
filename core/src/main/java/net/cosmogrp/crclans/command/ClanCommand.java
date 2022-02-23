@@ -12,7 +12,7 @@ import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
-import net.cosmogrp.crclans.command.part.ClanPart;
+import net.cosmogrp.crclans.command.part.ClanMemberPart;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import org.bukkit.entity.Player;
@@ -61,7 +61,7 @@ public class ClanCommand implements CommandClass {
     ) {
         memberService.kick(
                 sender, user,
-                commandContext.getObject(ClanMemberData.class, ClanPart.CLAN_CONTEXT_KEY),
+                commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
                 clanMember
         );
     }
@@ -74,7 +74,7 @@ public class ClanCommand implements CommandClass {
     ) {
         memberService.promote(
                 sender, user,
-                commandContext.getObject(ClanMemberData.class, ClanPart.CLAN_CONTEXT_KEY),
+                commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
                 clanMember
         );
     }
@@ -87,7 +87,7 @@ public class ClanCommand implements CommandClass {
     ) {
         memberService.demote(
                 sender, user,
-                commandContext.getObject(ClanMemberData.class, ClanPart.CLAN_CONTEXT_KEY),
+                commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
                 clanMember
         );
     }
