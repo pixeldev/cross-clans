@@ -1,33 +1,28 @@
 package net.cosmogrp.crclans.clan;
 
-import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class ClanData extends AbstractModel
         implements DocumentCodec {
 
     private final Date creation;
-    private ClanMember owner;
     private String description;
 
     private ClanData(
             String id, Date creation,
-            String description, ClanMember owner
+            String description
     ) {
         super(id);
         this.creation = creation;
         this.description = description;
-        this.owner = owner;
     }
 
     public Date getCreation() {
@@ -42,31 +37,10 @@ public class ClanData extends AbstractModel
         this.description = description;
     }
 
-    public ClanMember getOwner() {
-        return owner;
-    }
-
-    public void setOwner(ClanMember owner) {
-        if (owner == null) {
-            return;
-        }
-
-        this.owner = owner;
-    }
-
-    public boolean isOwner(UUID playerId) {
-        return owner.getPlayerId()
-                .equals(playerId);
-    }
-
-    public boolean isOwner(OfflinePlayer player) {
-        return isOwner(player.getUniqueId());
-    }
-
-    public static ClanData create(String tag, Player owner) {
+    public static ClanData create(String tag) {
         return new ClanData(
                 tag, new Date(),
-                null, ClanMember.fromPlayer(owner)
+                null
         );
     }
 
@@ -74,8 +48,7 @@ public class ClanData extends AbstractModel
         return new ClanData(
                 reader.readString("_id"),
                 reader.readDate("creation"),
-                reader.readString("description"),
-                reader.readChild("owner", ClanMember::fromDocument)
+                reader.readString("description")
         );
     }
 
@@ -84,7 +57,6 @@ public class ClanData extends AbstractModel
         return DocumentBuilder.create(this)
                 .write("creation", creation)
                 .write("description", description)
-                .write("owner", owner)
                 .build();
     }
 }

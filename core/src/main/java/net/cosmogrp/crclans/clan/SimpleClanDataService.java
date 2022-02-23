@@ -73,7 +73,7 @@ public class SimpleClanDataService
             return;
         }
 
-        clan = ClanData.create(tag, owner);
+        clan = ClanData.create(tag);
         user.setClan(tag);
 
         modelService.save(clan)

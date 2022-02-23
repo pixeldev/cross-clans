@@ -5,6 +5,7 @@ import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class ClanMemberData extends AbstractModel
         implements DocumentCodec {
 
+    private ClanMember owner;
     private final Map<UUID, ClanMember> members;
 
     private ClanMemberData(
@@ -26,6 +28,27 @@ public class ClanMemberData extends AbstractModel
     ) {
         super(id);
         this.members = members;
+    }
+
+    public ClanMember getOwner() {
+        return owner;
+    }
+
+    public void setOwner(ClanMember owner) {
+        if (owner == null) {
+            return;
+        }
+
+        this.owner = owner;
+    }
+
+    public boolean isOwner(UUID playerId) {
+        return owner.getPlayerId()
+                .equals(playerId);
+    }
+
+    public boolean isOwner(OfflinePlayer player) {
+        return isOwner(player.getUniqueId());
     }
 
     public Collection<ClanMember> getMembers() {
