@@ -31,18 +31,16 @@ public class SimpleClanDisbandService
     @Inject private GlobalNotifier globalNotifier;
     @Inject private LogHandler logHandler;
 
+    @Inject private ClanMemberService memberService;
     @Inject private UserService userService;
 
     @Inject private Channel<ClanDisbandMessage> disbandChannel;
 
-    private final ClanMemberService memberService;
     private final Collection<ClanService<? extends Model>> services;
 
     @Inject
     public SimpleClanDisbandService(CrClansPlugin plugin) {
         this.services = plugin.getServices();
-        this.memberService = (ClanMemberService)
-                plugin.getService(ClanMemberData.class);
     }
 
     @Override

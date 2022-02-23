@@ -1,8 +1,6 @@
 package net.cosmogrp.crclans.clan.home;
 
-import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.AbstractClanService;
-import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.server.ServerData;
@@ -22,13 +20,10 @@ public class SimpleClanHomeService
     @Inject private ServerSender serverSender;
     @Inject private ServerData serverData;
 
-    private final ClanMemberService memberService;
+    @Inject private ClanMemberService memberService;
 
-    @Inject
-    public SimpleClanHomeService(CrClansPlugin plugin) {
+    public SimpleClanHomeService() {
         super(ClanHomeData::create);
-        this.memberService = (ClanMemberService)
-                plugin.getService(ClanMemberData.class);
     }
 
     @Override

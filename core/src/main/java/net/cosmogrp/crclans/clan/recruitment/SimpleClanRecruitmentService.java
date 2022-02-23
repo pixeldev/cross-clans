@@ -24,13 +24,10 @@ public class SimpleClanRecruitmentService
     @Inject private MessageHandler messageHandler;
     @Inject private FileConfiguration configuration;
 
-    private final ClanMemberService memberService;
+    @Inject private ClanMemberService memberService;
 
-    @Inject
-    public SimpleClanRecruitmentService(CrClansPlugin plugin) {
+    public SimpleClanRecruitmentService() {
         super(ClanRecruitmentData::create);
-        this.memberService = (ClanMemberService)
-                plugin.getService(ClanMemberData.class);
     }
 
     @Override
