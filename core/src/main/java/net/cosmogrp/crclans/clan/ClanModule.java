@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.clan.chat.ClanChatService;
+import net.cosmogrp.crclans.clan.chat.SimpleClanChatService;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandMessage;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
@@ -12,8 +14,11 @@ import net.cosmogrp.crclans.clan.home.ClanHomeService;
 import net.cosmogrp.crclans.clan.home.SimpleClanHomeService;
 import net.cosmogrp.crclans.clan.member.ClanKickChannelListener;
 import net.cosmogrp.crclans.clan.member.ClanKickMessage;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
+import net.cosmogrp.crclans.clan.member.SimpleClanMemberService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.clan.recruitment.SimpleClanRecruitmentService;
+import net.cosmogrp.storage.dist.CachedRemoteModelService;
 import net.cosmogrp.storage.model.meta.ModelMeta;
 import net.cosmogrp.storage.mongo.MongoModelService;
 import net.cosmogrp.storage.redis.RedisModelService;
@@ -32,6 +37,8 @@ public class ClanModule extends AbstractModule {
         bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
         bind(ClanHomeService.class).to(SimpleClanHomeService.class).singleton();
         bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
+        bind(ClanMemberService.class).to(SimpleClanMemberService.class).singleton();
+        bind(ClanChatService.class).to(SimpleClanChatService.class).singleton();
     }
 
     @Provides
@@ -55,20 +62,20 @@ public class ClanModule extends AbstractModule {
     }
 
     @Provides @Singleton
-    public AsyncModelService<Clan> createService(
+    public CachedRemoteModelService<ClanData> createService(
             Executor executor, FileConfiguration configuration,
             MongoDatabase mongoDatabase, Gson gson,
             RedisCache redisCache
     ) {
-        ModelMeta<Clan> modelMeta = new ModelMeta<>(Clan.class)
-                .addProperty("redis-table", "clans")
-                .addProperty("collection", configuration.getString("server-group") + ":clans");
+        ModelMeta<ClanData> modelMeta = new ModelMeta<>(ClanData.class)
+                .addProperty("redis-table", "clans-data")
+                .addProperty("collection", configuration.getString("server-group") + ":clans-data");
 
         return new MongoModelService<>(
                 executor, modelMeta,
                 new RedisModelService<>(executor, modelMeta, gson, redisCache),
                 mongoDatabase,
-                Clan::fromDocument
+                ClanData::fromDocument
         );
     }
 
