@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 public interface ClanRecruitmentService
         extends ClanService<ClanRecruitmentData> {
 
+    String KEY = "clan-recruitment";
+
     void sendRecruitment(
             Player sender, User user,
             ClusteredUser target

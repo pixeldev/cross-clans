@@ -10,6 +10,8 @@ import java.util.function.Consumer;
 public interface ClanMemberService
         extends ClanService<ClanMemberData> {
 
+    String KEY = "clan-member";
+
     void kick(
             Player player, User user,
             ClanMemberData data, ClanMember target
