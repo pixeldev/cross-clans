@@ -4,13 +4,14 @@ import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.storage.dist.CachedRemoteModelService;
 import net.cosmogrp.storage.model.Model;
+import net.cosmogrp.storage.mongo.DocumentCodec;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.function.Function;
 
-public abstract class AbstractClanService<T extends Model>
+public abstract class AbstractClanService<T extends Model & DocumentCodec>
         implements ClanService<T> {
 
     @Inject protected MessageHandler messageHandler;

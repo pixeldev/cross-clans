@@ -21,6 +21,7 @@ import net.cosmogrp.crclans.inject.MainModule;
 import net.cosmogrp.crclans.loader.Loader;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.model.Model;
+import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.redis.connection.Redis;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -112,12 +113,12 @@ public class CrClansPlugin extends JavaPlugin
     }
 
     @Override
-    public <T extends Model> ClanService<T> getService(Class<T> modelClass) {
+    public <T extends Model & DocumentCodec> ClanService<T> getService(Class<T> modelClass) {
         return clanServiceRegistry.getService(modelClass);
     }
 
     @Override
-    public <T extends Model> void registerService(
+    public <T extends Model & DocumentCodec> void registerService(
             Class<T> clazz,
             Class<? extends ClanService<T>> service
     ) {
@@ -125,7 +126,7 @@ public class CrClansPlugin extends JavaPlugin
     }
 
     @Override
-    public <T extends Model> void unregisterService(Class<T> modelClass) {
+    public <T extends Model & DocumentCodec> void unregisterService(Class<T> modelClass) {
         clanServiceRegistry.unregisterService(modelClass);
     }
 }
