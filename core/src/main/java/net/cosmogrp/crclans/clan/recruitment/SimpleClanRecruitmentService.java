@@ -164,11 +164,15 @@ public class SimpleClanRecruitmentService
                 "%tag%", tag
         );
 
-        globalNotifier.singleNotify(
-                clanData.getOwner().getPlayerId(),
-                "clan.invite-deny-sender",
-                "%target%", sender.getName()
-        );
+        ClanMember owner = clanData.getOwner();
+
+        if (owner.isOnline()) {
+            globalNotifier.singleNotify(
+                    owner.getPlayerId(),
+                    "clan.invite-deny-sender",
+                    "%target%", sender.getName()
+            );
+        }
 
         save(sender, data);
     }
