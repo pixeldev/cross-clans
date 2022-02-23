@@ -67,7 +67,7 @@ clan:
     moderator-left-clan-members: "&f¡El moderador &a%target% &fha dejado el clan&f!"
     error-leaving-clan: "&f¡Ha ocurrido un error al dejar el clan, intenta de nuevo!"
 
-    error-finding-clan: "&c¡Ha ocurrido un error al buscar tu clan, intenta de nuevo!"
+    error-finding-data: "&c¡Ha ocurrido un error al buscar la información del clan, intenta de nuevo!"
     not-owner: "&c¡Solo el dueño del clan puede hacer eso!"
 
     not-enough-money: "&c¡No tienes suficiente dinero para crear un clan!"
