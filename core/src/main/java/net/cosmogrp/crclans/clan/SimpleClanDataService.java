@@ -8,11 +8,17 @@ import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
 
 public class SimpleClanDataService
         extends AbstractClanService<ClanData>
         implements ClanDataService {
+
+    @Inject private Executor executor;
+    @Inject private Map<String, ClanService<?>> services;
 
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
@@ -24,6 +30,7 @@ public class SimpleClanDataService
 
     @Inject
     public SimpleClanDataService(FileConfiguration configuration) {
+        super(ClanData::create);
         this.configuration = configuration;
 
         String tagPattern = configuration.getString("clan.tag-pattern");
@@ -72,10 +79,11 @@ public class SimpleClanDataService
             return;
         }
 
-        clan = ClanData.create(tag);
-        user.setClan(tag);
-
-        modelService.save(clan)
+        CompletableFuture.runAsync(() -> {
+            for (ClanService<?> service : services.values()) {
+                service.createSync(tag);
+            }
+        }, executor)
                 .whenComplete((result, error) -> {
                     if (error != null) {
                         logHandler.reportError(
@@ -87,6 +95,7 @@ public class SimpleClanDataService
                         return;
                     }
 
+                    user.setClan(tag);
                     globalNotifier.notify(
                             "clan.create-success",
                             "%tag%", tag,
