@@ -12,7 +12,7 @@ public interface ClanService<T extends Model> {
 
     void deleteSync(String tag);
 
-    void create(T data);
+    void createSync(String tag);
 
     void save(Player player, T data);
 

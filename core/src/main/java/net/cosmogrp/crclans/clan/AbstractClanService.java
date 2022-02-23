@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.function.Function;
 
 public abstract class AbstractClanService<T extends Model>
         implements ClanService<T> {
@@ -15,6 +16,12 @@ public abstract class AbstractClanService<T extends Model>
     @Inject protected MessageHandler messageHandler;
     @Inject protected LogHandler logHandler;
     @Inject protected CachedRemoteModelService<T> modelService;
+
+    private final Function<String, T> creator;
+
+    public AbstractClanService(Function<String, T> creator) {
+        this.creator = creator;
+    }
 
     @Override
     public @Nullable T getData(Player player, String tag) {
@@ -55,16 +62,8 @@ public abstract class AbstractClanService<T extends Model>
     }
 
     @Override
-    public void create(T data) {
-        modelService.save(data)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        logHandler.reportError(
-                                "Failed to create clan '%s'",
-                                error, data.getId()
-                        );
-                    }
-                });
+    public void createSync(String tag) {
+        modelService.saveSync(creator.apply(tag));
     }
 
     @Override
