@@ -30,6 +30,17 @@ public class SimpleClanMemberService
     }
 
     @Override
+    public void createSync(Player creator, String tag) {
+        ClanMemberData memberData = ClanMemberData.create(tag);
+        ClanMember owner = ClanMember.fromPlayer(creator);
+
+        memberData.setOwner(owner);
+        memberData.addMember(owner);
+
+        modelService.saveSync(memberData);
+    }
+
+    @Override
     public void kick(
             Player player, User user,
             ClanMemberData data, ClanMember target
