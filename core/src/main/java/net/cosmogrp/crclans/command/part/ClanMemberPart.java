@@ -26,6 +26,8 @@ import static net.cosmogrp.crclans.command.part.UserSenderPart.USER_CONTEXT_KEY;
 
 public class ClanMemberPart implements PartFactory {
 
+    public static final String MEMBER_CONTEXT_KEY = "clan-recruitment";
+
     @Inject private UserService userService;
     @Inject private ClanMemberService memberService;
 
@@ -61,7 +63,7 @@ public class ClanMemberPart implements PartFactory {
                     throw new ArgumentParseException("%translatable:clan.self-not-found%");
                 }
 
-                commandContext.setObject(ClanMemberData.class, ClanPart.CLAN_CONTEXT_KEY, memberData);
+                commandContext.setObject(ClanMemberData.class, MEMBER_CONTEXT_KEY, memberData);
                 ClanMember clanMember = null;
 
                 for (ClanMember member : memberData.getMembers()) {

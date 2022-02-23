@@ -16,8 +16,6 @@ import java.util.List;
 
 public class ClanRecruitmentPart implements PartFactory {
 
-    public static final String CLAN_CONTEXT_KEY = "clan-recruitment";
-
     @Inject private ClanRecruitmentService recruitmentService;
 
     @Override
