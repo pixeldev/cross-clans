@@ -5,7 +5,6 @@ import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
