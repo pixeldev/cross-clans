@@ -1,6 +1,7 @@
 package net.cosmogrp.crclans.clan.disband;
 
 import me.yushust.message.MessageHandler;
+import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
@@ -9,13 +10,13 @@ import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
+import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.redis.channel.Channel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -35,13 +36,13 @@ public class SimpleClanDisbandService
     @Inject private Channel<ClanDisbandMessage> disbandChannel;
 
     private final ClanMemberService memberService;
-    private final Map<String, ClanService<?>> services;
+    private final Collection<ClanService<? extends Model>> services;
 
     @Inject
-    public SimpleClanDisbandService(Map<String, ClanService<?>> services) {
-        this.services = services;
+    public SimpleClanDisbandService(CrClansPlugin plugin) {
+        this.services = plugin.getServices();
         this.memberService = (ClanMemberService)
-                services.get(ClanMemberService.KEY);
+                plugin.getService(ClanMemberData.class);
     }
 
     @Override
@@ -49,8 +50,6 @@ public class SimpleClanDisbandService
         memberService.computeAsOwner(
                 player, user,
                 memberData -> {
-                    Collection<ClanService<?>> services =
-                            this.services.values();
                     String tag = memberData.getId();
 
                     CompletableFuture.runAsync(() -> {

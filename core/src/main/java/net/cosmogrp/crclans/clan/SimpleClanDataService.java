@@ -1,14 +1,16 @@
 package net.cosmogrp.crclans.clan;
 
+import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
+import net.cosmogrp.storage.model.Model;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
@@ -18,10 +20,11 @@ public class SimpleClanDataService
         implements ClanDataService {
 
     @Inject private Executor executor;
-    @Inject private Map<String, ClanService<?>> services;
 
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
+
+    private final Collection<ClanService<? extends Model>> services;
 
     private final FileConfiguration configuration;
     private final Pattern tagPattern;
@@ -29,9 +32,10 @@ public class SimpleClanDataService
     private final int maxTagLength;
 
     @Inject
-    public SimpleClanDataService(FileConfiguration configuration) {
+    public SimpleClanDataService(CrClansPlugin plugin) {
         super(ClanData::create);
-        this.configuration = configuration;
+        this.services = plugin.getServices();
+        this.configuration = plugin.getConfig();
 
         String tagPattern = configuration.getString("clan.tag-pattern");
 
@@ -80,7 +84,7 @@ public class SimpleClanDataService
         }
 
         CompletableFuture.runAsync(() -> {
-            for (ClanService<?> service : services.values()) {
+            for (ClanService<?> service : services) {
                 service.createSync(owner, tag);
             }
         }, executor)

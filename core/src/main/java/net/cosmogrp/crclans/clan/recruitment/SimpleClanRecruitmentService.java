@@ -1,8 +1,8 @@
 package net.cosmogrp.crclans.clan.recruitment;
 
 import me.yushust.message.MessageHandler;
+import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.AbstractClanService;
-import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
-import java.util.Map;
 import java.util.UUID;
 
 public class SimpleClanRecruitmentService
@@ -28,10 +27,10 @@ public class SimpleClanRecruitmentService
     private final ClanMemberService memberService;
 
     @Inject
-    public SimpleClanRecruitmentService(Map<String, ClanService<?>> services) {
+    public SimpleClanRecruitmentService(CrClansPlugin plugin) {
         super(ClanRecruitmentData::create);
         this.memberService = (ClanMemberService)
-                services.get(ClanMemberService.KEY);
+                plugin.getService(ClanMemberData.class);
     }
 
     @Override

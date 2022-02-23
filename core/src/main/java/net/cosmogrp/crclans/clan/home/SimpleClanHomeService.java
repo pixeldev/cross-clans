@@ -1,7 +1,8 @@
 package net.cosmogrp.crclans.clan.home;
 
+import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.AbstractClanService;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.server.ServerData;
@@ -11,7 +12,6 @@ import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
-import java.util.Map;
 
 public class SimpleClanHomeService
         extends AbstractClanService<ClanHomeData>
@@ -25,10 +25,10 @@ public class SimpleClanHomeService
     private final ClanMemberService memberService;
 
     @Inject
-    public SimpleClanHomeService(Map<String, ClanService<?>> services) {
+    public SimpleClanHomeService(CrClansPlugin plugin) {
         super(ClanHomeData::create);
         this.memberService = (ClanMemberService)
-                services.get(ClanMemberService.KEY);
+                plugin.getService(ClanMemberData.class);
     }
 
     @Override
