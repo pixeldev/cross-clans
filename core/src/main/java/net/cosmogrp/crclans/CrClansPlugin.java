@@ -76,7 +76,7 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getMessenger().unregisterOutgoingPluginChannel(this);
+        Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
         mongoClient.close();
 
         try {
