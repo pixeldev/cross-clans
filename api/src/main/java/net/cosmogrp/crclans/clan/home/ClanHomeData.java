@@ -4,6 +4,7 @@ import net.cosmogrp.crclans.server.ServerLocation;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
+import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,8 +13,9 @@ public class ClanHomeData extends AbstractModel
 
     private ServerLocation home;
 
-    public ClanHomeData(String id) {
+    private ClanHomeData(String id, ServerLocation home) {
         super(id);
+        this.home = home;
     }
 
     public @Nullable ServerLocation getHome() {
@@ -22,6 +24,17 @@ public class ClanHomeData extends AbstractModel
 
     public void setHome(ServerLocation home) {
         this.home = home;
+    }
+
+    public static ClanHomeData create(String tag) {
+        return new ClanHomeData(tag, null);
+    }
+
+    public static ClanHomeData fromDocument(DocumentReader reader) {
+        return new ClanHomeData(
+                reader.readString("_id"),
+                reader.readChild("home", ServerLocation::fromDocument)
+        );
     }
 
     @Override

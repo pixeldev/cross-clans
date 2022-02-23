@@ -3,8 +3,10 @@ package net.cosmogrp.crclans.clan;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
+import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
@@ -17,7 +19,7 @@ public class ClanData extends AbstractModel
     private ClanMember owner;
     private String description;
 
-    public ClanData(
+    private ClanData(
             String id, Date creation,
             String description, ClanMember owner
     ) {
@@ -58,6 +60,22 @@ public class ClanData extends AbstractModel
 
     public boolean isOwner(OfflinePlayer player) {
         return isOwner(player.getUniqueId());
+    }
+
+    public static ClanData create(String tag, Player owner) {
+        return new ClanData(
+                tag, new Date(),
+                null, ClanMember.fromPlayer(owner)
+        );
+    }
+
+    public static ClanData fromDocument(DocumentReader reader) {
+        return new ClanData(
+                reader.readString("_id"),
+                reader.readDate("creation"),
+                reader.readString("description"),
+                reader.readChild("owner", ClanMember::fromDocument)
+        );
     }
 
     @Override

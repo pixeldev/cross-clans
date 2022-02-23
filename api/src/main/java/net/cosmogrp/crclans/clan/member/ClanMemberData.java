@@ -4,6 +4,7 @@ import net.cosmogrp.crclans.clan.ClanMember;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
+import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,9 +20,12 @@ public class ClanMemberData extends AbstractModel
 
     private final Map<UUID, ClanMember> members;
 
-    public ClanMemberData(String id) {
+    private ClanMemberData(
+            String id,
+            Map<UUID, ClanMember> members
+    ) {
         super(id);
-        this.members = new HashMap<>();
+        this.members = members;
     }
 
     public Collection<ClanMember> getMembers() {
@@ -51,6 +55,21 @@ public class ClanMemberData extends AbstractModel
 
     public @Nullable ClanMember removeMember(UUID uuid) {
         return members.remove(uuid);
+    }
+
+    public static ClanMemberData create(String tag) {
+        return new ClanMemberData(tag, new HashMap<>());
+    }
+
+    public static ClanMemberData fromDocument(DocumentReader reader) {
+        return new ClanMemberData(
+                reader.readString("_id"),
+                reader.readMap(
+                        "members",
+                        ClanMember::getPlayerId,
+                        ClanMember::fromDocument
+                )
+        );
     }
 
     @Override

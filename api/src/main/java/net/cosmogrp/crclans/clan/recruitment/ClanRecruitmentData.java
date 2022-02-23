@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.clan.recruitment;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
+import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,9 +16,12 @@ public class ClanRecruitmentData extends AbstractModel
 
     private final Map<UUID, RecruitmentRequest> requests;
 
-    public ClanRecruitmentData(String id) {
+    private ClanRecruitmentData(
+            String id,
+            Map<UUID, RecruitmentRequest> requests
+    ) {
         super(id);
-        this.requests = new HashMap<>();
+        this.requests = requests;
     }
 
     public @Nullable RecruitmentRequest getRequest(UUID playerId) {
@@ -30,6 +34,21 @@ public class ClanRecruitmentData extends AbstractModel
 
     public void removeRequest(RecruitmentRequest request) {
         requests.remove(request.getPlayerId());
+    }
+
+    public static ClanRecruitmentData create(String tag) {
+        return new ClanRecruitmentData(tag, new HashMap<>());
+    }
+
+    public static ClanRecruitmentData fromDocument(DocumentReader reader) {
+        return new ClanRecruitmentData(
+                reader.readString("_id"),
+                reader.readMap(
+                        "recruitments",
+                        RecruitmentRequest::getPlayerId,
+                        RecruitmentRequest::fromDocument
+                )
+        );
     }
 
     @Override
