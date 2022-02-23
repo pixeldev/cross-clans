@@ -62,8 +62,8 @@ public abstract class AbstractClanService<T extends Model>
     }
 
     @Override
-    public void createSync(String tag) {
-        modelService.saveSync(creator.apply(tag));
+    public void createSync(Player creator, String tag) {
+        modelService.saveSync(this.creator.apply(tag));
     }
 
     @Override
