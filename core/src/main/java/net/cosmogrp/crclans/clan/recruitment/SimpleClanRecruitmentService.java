@@ -65,39 +65,40 @@ public class SimpleClanRecruitmentService
             return;
         }
 
-        ClanRecruitmentData recruitmentData = getData(tag);
+        ClanRecruitmentData recruitmentData = getData(sender, tag);
 
         if (recruitmentData == null) {
-            recruitmentData = ClanRecruitmentData.create(tag);
+            return;
+        }
 
-            int time = configuration.getInt("clans.invite-expiry");
-            RecruitmentRequest request = RecruitmentRequest
-                    .create(target, time);
+        RecruitmentRequest request =
+                recruitmentData.getRequest(targetId);
 
-            recruitmentData.addRequest(request);
-            messageHandler.sendReplacing(
-                    sender, "clan.invited-sender",
-                    "%target%", target.asPlayer().getName()
-            );
-
-            globalNotifier.singleNotifyIn(
-                    target.getPlayerId(), "minimessage",
-                    "clan.invited-target",
-                    "%tag%", memberData.getId(),
-                    "%time%", time
-            );
-        } else {
-            RecruitmentRequest request =
-                    recruitmentData.getRequest(targetId);
-
-            if (request != null) {
-                if (request.isExpired()) {
-                    recruitmentData.removeRequest(request);
-                } else {
-                    messageHandler.send(sender, "clan.already-invited");
-                }
+        if (request != null) {
+            if (request.isExpired()) {
+                recruitmentData.removeRequest(request);
+            } else {
+                messageHandler.send(sender, "clan.already-invited");
+                return;
             }
         }
+
+        int time = configuration.getInt("clans.invite-expiry");
+        request = RecruitmentRequest
+                .create(target, time);
+
+        recruitmentData.addRequest(request);
+        messageHandler.sendReplacing(
+                sender, "clan.invited-sender",
+                "%target%", target.asPlayer().getName()
+        );
+
+        globalNotifier.singleNotifyIn(
+                target.getPlayerId(), "minimessage",
+                "clan.invited-target",
+                "%tag%", memberData.getId(),
+                "%time%", time
+        );
 
         save(sender, recruitmentData);
     }
