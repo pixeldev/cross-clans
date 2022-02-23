@@ -25,6 +25,10 @@ public class SimpleClanMemberService
 
     @Inject private Channel<ClanKickMessage> kickChannel;
 
+    public SimpleClanMemberService() {
+        super(ClanMemberData::create);
+    }
+
     @Override
     public void kick(
             Player player, User user,

@@ -26,6 +26,7 @@ public class SimpleClanHomeService
 
     @Inject
     public SimpleClanHomeService(Map<String, ClanService<?>> services) {
+        super(ClanHomeData::create);
         this.memberService = (ClanMemberService)
                 services.get(ClanMemberService.KEY);
     }
