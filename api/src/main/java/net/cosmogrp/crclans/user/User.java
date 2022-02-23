@@ -36,12 +36,8 @@ public class User extends AbstractModel
         this.chatType = chatType;
     }
 
-    public void setClan(@Nullable ClanData clan) {
-        if (clan == null) {
-            this.clanTag = null;
-        } else {
-            this.clanTag = clan.getId();
-        }
+    public void setClan(@Nullable String tag) {
+        this.clanTag = tag;
     }
 
     public @Nullable String getClanTag() {
