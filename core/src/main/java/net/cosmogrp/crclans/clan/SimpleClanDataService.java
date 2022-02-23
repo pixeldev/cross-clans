@@ -1,26 +1,21 @@
 package net.cosmogrp.crclans.clan;
 
-import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
-import net.cosmogrp.storage.AsyncModelService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public class SimpleClanService implements ClanService {
+public class SimpleClanDataService
+        extends AbstractClanService<ClanData>
+        implements ClanDataService {
 
-    @Inject private AsyncModelService<Clan> modelService;
-    @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
-    @Inject private LogHandler logHandler;
 
     private final FileConfiguration configuration;
     private final Pattern tagPattern;
@@ -28,7 +23,7 @@ public class SimpleClanService implements ClanService {
     private final int maxTagLength;
 
     @Inject
-    public SimpleClanService(FileConfiguration configuration) {
+    public SimpleClanDataService(FileConfiguration configuration) {
         this.configuration = configuration;
 
         String tagPattern = configuration.getString("clan.tag-pattern");
@@ -47,11 +42,6 @@ public class SimpleClanService implements ClanService {
     }
 
     @Override
-    public @Nullable Clan getClan(String tag) {
-        return modelService.getSync(tag);
-    }
-
-    @Override
     public void createClan(User user, Player owner, String tag) {
         if (user.hasClan()) {
             messageHandler.send(owner, "clan.already-in-clan");
@@ -67,7 +57,7 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        Clan clan = modelService.getSync(tag.toLowerCase(Locale.ROOT));
+        ClanData clan = modelService.getSync(tag.toLowerCase(Locale.ROOT));
 
         if (clan != null) {
             messageHandler.send(owner, "clan.already-exists");
@@ -82,7 +72,7 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        clan = Clan.create(owner, tag);
+        clan = ClanData.create(tag, owner);
         user.setClan(clan);
 
         modelService.save(clan)
@@ -102,34 +92,6 @@ public class SimpleClanService implements ClanService {
                             "%tag%", tag,
                             "%creator%", owner.getName()
                     );
-                });
-    }
-
-    @Override
-    public void saveClan(Player player, Clan clan) {
-        modelService.save(clan)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        logHandler.reportError(
-                                "Failed to save clan '%s'",
-                                error, clan.getId()
-                        );
-
-                        messageHandler.send(player, "clan.save-failed");
-                    }
-                });
-    }
-
-    @Override
-    public void saveClan(Clan clan) {
-        modelService.save(clan)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        logHandler.reportError(
-                                "Failed to save clan '%s'",
-                                error, clan.getId()
-                        );
-                    }
                 });
     }
 }
