@@ -8,7 +8,7 @@ import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;

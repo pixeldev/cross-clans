@@ -4,7 +4,7 @@ import me.fixeddev.commandflow.annotated.part.AbstractModule;
 import me.fixeddev.commandflow.annotated.part.Key;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.command.part.ClanMemberPart;
 import net.cosmogrp.crclans.command.part.ClanPart;
 import net.cosmogrp.crclans.command.part.ClusteredUserPart;

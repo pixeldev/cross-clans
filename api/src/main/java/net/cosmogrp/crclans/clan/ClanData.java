@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans.clan;
 
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;

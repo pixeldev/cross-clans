@@ -1,5 +1,6 @@
 package net.cosmogrp.crclans.clan;
 
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.recruitment.RecruitmentRequest;
 import net.cosmogrp.crclans.server.ServerLocation;
 import net.cosmogrp.storage.model.AbstractModel;

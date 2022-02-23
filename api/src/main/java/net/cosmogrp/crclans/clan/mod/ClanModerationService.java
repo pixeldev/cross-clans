@@ -1,7 +1,7 @@
 package net.cosmogrp.crclans.clan.mod;
 
 import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 

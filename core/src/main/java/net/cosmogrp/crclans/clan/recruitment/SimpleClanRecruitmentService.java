@@ -2,7 +2,7 @@ package net.cosmogrp.crclans.clan.recruitment;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
