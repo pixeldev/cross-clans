@@ -11,6 +11,7 @@ import net.cosmogrp.crclans.clan.disband.SimpleClanDisbandService;
 import net.cosmogrp.crclans.clan.home.ClanHomeData;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
 import net.cosmogrp.crclans.clan.home.SimpleClanHomeService;
+import net.cosmogrp.crclans.clan.inject.ClanServiceModule;
 import net.cosmogrp.crclans.clan.member.ClanKickChannelListener;
 import net.cosmogrp.crclans.clan.member.ClanKickMessage;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
