@@ -43,7 +43,7 @@ public class User extends AbstractModel
         return channelId;
     }
 
-    public void setChannelId(String channelId) {
+    public void setChannelId(@Nullable String channelId) {
         this.channelId = channelId;
     }
 
