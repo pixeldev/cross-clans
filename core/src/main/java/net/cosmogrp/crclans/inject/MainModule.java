@@ -5,6 +5,7 @@ import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.adapt.AdaptionModuleFactory;
 import net.cosmogrp.crclans.clan.ClanModule;
 import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.channel.DefaultChannelLoader;
 import net.cosmogrp.crclans.clan.service.ClanServicesLoader;
 import net.cosmogrp.crclans.loader.Loader;
 import net.cosmogrp.crclans.log.LogHandler;
@@ -45,7 +46,8 @@ public class MainModule extends AbstractModule {
 
         multibind(Loader.class)
                 .asSet()
-                .to(ClanServicesLoader.class);
+                .to(ClanServicesLoader.class)
+                .to(DefaultChannelLoader.class);
 
         install(
                 new RedisModule(), new DatabaseModule(),
