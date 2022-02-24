@@ -5,6 +5,8 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.clan.ClanDataService;
+import net.cosmogrp.crclans.clan.channel.ClanChannel;
+import net.cosmogrp.crclans.clan.chat.ClanChatService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
@@ -27,10 +29,19 @@ public class ClanCommand implements CommandClass {
     @Inject private ClanHomeService homeService;
     @Inject private ClanDisbandService disbandService;
     @Inject private ClanDataService dataService;
+    @Inject private ClanChatService clanChatService;
 
     @Command(names = "create", permission = "clans.create")
     public void create(@Sender Player sender, @Sender User user, String tag) {
         dataService.createClan(user, sender, tag);
+    }
+
+    @Command(names = "channel", permission = "clans.channel")
+    public void runChannel(
+            @Sender Player sender, @Sender User user,
+            ClanChannel clanChannel
+    ) {
+        clanChatService.setChannel(sender, user, clanChannel);
     }
 
     @Command(names = "sethome", permission = "clans.sethome")
