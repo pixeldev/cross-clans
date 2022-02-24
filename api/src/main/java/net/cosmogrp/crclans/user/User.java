@@ -1,6 +1,5 @@
 package net.cosmogrp.crclans.user;
 
-import net.cosmogrp.crclans.clan.ClanData;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
@@ -16,7 +15,7 @@ public class User extends AbstractModel
     private final UUID playerId;
 
     private String clanTag;
-    private ChatType chatType;
+    private String channelId;
 
     private User(UUID playerId, String clanTag) {
         super(playerId.toString());
@@ -26,14 +25,6 @@ public class User extends AbstractModel
 
     public UUID getPlayerId() {
         return playerId;
-    }
-
-    public @Nullable ChatType getChatType() {
-        return chatType;
-    }
-
-    public void setChatType(ChatType chatType) {
-        this.chatType = chatType;
     }
 
     public void setClan(@Nullable String tag) {
@@ -46,6 +37,14 @@ public class User extends AbstractModel
 
     public boolean hasClan() {
         return clanTag != null;
+    }
+
+    public @Nullable String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     public static User create(UUID playerId) {
