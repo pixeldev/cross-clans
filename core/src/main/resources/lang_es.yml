@@ -103,5 +103,7 @@ channels:
 user:
     not-found: "&cOcurrió un error al buscar tu información, si este error continúa contacta con un administrador"
     load-error: "&cNo pudimos obtener tu información, intenta de nuevo"
+
+    exit-channel: "&f¡Ahora estás en el chat global!"
     already-in-channel: "&cYa estás en ese canal!"
     change-channel: "&f¡Ahora estás en el canal de &a%channel% &ftodos tus mensajes serán envíados por ahí!"

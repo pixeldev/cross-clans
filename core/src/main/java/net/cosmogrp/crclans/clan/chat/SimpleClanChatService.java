@@ -16,8 +16,15 @@ public class SimpleClanChatService implements ClanChatService {
             Player player, User user,
             ClanChannel clanChannel
     ) {
-        String currentChannel = user.getChannelId();
         String channelId = clanChannel.getId();
+
+        if (channelId.equals("global")) {
+            user.setChannelId(null);
+            messageHandler.send(player, "user.exit-channel");
+            return;
+        }
+
+        String currentChannel = user.getChannelId();
 
         if (currentChannel != null &&
                 currentChannel.equals(channelId)) {
