@@ -13,5 +13,6 @@ public class DefaultChannelLoader implements Loader {
     @Override
     public void load() {
         channelRegistry.registerChannel(injector.getInstance(MemberClanChannel.class));
+        channelRegistry.registerChannel(injector.getInstance(GlobalClanChannel.class));
     }
 }
