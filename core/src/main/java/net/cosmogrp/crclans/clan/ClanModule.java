@@ -2,6 +2,8 @@ package net.cosmogrp.crclans.clan;
 
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.clan.channel.ClanChannelRegistry;
+import net.cosmogrp.crclans.clan.channel.SimpleClanChannelRegistry;
 import net.cosmogrp.crclans.clan.chat.ClanChatService;
 import net.cosmogrp.crclans.clan.chat.SimpleClanChatService;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
@@ -47,6 +49,8 @@ public class ClanModule extends AbstractModule {
                         ClanMemberData::fromDocument, ClanMemberData.class
                 )
         );
+
+        bind(ClanChannelRegistry.class).to(SimpleClanChannelRegistry.class).singleton();
 
         bind(ClanChatService.class).to(SimpleClanChatService.class).singleton();
         bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
