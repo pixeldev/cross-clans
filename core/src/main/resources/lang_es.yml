@@ -23,7 +23,7 @@ commands:
 
 clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
-    already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
+    already-in-clan: "&c¡Ya estás en un clan, para poder hacer esto debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
 
     error-sending-message: "&c¡Ha ocurrido un error al enviar el mensaje, intenta de nuevo!"
