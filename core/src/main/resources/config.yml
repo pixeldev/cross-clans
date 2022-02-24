@@ -13,9 +13,10 @@ database:
     name: "clans"
 
 clans:
-    # expiry time in seconds
-    chat-format: "%player_name% &7: &f%message%"
+    channel:
+        message-format: "&f%player_name% &a: &f%message%"
 
+    # expiry time in seconds
     invite-expiry: 600
     create-cost: 100
 
