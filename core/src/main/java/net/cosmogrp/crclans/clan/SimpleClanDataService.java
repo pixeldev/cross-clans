@@ -1,26 +1,30 @@
 package net.cosmogrp.crclans.clan;
 
-import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.log.LogHandler;
+import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
-import net.cosmogrp.storage.AsyncModelService;
+import net.cosmogrp.storage.model.Model;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
 
-public class SimpleClanService implements ClanService {
+public class SimpleClanDataService
+        extends AbstractClanService<ClanData>
+        implements ClanDataService {
 
-    @Inject private AsyncModelService<Clan> modelService;
-    @Inject private MessageHandler messageHandler;
+    @Inject private Executor executor;
+
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
-    @Inject private LogHandler logHandler;
+
+    private final Collection<ClanService<? extends Model>> services;
 
     private final FileConfiguration configuration;
     private final Pattern tagPattern;
@@ -28,8 +32,10 @@ public class SimpleClanService implements ClanService {
     private final int maxTagLength;
 
     @Inject
-    public SimpleClanService(FileConfiguration configuration) {
-        this.configuration = configuration;
+    public SimpleClanDataService(CrClansPlugin plugin) {
+        super(ClanData::create);
+        this.services = plugin.getServices();
+        this.configuration = plugin.getConfig();
 
         String tagPattern = configuration.getString("clan.tag-pattern");
 
@@ -44,11 +50,6 @@ public class SimpleClanService implements ClanService {
         }
 
         this.tagPattern = Pattern.compile(tagPattern);
-    }
-
-    @Override
-    public @Nullable Clan getClan(String tag) {
-        return modelService.getSync(tag);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        Clan clan = modelService.getSync(tag.toLowerCase(Locale.ROOT));
+        ClanData clan = modelService.getSync(tag.toLowerCase(Locale.ROOT));
 
         if (clan != null) {
             messageHandler.send(owner, "clan.already-exists");
@@ -82,10 +83,11 @@ public class SimpleClanService implements ClanService {
             return;
         }
 
-        clan = Clan.create(owner, tag);
-        user.setClan(clan);
-
-        modelService.save(clan)
+        CompletableFuture.runAsync(() -> {
+            for (ClanService<?> service : services) {
+                service.createSync(owner, tag);
+            }
+        }, executor)
                 .whenComplete((result, error) -> {
                     if (error != null) {
                         logHandler.reportError(
@@ -97,39 +99,12 @@ public class SimpleClanService implements ClanService {
                         return;
                     }
 
+                    user.setClan(tag);
                     globalNotifier.notify(
                             "clan.create-success",
                             "%tag%", tag,
                             "%creator%", owner.getName()
                     );
-                });
-    }
-
-    @Override
-    public void saveClan(Player player, Clan clan) {
-        modelService.save(clan)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        logHandler.reportError(
-                                "Failed to save clan '%s'",
-                                error, clan.getId()
-                        );
-
-                        messageHandler.send(player, "clan.save-failed");
-                    }
-                });
-    }
-
-    @Override
-    public void saveClan(Clan clan) {
-        modelService.save(clan)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        logHandler.reportError(
-                                "Failed to save clan '%s'",
-                                error, clan.getId()
-                        );
-                    }
                 });
     }
 }

@@ -4,14 +4,17 @@ import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
-import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.ClanDataService;
+import net.cosmogrp.crclans.clan.channel.ClanChannel;
+import net.cosmogrp.crclans.clan.chat.ClanChatService;
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
-import net.cosmogrp.crclans.clan.mod.ClanModerationService;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
+import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
-import net.cosmogrp.crclans.command.part.ClanPart;
+import net.cosmogrp.crclans.command.part.ClanMemberPart;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import org.bukkit.entity.Player;
@@ -21,35 +24,44 @@ import javax.inject.Inject;
 @Command(names = {"clan", "clans"})
 public class ClanCommand implements CommandClass {
 
-    @Inject private ClanService clanService;
     @Inject private ClanRecruitmentService recruitmentService;
-    @Inject private ClanHomeService clanHomeService;
-    @Inject private ClanDisbandService clanDisbandService;
-    @Inject private ClanModerationService clanModerationService;
+    @Inject private ClanMemberService memberService;
+    @Inject private ClanHomeService homeService;
+    @Inject private ClanDisbandService disbandService;
+    @Inject private ClanDataService dataService;
+    @Inject private ClanChatService clanChatService;
 
     @Command(names = "create", permission = "clans.create")
     public void create(@Sender Player sender, @Sender User user, String tag) {
-        clanService.createClan(user, sender, tag);
+        dataService.createClan(user, sender, tag);
+    }
+
+    @Command(names = "channel", permission = "clans.channel")
+    public void runChannel(
+            @Sender Player sender, @Sender User user,
+            ClanChannel clanChannel
+    ) {
+        clanChatService.setChannel(sender, user, clanChannel);
     }
 
     @Command(names = "sethome", permission = "clans.sethome")
     public void runSetHome(@Sender Player sender, @Sender User user) {
-        clanHomeService.setHome(sender, user);
+        homeService.setHome(sender, user);
     }
 
     @Command(names = "delhome", permission = "clans.delhome")
     public void runDelHome(@Sender Player sender, @Sender User user) {
-        clanHomeService.delHome(sender, user);
+        homeService.delHome(sender, user);
     }
 
     @Command(names = "home", permission = "clans.home")
     public void runHome(@Sender Player sender, @Sender User user) {
-        clanHomeService.teleportToHome(sender, user);
+        homeService.teleportToHome(sender, user);
     }
 
     @Command(names = "disband", permission = "clans.disband")
     public void runDelete(@Sender Player sender, @Sender User user) {
-        clanDisbandService.disbandClan(sender, user);
+        disbandService.disbandClan(sender, user);
     }
 
     @Command(names = "kick", permission = "clans.kick")
@@ -58,9 +70,9 @@ public class ClanCommand implements CommandClass {
             @Sender Player sender, @Sender User user,
             ClanMember clanMember
     ) {
-        clanModerationService.kickMember(
+        memberService.kick(
                 sender, user,
-                commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
+                commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
                 clanMember
         );
     }
@@ -71,9 +83,9 @@ public class ClanCommand implements CommandClass {
             @Sender Player sender, @Sender User user,
             ClanMember clanMember
     ) {
-        clanModerationService.promoteMember(
+        memberService.promote(
                 sender, user,
-                commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
+                commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
                 clanMember
         );
     }
@@ -84,16 +96,16 @@ public class ClanCommand implements CommandClass {
             @Sender Player sender, @Sender User user,
             ClanMember clanMember
     ) {
-        clanModerationService.demoteMember(
+        memberService.demote(
                 sender, user,
-                commandContext.getObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY),
+                commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
                 clanMember
         );
     }
 
     @Command(names = "leave", permission = "clans.leave")
     public void runLeave(@Sender Player sender, @Sender User user) {
-        clanDisbandService.leaveClan(sender, user);
+        disbandService.leaveClan(sender, user);
     }
 
     @Command(names = "invite", permission = "clans.invite")
@@ -107,14 +119,14 @@ public class ClanCommand implements CommandClass {
     @Command(names = "accept", permission = "clans.accept")
     public void runAccept(
             @Sender Player sender, @Sender User user,
-            Clan clan
+            ClanRecruitmentData data
     ) {
-        recruitmentService.acceptRecruitment(sender, user, clan);
+        recruitmentService.acceptRecruitment(sender, user, data);
     }
 
     @Command(names = "deny", permission = "clans.deny")
-    public void runDeny(@Sender Player sender, Clan clan) {
-        recruitmentService.denyRecruitment(sender, clan);
+    public void runDeny(@Sender Player sender, ClanRecruitmentData data) {
+        recruitmentService.denyRecruitment(sender, data);
     }
 
 }

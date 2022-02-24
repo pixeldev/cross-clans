@@ -1,69 +1,90 @@
 package net.cosmogrp.crclans.clan.disband;
 
 import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
+import net.cosmogrp.crclans.CrClansPlugin;
+import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
-import net.cosmogrp.crclans.user.clan.ClanUserService;
-import net.cosmogrp.storage.AsyncModelService;
+import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.redis.channel.Channel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class SimpleClanDisbandService
         implements ClanDisbandService {
+
+    @Inject private Executor executor;
 
     @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
     @Inject private LogHandler logHandler;
 
-    @Inject private AsyncModelService<Clan> modelService;
-    @Inject private ClanUserService clanUserService;
+    @Inject private ClanMemberService memberService;
     @Inject private UserService userService;
-    @Inject private ClanService clanService;
 
     @Inject private Channel<ClanDisbandMessage> disbandChannel;
 
+    private final Collection<ClanService<? extends Model>> services;
+
+    @Inject
+    public SimpleClanDisbandService(CrClansPlugin plugin) {
+        this.services = plugin.getServices();
+    }
+
     @Override
     public void disbandClan(Player player, User user) {
-        clanUserService.executeAsOwner(
+        memberService.computeAsOwner(
                 player, user,
-                clan -> modelService
-                        .delete(clan)
-                        .whenComplete((result, error) -> {
-                            if (error != null) {
-                                logHandler.reportError(
-                                        "Failed to delete clan '%s'", error,
-                                        clan.getId()
-                                );
+                memberData -> {
+                    String tag = memberData.getId();
 
-                                messageHandler.send(player, "clan.disband-failed");
-                                return;
-                            }
+                    CompletableFuture.runAsync(() -> {
+                                for (ClanService<?> service : services) {
+                                    service.deleteSync(tag);
+                                }
+                            }, executor)
+                            .whenComplete((result, error) -> {
+                                if (error != null) {
+                                    logHandler.reportError(
+                                            "Failed to delete clan '%s'", error,
+                                            tag
+                                    );
 
-                            // just remove clan from the owner
-                            // we will wait to members get connected to the server
-                            user.setClan(null);
-                            clan.removeMember(user.getPlayerId());
+                                    messageHandler.send(
+                                            player,
+                                            "clan.disband-failed"
+                                    );
+                                    return;
+                                }
 
-                            messageHandler.send(player, "clan.disband-success");
+                                user.setClan(null);
+                                memberData.removeMember(user.getPlayerId());
 
-                            Set<UUID> onlineMembers = clan.getOnlineMembers();
+                                messageHandler.send(player, "clan.disband-success");
 
-                            if (notifyDisband(onlineMembers)) {
-                                return;
-                            }
+                                Set<UUID> onlineMembers =
+                                        memberData.getOnlineIdMembers();
 
-                            disbandChannel.sendMessage(new ClanDisbandMessage(onlineMembers));
-                        }));
+                                if (notifyDisband(onlineMembers)) {
+                                    return;
+                                }
+
+                                disbandChannel.sendMessage(new ClanDisbandMessage(onlineMembers));
+                            });
+                }
+        );
     }
 
     @Override
@@ -94,18 +115,24 @@ public class SimpleClanDisbandService
 
     @Override
     public void leaveClan(Player player, User user) {
-        Clan clan = clanUserService.getClan(player, user);
+        String tag = memberService.getClanTag(player, user);
 
-        if (clan == null) {
+        if (tag == null) {
             return;
         }
 
-        if (clan.isOwner(player)) {
+        ClanMemberData memberData = memberService.getData(player, tag);
+
+        if (memberData == null) {
+            return;
+        }
+
+        if (memberData.isOwner(player)) {
             messageHandler.send(player, "clan.cannot-leave-own-clan");
             return;
         }
 
-        ClanMember clanMember = clan.removeMember(user.getPlayerId());
+        ClanMember clanMember = memberData.removeMember(user.getPlayerId());
 
         if (clanMember == null) {
             messageHandler.send(player, "clan.error-leaving-clan");
@@ -116,18 +143,18 @@ public class SimpleClanDisbandService
 
         messageHandler.sendReplacing(
                 player, "clan.left-clan-sender",
-                "%tag%", clan.getId()
+                "%tag%", memberData.getId()
         );
 
         globalNotifier.notify(
-                clan.getOnlineMembers(),
+                memberData.getOnlineIdMembers(),
                 clanMember.isModerator() ?
                         "clan.moderator-left-clan-members"
                         : "clan.left-clan-members",
                 "%target%", player.getName()
         );
 
-        clanService.saveClan(player, clan);
+        memberService.save(player, memberData);
     }
 
 }

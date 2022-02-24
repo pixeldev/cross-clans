@@ -5,6 +5,7 @@ import net.cosmogrp.crclans.server.ServerData;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.storage.redis.connection.RedisCache;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +32,15 @@ public class SimpleClusteredUserRegistry
             return null;
         }
 
-        return gson.fromJson(json, ClusteredUser.class);
+        ClusteredUser clusteredUser = gson.fromJson(json, ClusteredUser.class);
+        OfflinePlayer offlinePlayer = clusteredUser.asPlayer();
+
+        if (offlinePlayer == null
+                || !offlinePlayer.hasPlayedBefore()) {
+            return null;
+        }
+
+        return clusteredUser;
     }
 
     @Override

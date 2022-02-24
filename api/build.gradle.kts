@@ -10,7 +10,7 @@ dependencies {
         api("net.cosmogrp:economy-$it:0.0.1")
     }
 
-    api("me.yushust.inject:core:0.4.5-SNAPSHOT")
+    api("me.yushust.inject:core:0.4.6-SNAPSHOT")
     api("me.yushust.message:core:6.0.17")
     api("me.yushust.message:sourcetype-bukkit-yml:6.0.17")
     api("me.fixeddev:commandflow-brigadier:0.5.0-SNAPSHOT")

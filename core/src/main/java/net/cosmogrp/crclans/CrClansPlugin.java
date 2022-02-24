@@ -10,12 +10,18 @@ import me.fixeddev.commandflow.brigadier.BrigadierCommandManager;
 import me.fixeddev.commandflow.bukkit.factory.BukkitModule;
 import me.fixeddev.commandflow.translator.DefaultTranslator;
 import me.yushust.inject.Injector;
+import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.ClanServiceRegistry;
+import net.cosmogrp.crclans.clan.SimpleClanServiceRegistry;
 import net.cosmogrp.crclans.command.ClanCommand;
 import net.cosmogrp.crclans.command.internal.ClanPartModule;
 import net.cosmogrp.crclans.command.internal.CustomTranslationProvider;
 import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
 import net.cosmogrp.crclans.inject.MainModule;
+import net.cosmogrp.crclans.loader.Loader;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
+import net.cosmogrp.storage.model.Model;
+import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.redis.connection.Redis;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -24,11 +30,22 @@ import org.bukkit.plugin.messaging.Messenger;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Set;
 
-public class CrClansPlugin extends JavaPlugin {
+public class CrClansPlugin extends JavaPlugin
+        implements ClanServiceRegistry {
+
+    private final Injector injector;
+    private final ClanServiceRegistry clanServiceRegistry;
+
+    {
+        injector = Injector.create(new MainModule(this));
+        clanServiceRegistry = new SimpleClanServiceRegistry(injector);
+    }
 
     @Inject private Set<Listener> listeners;
+    @Inject private Set<Loader> loaders;
 
     @Inject private ClanPartModule clanPartModule;
     @Inject private CustomTranslationProvider translatorProvider;
@@ -44,12 +61,12 @@ public class CrClansPlugin extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
-        Injector.create(new MainModule(this))
-                .injectMembers(this);
+        injector.injectMembers(this);
+        loaders.forEach(Loader::load);
     }
 
     @Override
-    public void onEnable(){
+    public void onEnable() {
         Messenger messenger = Bukkit.getMessenger();
         messenger.registerOutgoingPluginChannel(this, "BungeeCord");
 
@@ -76,7 +93,7 @@ public class CrClansPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getMessenger().unregisterOutgoingPluginChannel(this);
+        Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
         mongoClient.close();
 
         try {
@@ -86,4 +103,30 @@ public class CrClansPlugin extends JavaPlugin {
         }
     }
 
+    public static CrClansPlugin getInstance() {
+        return JavaPlugin.getPlugin(CrClansPlugin.class);
+    }
+
+    @Override
+    public Collection<ClanService<? extends Model>> getServices() {
+        return clanServiceRegistry.getServices();
+    }
+
+    @Override
+    public <T extends Model & DocumentCodec> ClanService<T> getService(Class<T> modelClass) {
+        return clanServiceRegistry.getService(modelClass);
+    }
+
+    @Override
+    public <T extends Model & DocumentCodec> void registerService(
+            Class<T> clazz,
+            Class<? extends ClanService<T>> service
+    ) {
+        clanServiceRegistry.registerService(clazz, service);
+    }
+
+    @Override
+    public <T extends Model & DocumentCodec> void unregisterService(Class<T> modelClass) {
+        clanServiceRegistry.unregisterService(modelClass);
+    }
 }

@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.clan;
+package net.cosmogrp.crclans.clan.member;
 
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;

@@ -1,65 +1,92 @@
 package net.cosmogrp.crclans.clan.home;
 
-import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.clan.Clan;
+import net.cosmogrp.crclans.clan.AbstractClanService;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.server.ServerData;
 import net.cosmogrp.crclans.server.ServerLocation;
 import net.cosmogrp.crclans.server.ServerSender;
 import net.cosmogrp.crclans.user.User;
-import net.cosmogrp.crclans.user.clan.ClanUserService;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 
 public class SimpleClanHomeService
+        extends AbstractClanService<ClanHomeData>
         implements ClanHomeService {
 
-    @Inject private MessageHandler messageHandler;
     @Inject private GlobalNotifier globalNotifier;
-
-    @Inject private ClanUserService clanUserService;
 
     @Inject private ServerSender serverSender;
     @Inject private ServerData serverData;
 
+    @Inject private ClanMemberService memberService;
+
+    public SimpleClanHomeService() {
+        super(ClanHomeData::create);
+    }
+
     @Override
     public void setHome(Player player, User user) {
-        clanUserService.computeAsOwner(player, user, clan -> {
-            clan.setHome(ServerLocation.centered(serverData, player));
+        memberService.computeAsOwner(
+                player, user,
+                memberData -> {
+                    ClanHomeData homeData = getData(player, memberData.getId());
 
-            messageHandler.send(player, "clan.set-home-sender");
+                    if (homeData == null) {
+                        return;
+                    }
 
-            globalNotifier.notify(
-                    clan.getOnlineMembers(),
-                    "clan.set-home-members"
-            );
-        });
+                    homeData.setHome(ServerLocation.centered(
+                            serverData,
+                            player
+                    ));
+
+                    messageHandler.send(player, "clan.set-home-sender");
+
+                    globalNotifier.notify(
+                            memberData.getOnlineIdMembers(),
+                            "clan.set-home-members"
+                    );
+
+                    save(player, homeData);
+                }
+        );
     }
 
     @Override
     public void delHome(Player player, User user) {
-        clanUserService.computeAsOwner(player, user, clan -> {
-            clan.setHome(null);
+        memberService.computeAsOwner(
+                player, user,
+                memberData -> {
+                    ClanHomeData homeData = getData(player, memberData.getId());
 
-            messageHandler.send(player, "clan.del-home-sender");
+                    if (homeData == null) {
+                        return;
+                    }
 
-            globalNotifier.notify(
-                    clan.getOnlineMembers(),
-                    "clan.del-home-members"
-            );
-        });
+                    homeData.setHome(null);
+
+                    messageHandler.send(player, "clan.del-home-sender");
+
+                    globalNotifier.notify(
+                            memberData.getOnlineIdMembers(),
+                            "clan.del-home-members"
+                    );
+
+                    save(player, homeData);
+                });
     }
 
     @Override
     public void teleportToHome(Player player, User user) {
-        Clan clan = clanUserService.getClan(player, user);
+        ClanHomeData homeData = getData(player, user.getClanTag());
 
-        if (clan == null) {
+        if (homeData == null) {
             return;
         }
 
-        ServerLocation home = clan.getHome();
+        ServerLocation home = homeData.getHome();
 
         if (home == null) {
             messageHandler.send(player, "clan.no-home");

@@ -6,19 +6,17 @@ import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
-import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
+import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
-public class ClanPart implements PartFactory {
+public class ClanRecruitmentPart implements PartFactory {
 
-    public static final String CLAN_CONTEXT_KEY = "clan";
-
-    @Inject private ClanService clanService;
+    @Inject private ClanRecruitmentService recruitmentService;
 
     @Override
     public CommandPart createPart(
@@ -26,18 +24,19 @@ public class ClanPart implements PartFactory {
             List<? extends Annotation> list) {
         return new ArgumentPart() {
             @Override
-            public List<Clan> parseValue(
+            public List<ClanRecruitmentData> parseValue(
                     CommandContext commandContext,
                     ArgumentStack argumentStack,
                     CommandPart commandPart
             ) throws ArgumentParseException {
-                Clan clan = clanService.getClan(argumentStack.next());
+                ClanRecruitmentData recruitmentData =
+                        recruitmentService.getData(argumentStack.next());
 
-                if (clan == null) {
+                if (recruitmentData == null) {
                     throw new ArgumentParseException("%translatable:clan.not-found%");
                 }
 
-                return Collections.singletonList(clan);
+                return Collections.singletonList(recruitmentData);
             }
 
             @Override

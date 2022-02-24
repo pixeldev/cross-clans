@@ -1,12 +1,13 @@
 package net.cosmogrp.crclans.clan.recruitment;
 
 import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.CrClansPlugin;
+import net.cosmogrp.crclans.clan.AbstractClanService;
+import net.cosmogrp.crclans.clan.member.ClanMember;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
-import net.cosmogrp.crclans.user.clan.ClanUserService;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,26 +17,38 @@ import javax.inject.Inject;
 import java.util.UUID;
 
 public class SimpleClanRecruitmentService
+        extends AbstractClanService<ClanRecruitmentData>
         implements ClanRecruitmentService {
 
     @Inject private GlobalNotifier globalNotifier;
-    @Inject private ClanUserService clanUserService;
     @Inject private MessageHandler messageHandler;
     @Inject private FileConfiguration configuration;
-    @Inject private ClanService clanService;
+
+    @Inject private ClanMemberService memberService;
+
+    public SimpleClanRecruitmentService() {
+        super(ClanRecruitmentData::create);
+    }
 
     @Override
     public void sendRecruitment(
             Player sender, User user,
             ClusteredUser target
     ) {
-        Clan clan = clanUserService.getClan(sender, user);
+        String tag = memberService.getClanTag(sender, user);
 
-        if (clan == null) {
+        if (tag == null) {
             return;
         }
 
-        ClanMember clanMember = clan.getMember(sender.getUniqueId());
+        ClanMemberData memberData =
+                memberService.getData(sender, tag);
+
+        if (memberData == null) {
+            return;
+        }
+
+        ClanMember clanMember = memberData.getMember(sender.getUniqueId());
 
         if (clanMember == null) {
             // this should never happen
@@ -49,17 +62,23 @@ public class SimpleClanRecruitmentService
 
         UUID targetId = target.getPlayerId();
 
-        if (clan.isMember(targetId)) {
+        if (memberData.isMember(targetId)) {
             messageHandler.send(sender, "clan.already-member");
             return;
         }
 
+        ClanRecruitmentData recruitmentData = getData(sender, tag);
+
+        if (recruitmentData == null) {
+            return;
+        }
+
         RecruitmentRequest request =
-                clan.getRequest(targetId);
+                recruitmentData.getRequest(targetId);
 
         if (request != null) {
             if (request.isExpired()) {
-                clan.removeRequest(request);
+                recruitmentData.removeRequest(request);
             } else {
                 messageHandler.send(sender, "clan.already-invited");
                 return;
@@ -67,11 +86,10 @@ public class SimpleClanRecruitmentService
         }
 
         int time = configuration.getInt("clans.invite-expiry");
-        request = RecruitmentRequest.create(
-                target, time
-        );
+        request = RecruitmentRequest
+                .create(target, time);
 
-        clan.addRequest(request);
+        recruitmentData.addRequest(request);
         messageHandler.sendReplacing(
                 sender, "clan.invited-sender",
                 "%target%", target.asPlayer().getName()
@@ -80,83 +98,105 @@ public class SimpleClanRecruitmentService
         globalNotifier.singleNotifyIn(
                 target.getPlayerId(), "minimessage",
                 "clan.invited-target",
-                "%tag%", clan.getId(),
+                "%tag%", memberData.getId(),
                 "%time%", time
         );
 
-        clanService.saveClan(sender, clan);
+        save(sender, recruitmentData);
     }
 
     @Override
     public void acceptRecruitment(
             Player sender, User user,
-            Clan clan
+            ClanRecruitmentData data
     ) {
         if (user.hasClan()) {
             messageHandler.send(sender, "clan.already-in-clan");
             return;
         }
 
-        RecruitmentRequest request = checkRequest(clan, sender);
+        RecruitmentRequest request = checkRequest(data, sender);
 
         if (request == null) {
+            return;
+        }
+
+        String tag = data.getId();
+        ClanMemberData memberData = memberService
+                .getData(sender, tag);
+
+        if (memberData == null) {
             return;
         }
 
         messageHandler.sendReplacing(
                 sender, "clan.invite-accepted-target",
-                "%tag%", clan.getId()
+                "%tag%", tag
         );
 
         globalNotifier.singleNotify(
-                clan.getOwner().getPlayerId(),
+                memberData.getOwner().getPlayerId(),
                 "clan.invite-accepted-sender",
                 "%target%", sender.getName()
         );
 
         globalNotifier.notify(
-                clan.getOnlineMembers(),
+                memberData.getOnlineIdMembers(),
                 "clan.invite-accepted-members",
                 "%target%", sender.getName()
         );
 
-        user.setClan(clan);
-        clan.addMember(sender);
-        clan.removeRequest(request);
+        user.setClan(tag);
+        memberData.addMember(sender);
+        data.removeRequest(request);
 
-        clanService.saveClan(sender, clan);
+        save(sender, data);
+        memberService.save(sender, memberData);
     }
 
     @Override
     public void denyRecruitment(
-            Player sender, Clan clan
+            Player sender,
+            ClanRecruitmentData data
     ) {
-        RecruitmentRequest request = checkRequest(clan, sender);
+        RecruitmentRequest request = checkRequest(data, sender);
 
         if (request == null) {
             return;
         }
 
-        clan.removeRequest(request);
+        String tag = data.getId();
+        ClanMemberData memberData = memberService
+                .getData(sender, tag);
+
+        if (memberData == null) {
+            return;
+        }
+
+        data.removeRequest(request);
         messageHandler.sendReplacing(
                 sender, "clan.invite-deny-target",
-                "%tag%", clan.getId()
+                "%tag%", tag
         );
 
-        globalNotifier.singleNotify(
-                clan.getOwner().getPlayerId(),
-                "clan.invite-deny-sender",
-                "%target%", sender.getName()
-        );
+        ClanMember owner = memberData.getOwner();
 
-        clanService.saveClan(sender, clan);
+        if (owner.isOnline()) {
+            globalNotifier.singleNotify(
+                    owner.getPlayerId(),
+                    "clan.invite-deny-sender",
+                    "%target%", sender.getName()
+            );
+        }
+
+        save(sender, data);
     }
 
     private @Nullable RecruitmentRequest checkRequest(
-            Clan clan,
+            ClanRecruitmentData data,
             Player sender
     ) {
-        RecruitmentRequest request = clan.getRequest(sender.getUniqueId());
+        RecruitmentRequest request = data.getRequest(sender.getUniqueId());
 
         if (request == null) {
             messageHandler.send(sender, "clan.no-invite");
@@ -164,7 +204,7 @@ public class SimpleClanRecruitmentService
         }
 
         if (request.isExpired()) {
-            clan.removeRequest(request);
+            data.removeRequest(request);
             messageHandler.send(sender, "clan.invite-expired");
             return null;
         }

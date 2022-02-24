@@ -1,42 +1,63 @@
 package net.cosmogrp.crclans.clan;
 
-import com.google.gson.Gson;
-import com.mongodb.client.MongoDatabase;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.clan.channel.ClanChannelRegistry;
+import net.cosmogrp.crclans.clan.channel.SimpleClanChannelRegistry;
+import net.cosmogrp.crclans.clan.chat.ClanChatService;
+import net.cosmogrp.crclans.clan.chat.SimpleClanChatService;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandMessage;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
 import net.cosmogrp.crclans.clan.disband.SimpleClanDisbandService;
+import net.cosmogrp.crclans.clan.home.ClanHomeData;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
 import net.cosmogrp.crclans.clan.home.SimpleClanHomeService;
-import net.cosmogrp.crclans.clan.mod.ClanKickChannelListener;
-import net.cosmogrp.crclans.clan.mod.ClanKickMessage;
-import net.cosmogrp.crclans.clan.mod.ClanModerationService;
-import net.cosmogrp.crclans.clan.mod.SimpleClanModerationService;
+import net.cosmogrp.crclans.clan.inject.ClanServiceModule;
+import net.cosmogrp.crclans.clan.member.ClanKickChannelListener;
+import net.cosmogrp.crclans.clan.member.ClanKickMessage;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
+import net.cosmogrp.crclans.clan.member.SimpleClanMemberService;
+import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.clan.recruitment.SimpleClanRecruitmentService;
-import net.cosmogrp.storage.AsyncModelService;
-import net.cosmogrp.storage.model.meta.ModelMeta;
-import net.cosmogrp.storage.mongo.MongoModelService;
-import net.cosmogrp.storage.redis.RedisModelService;
 import net.cosmogrp.storage.redis.channel.Channel;
 import net.cosmogrp.storage.redis.connection.Redis;
-import net.cosmogrp.storage.redis.connection.RedisCache;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.inject.Singleton;
-import java.util.concurrent.Executor;
 
 public class ClanModule extends AbstractModule {
 
     @Override
     public void configure() {
-        bind(ClanService.class).to(SimpleClanService.class).singleton();
-        bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
-        bind(ClanModerationService.class).to(SimpleClanModerationService.class).singleton();
-        bind(ClanHomeService.class).to(SimpleClanHomeService.class).singleton();
+        install(
+                new ClanServiceModule<>(
+                        ClanDataService.KEY,
+                        ClanData::fromDocument, ClanData.class
+                ),
+                new ClanServiceModule<>(
+                        ClanRecruitmentService.KEY,
+                        ClanRecruitmentData::fromDocument, ClanRecruitmentData.class
+                ),
+                new ClanServiceModule<>(
+                        ClanHomeService.KEY,
+                        ClanHomeData::fromDocument, ClanHomeData.class
+                ),
+                new ClanServiceModule<>(
+                        ClanMemberService.KEY,
+                        ClanMemberData::fromDocument, ClanMemberData.class
+                )
+        );
+
+        bind(ClanChannelRegistry.class).to(SimpleClanChannelRegistry.class).singleton();
+
+        bind(ClanChatService.class).to(SimpleClanChatService.class).singleton();
         bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
+        bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
+        bind(ClanHomeService.class).to(SimpleClanHomeService.class).singleton();
+        bind(ClanDataService.class).to(SimpleClanDataService.class).singleton();
+        bind(ClanMemberService.class).to(SimpleClanMemberService.class).singleton();
     }
 
     @Provides
@@ -57,24 +78,6 @@ public class ClanModule extends AbstractModule {
         return redis.getMessenger()
                 .getChannel("disband", ClanDisbandMessage.class)
                 .addListener(listener);
-    }
-
-    @Provides @Singleton
-    public AsyncModelService<Clan> createService(
-            Executor executor, FileConfiguration configuration,
-            MongoDatabase mongoDatabase, Gson gson,
-            RedisCache redisCache
-    ) {
-        ModelMeta<Clan> modelMeta = new ModelMeta<>(Clan.class)
-                .addProperty("redis-table", "clans")
-                .addProperty("collection", configuration.getString("server-group") + ":clans");
-
-        return new MongoModelService<>(
-                executor, modelMeta,
-                new RedisModelService<>(executor, modelMeta, gson, redisCache),
-                mongoDatabase,
-                Clan::fromDocument
-        );
     }
 
 }

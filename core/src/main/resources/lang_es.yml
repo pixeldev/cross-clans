@@ -15,6 +15,7 @@ commands:
         offline: "&c¡Este jugador está desconectado!"
     clustered-player-not-found: "&cNo hay un jugador con ese nombre en el servidor!"
     clan:
+        channel-not-found: "&c¡No existe un canal con ese nombre!"
         not-found: "&c¡No se encontró el clan!"
         not-in-clan: "&cDebes pertenecer a un clan para hacer esto"
         self-not-found: "&c¡No se encontró tu clan!"
@@ -24,6 +25,8 @@ clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
     already-in-clan: "&c¡Ya estás en un clan, para poder crear uno debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
+
+    error-sending-message: "&c¡Ha ocurrido un error al enviar el mensaje, intenta de nuevo!"
 
     set-home-sender: "&f¡Has establecido la localización de la casa de tu clan!"
     set-home-members: "&f¡Se ha establecido la localización de la casa de tu clan!"
@@ -67,7 +70,7 @@ clan:
     moderator-left-clan-members: "&f¡El moderador &a%target% &fha dejado el clan&f!"
     error-leaving-clan: "&f¡Ha ocurrido un error al dejar el clan, intenta de nuevo!"
 
-    error-finding-clan: "&c¡Ha ocurrido un error al buscar tu clan, intenta de nuevo!"
+    error-finding-data: "&c¡Ha ocurrido un error al buscar la información del clan, intenta de nuevo!"
     not-owner: "&c¡Solo el dueño del clan puede hacer eso!"
 
     not-enough-money: "&c¡No tienes suficiente dinero para crear un clan!"
@@ -92,6 +95,15 @@ clan:
         - " &aCreador: &f%creator%"
         - " "
 
+channels:
+    prefix: "%path_channels.%channel%% >> %message%"
+    member: "&9Miembros"
+    allies: "&bAliados"
+
 user:
     not-found: "&cOcurrió un error al buscar tu información, si este error continúa contacta con un administrador"
     load-error: "&cNo pudimos obtener tu información, intenta de nuevo"
+
+    exit-channel: "&f¡Ahora estás en el chat global!"
+    already-in-channel: "&cYa estás en ese canal!"
+    change-channel: "&f¡Ahora estás en el canal de &a%channel% &ftodos tus mensajes serán envíados por ahí!"

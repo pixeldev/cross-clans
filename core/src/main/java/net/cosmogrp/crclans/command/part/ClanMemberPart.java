@@ -7,9 +7,9 @@ import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
-import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.member.ClanMember;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
 import org.bukkit.command.CommandSender;
@@ -26,8 +26,10 @@ import static net.cosmogrp.crclans.command.part.UserSenderPart.USER_CONTEXT_KEY;
 
 public class ClanMemberPart implements PartFactory {
 
+    public static final String MEMBER_CONTEXT_KEY = "clan-recruitment";
+
     @Inject private UserService userService;
-    @Inject private ClanService clanService;
+    @Inject private ClanMemberService memberService;
 
     @Override
     public CommandPart createPart(
@@ -55,16 +57,16 @@ public class ClanMemberPart implements PartFactory {
                     throw new ArgumentParseException("%translatable:clan.not-in-clan%");
                 }
 
-                Clan clan = clanService.getClan(clanTag);
+                ClanMemberData memberData = memberService.getData(clanTag);
 
-                if (clan == null) {
+                if (memberData == null) {
                     throw new ArgumentParseException("%translatable:clan.self-not-found%");
                 }
 
-                commandContext.setObject(Clan.class, ClanPart.CLAN_CONTEXT_KEY, clan);
+                commandContext.setObject(ClanMemberData.class, MEMBER_CONTEXT_KEY, memberData);
                 ClanMember clanMember = null;
 
-                for (ClanMember member : clan.getMembers()) {
+                for (ClanMember member : memberData.getMembers()) {
                     if (member.getPlayerName().equalsIgnoreCase(next)) {
                         clanMember = member;
                     }
@@ -103,9 +105,9 @@ public class ClanMemberPart implements PartFactory {
                     return Collections.emptyList();
                 }
 
-                Clan clan = clanService.getClan(clanTag);
+                ClanMemberData memberData = memberService.getData(clanTag);
 
-                if (clan == null) {
+                if (memberData == null) {
                     return Collections.emptyList();
                 }
 
@@ -114,7 +116,7 @@ public class ClanMemberPart implements PartFactory {
                         "";
 
                 List<String> suggestions = new ArrayList<>();
-                for (ClanMember member : clan.getMembers()) {
+                for (ClanMember member : memberData.getMembers()) {
                     String name = member.getPlayerName();
                     if (commandSender.getName().equals(name)) {
                         continue;

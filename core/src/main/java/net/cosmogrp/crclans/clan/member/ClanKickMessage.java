@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.clan.mod;
+package net.cosmogrp.crclans.clan.member;
 
 import java.util.UUID;
 

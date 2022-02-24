@@ -1,9 +1,6 @@
-package net.cosmogrp.crclans.clan.mod;
+package net.cosmogrp.crclans.clan.member;
 
-import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.clan.Clan;
-import net.cosmogrp.crclans.clan.ClanMember;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.AbstractClanService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
@@ -12,25 +9,56 @@ import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.storage.redis.channel.Channel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public class SimpleClanModerationService
-        implements ClanModerationService {
+public class SimpleClanMemberService
+        extends AbstractClanService<ClanMemberData>
+        implements ClanMemberService {
 
-    @Inject private MessageHandler messageHandler;
+    @Inject private UserService userService;
+
     @Inject private GlobalNotifier globalNotifier;
     @Inject private ClusteredUserRegistry clusteredUserRegistry;
 
-    @Inject private ClanService clanService;
-    @Inject private UserService userService;
-
     @Inject private Channel<ClanKickMessage> kickChannel;
 
+    public SimpleClanMemberService() {
+        super(ClanMemberData::create);
+    }
+
     @Override
-    public void kickMember(Player player, User user, Clan clan, ClanMember target) {
-        ClanMember clanMember = clan.getMember(user.getPlayerId());
+    public void createSync(Player creator, String tag) {
+        ClanMemberData memberData = ClanMemberData.create(tag);
+        ClanMember owner = ClanMember.fromPlayer(creator);
+
+        owner.setModerator(true);
+        memberData.setOwner(owner);
+        memberData.addMember(owner);
+
+        modelService.saveSync(memberData);
+    }
+
+    @Override
+    public @Nullable String getClanTag(Player player, User user) {
+        String clanTag = user.getClanTag();
+
+        if (clanTag == null) {
+            messageHandler.send(player, "clan.not-in-clan");
+        }
+
+        return clanTag;
+    }
+
+    @Override
+    public void kick(
+            Player player, User user,
+            ClanMemberData data, ClanMember target
+    ) {
+        ClanMember clanMember = data.getMember(user.getPlayerId());
 
         if (clanMember == null) {
             // this should never happen
@@ -42,7 +70,7 @@ public class SimpleClanModerationService
             return;
         }
 
-        if (target.isModerator() && !clan.isOwner(player)) {
+        if (target.isModerator()) {
             messageHandler.send(player, "clan.kick-mod");
             return;
         }
@@ -50,25 +78,26 @@ public class SimpleClanModerationService
         UUID targetId = target.getPlayerId();
         String targetName = target.getPlayerName();
 
-        clan.removeMember(targetId);
+        data.removeMember(targetId);
         messageHandler.sendReplacing(
                 player, "clan.kick-success-sender",
                 "%target%", targetName
         );
 
         globalNotifier.notify(
-                clan.getOnlineMembers(), "clan.kick-success-members",
+                data.getOnlineIdMembers(),
+                "clan.kick-success-members",
                 "%sender%", player.getName(),
                 "%target%", targetName
         );
 
-        clanService.saveClan(player, clan);
+        save(player, data);
 
         ClusteredUser clusteredTarget =
                 clusteredUserRegistry.find(targetName);
 
         if (clusteredTarget != null) {
-            String clanTag = clan.getId();
+            String clanTag = data.getId();
             if (notifyKick(targetId, clanTag)) {
                 return;
             }
@@ -81,9 +110,11 @@ public class SimpleClanModerationService
     }
 
     @Override
-    public void promoteMember(Player player, User user, Clan clan, ClanMember target) {
-        if (!clan.isOwner(player)) {
-            messageHandler.send(player, "clan.not-owner");
+    public void promote(
+            Player player, User user,
+            ClanMemberData data, ClanMember target
+    ) {
+        if (!checkOwner(player, data)) {
             return;
         }
 
@@ -99,7 +130,8 @@ public class SimpleClanModerationService
         );
 
         globalNotifier.notify(
-                clan.getOnlineMembers(), "clan.promote-success-members",
+                data.getOnlineIdMembers(),
+                "clan.promote-success-members",
                 "%sender%", player.getName(),
                 "%target%", target.getPlayerName()
         );
@@ -110,17 +142,19 @@ public class SimpleClanModerationService
                 "%sender%", player.getName()
         );
 
-        clanService.saveClan(player, clan);
+        save(player, data);
     }
 
     @Override
-    public void demoteMember(Player player, User user, Clan clan, ClanMember target) {
-        if (!clan.isOwner(player)) {
-            messageHandler.send(player, "clan.not-owner");
+    public void demote(
+            Player player, User user,
+            ClanMemberData data, ClanMember target
+    ) {
+        if (!checkOwner(player, data)) {
             return;
         }
 
-        if (clan.isOwner(target.getPlayerId())) {
+        if (data.isOwner(target.getPlayerId())) {
             messageHandler.send(player, "clan.cannot-demote-owner");
             return;
         }
@@ -137,7 +171,8 @@ public class SimpleClanModerationService
         );
 
         globalNotifier.notify(
-                clan.getOnlineMembers(), "clan.demote-success-members",
+                data.getOnlineIdMembers(),
+                "clan.demote-success-members",
                 "%sender%", player.getName(),
                 "%target%", target.getPlayerName()
         );
@@ -148,7 +183,7 @@ public class SimpleClanModerationService
                 "%sender%", player.getName()
         );
 
-        clanService.saveClan(player, clan);
+        save(player, data);
     }
 
     @Override
@@ -170,6 +205,40 @@ public class SimpleClanModerationService
                 player, "clan.kick-success-target",
                 "%tag%", clanId
         );
+
+        return true;
+    }
+
+    @Override
+    public void computeAsOwner(
+            Player player, User user,
+            Consumer<ClanMemberData> action
+    ) {
+        String tag = user.getClanTag();
+
+        if (tag == null) {
+            messageHandler.send(player, "clan.not-in-clan");
+            return;
+        }
+
+        ClanMemberData memberData = getData(player, tag);
+
+        if (memberData == null) {
+            return;
+        }
+
+        if (checkOwner(player, memberData)) {
+            action.accept(memberData);
+        }
+    }
+
+    private boolean checkOwner(
+            Player player, ClanMemberData memberData
+    ) {
+        if (!memberData.isOwner(player)) {
+            messageHandler.send(player, "clan.not-owner");
+            return false;
+        }
 
         return true;
     }

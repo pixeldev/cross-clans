@@ -4,6 +4,10 @@ import me.yushust.inject.AbstractModule;
 import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.adapt.AdaptionModuleFactory;
 import net.cosmogrp.crclans.clan.ClanModule;
+import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.channel.DefaultChannelLoader;
+import net.cosmogrp.crclans.clan.service.ClanServicesLoader;
+import net.cosmogrp.crclans.loader.Loader;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.notifier.NotifierModule;
 import net.cosmogrp.crclans.server.BungeeServerSender;
@@ -28,6 +32,7 @@ public class MainModule extends AbstractModule {
     @Override
     public void configure() {
         bind(Plugin.class).toInstance(plugin);
+        bind(CrClansPlugin.class).toInstance(plugin);
 
         FileConfiguration configuration = plugin.getConfig();
         bind(FileConfiguration.class).toInstance(configuration);
@@ -38,6 +43,11 @@ public class MainModule extends AbstractModule {
         bind(ServerData.class).toInstance(new ServerData(configuration));
         bind(ServerSender.class).to(BungeeServerSender.class).singleton();
         bind(LogHandler.class).toInstance(new LogHandler(plugin.getLogger()));
+
+        multibind(Loader.class)
+                .asSet()
+                .to(ClanServicesLoader.class)
+                .to(DefaultChannelLoader.class);
 
         install(
                 new RedisModule(), new DatabaseModule(),
