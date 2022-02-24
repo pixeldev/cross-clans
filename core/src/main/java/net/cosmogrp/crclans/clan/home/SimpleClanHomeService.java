@@ -65,10 +65,7 @@ public class SimpleClanHomeService
                         return;
                     }
 
-                    homeData.setHome(ServerLocation.centered(
-                            serverData,
-                            player
-                    ));
+                    homeData.setHome(null);
 
                     messageHandler.send(player, "clan.del-home-sender");
 
