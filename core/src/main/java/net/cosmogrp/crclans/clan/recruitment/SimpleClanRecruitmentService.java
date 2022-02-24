@@ -35,7 +35,12 @@ public class SimpleClanRecruitmentService
             Player sender, User user,
             ClusteredUser target
     ) {
-        String tag = user.getClanTag();
+        String tag = memberService.getClanTag(sender, user);
+
+        if (tag == null) {
+            return;
+        }
+
         ClanMemberData memberData =
                 memberService.getData(sender, tag);
 

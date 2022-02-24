@@ -9,6 +9,7 @@ import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import net.cosmogrp.storage.redis.channel.Channel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -39,6 +40,17 @@ public class SimpleClanMemberService
         memberData.addMember(owner);
 
         modelService.saveSync(memberData);
+    }
+
+    @Override
+    public @Nullable String getClanTag(Player player, User user) {
+        String clanTag = user.getClanTag();
+
+        if (clanTag == null) {
+            messageHandler.send(player, "clan.not-in-clan");
+        }
+
+        return clanTag;
     }
 
     @Override

@@ -115,7 +115,12 @@ public class SimpleClanDisbandService
 
     @Override
     public void leaveClan(Player player, User user) {
-        String tag = user.getClanTag();
+        String tag = memberService.getClanTag(player, user);
+
+        if (tag == null) {
+            return;
+        }
+
         ClanMemberData memberData = memberService.getData(player, tag);
 
         if (memberData == null) {
