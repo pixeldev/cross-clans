@@ -48,6 +48,8 @@ public class SimpleClanHomeService
                             memberData.getOnlineIdMembers(),
                             "clan.set-home-members"
                     );
+
+                    save(player, homeData);
                 }
         );
     }
@@ -74,6 +76,8 @@ public class SimpleClanHomeService
                             memberData.getOnlineIdMembers(),
                             "clan.del-home-members"
                     );
+
+                    save(player, homeData);
                 });
     }
 
