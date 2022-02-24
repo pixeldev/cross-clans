@@ -34,6 +34,7 @@ public class SimpleClanMemberService
         ClanMemberData memberData = ClanMemberData.create(tag);
         ClanMember owner = ClanMember.fromPlayer(creator);
 
+        owner.setModerator(true);
         memberData.setOwner(owner);
         memberData.addMember(owner);
 
