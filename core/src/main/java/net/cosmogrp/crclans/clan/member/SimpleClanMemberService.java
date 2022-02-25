@@ -54,6 +54,39 @@ public class SimpleClanMemberService
     }
 
     @Override
+    public void transferOwner(
+            Player player, User user,
+            ClanMember target
+    ) {
+        computeAsOwner(player, user, data -> {
+            data.setOwner(target);
+            target.setModerator(true);
+
+            Object[] replacements = {"%target%", target.getPlayerName()};
+
+            messageHandler.sendReplacing(
+                    player, "clan.transfer-owner-sender",
+                    replacements
+            );
+
+            globalNotifier.notify(
+                    data.getOnlineIdMembers(),
+                    "clan.transfer-owner-members",
+                    replacements
+            );
+
+            if (target.isOnline()) {
+                globalNotifier.singleNotify(
+                        target.getPlayerId(),
+                        "clan.transfer-owner-target"
+                );
+            }
+
+            save(player, data);
+        });
+    }
+
+    @Override
     public void kick(
             Player player, User user,
             ClanMemberData data, ClanMember target

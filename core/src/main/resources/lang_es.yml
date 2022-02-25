@@ -35,6 +35,10 @@ clan:
     del-home-sender: "&f¡Has borrado la localización de la casa de tu clan!"
     del-home-members: "&f¡Se ha borrado la localización de la casa de tu clan!"
 
+    transfer-owner-sender: "&f¡Has transferido el clan a &a%target%&f!"
+    transfer-owner-target: "&f¡Ahora eres el dueño del clan!"
+    transfer-owner-members: "&f¡Se ha transferido el clan a &a%target%&f!"
+
     already-mod: "&c¡Ese jugador ya es moderador!"
     promote-success-sender: "&f¡Has ascendido a &a%target% &fa moderador!"
     promote-success-members: "&f¡&a%target% &ffue ascendido por &a%sender% &fa moderador!"
