@@ -44,6 +44,14 @@ public class ClanCommand implements CommandClass {
         clanChatService.setChannel(sender, user, clanChannel);
     }
 
+    @Command(names = "changeleader", permission = "clans.changeleader")
+    public void runChangeLeader(
+            @Sender Player sender, @Sender User user,
+            ClanMember target
+    ) {
+        memberService.transferOwner(sender, user, target);
+    }
+
     @Command(names = "sethome", permission = "clans.sethome")
     public void runSetHome(@Sender Player sender, @Sender User user) {
         homeService.setHome(sender, user);
