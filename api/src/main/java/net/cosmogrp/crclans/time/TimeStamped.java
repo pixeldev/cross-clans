@@ -1,42 +1,16 @@
 package net.cosmogrp.crclans.time;
 
-import java.util.Map;
+import net.cosmogrp.storage.mongo.DocumentCodec;
+import org.jetbrains.annotations.Nullable;
 
-public class TimeStamped<T> {
+public interface TimeStamped extends DocumentCodec {
 
-    private final long time;
-    protected final Map<T, Long> timestamps;
+    @Nullable TimeStamp getTimestamp(String key);
 
-    protected TimeStamped(long time, Map<T, Long> timestamps) {
-        this.time = time;
-        this.timestamps = timestamps;
-    }
+    void bind(String key, long duration);
 
-    public long getTimestamp(T key) {
-        Long timestamp = timestamps.get(key);
+    void unbind(String key);
 
-        if (timestamp == null) {
-            return -1;
-        }
+    boolean hasExpired(String key);
 
-        return timestamp;
-    }
-
-    public void bind(T key) {
-        timestamps.put(key, System.currentTimeMillis() + time);
-    }
-
-    public void unbind(T key) {
-        timestamps.remove(key);
-    }
-
-    public boolean hasExpired(T key) {
-        long timestamp = getTimestamp(key);
-
-        if (timestamp <= 0) {
-            return true;
-        }
-
-        return System.currentTimeMillis() > timestamp;
-    }
 }
