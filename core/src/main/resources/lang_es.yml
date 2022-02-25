@@ -19,6 +19,8 @@ commands:
         not-found: "&c¡No se encontró el clan!"
         not-in-clan: "&cDebes pertenecer a un clan para hacer esto"
         self-not-found: "&c¡No se encontró tu clan!"
+
+        member-not-self: "&c¡No puedes hacer esto contigo mismo!"
         member-not-found: "&c¡No se encontró un miembro en tu clan con ese nombre!"
 
 clan:

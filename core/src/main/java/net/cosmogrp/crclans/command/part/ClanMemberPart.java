@@ -76,6 +76,10 @@ public class ClanMemberPart implements PartFactory {
                     throw new ArgumentParseException("%translatable:clan.member-not-found%");
                 }
 
+                if (clanMember.getPlayerId().equals(user.getPlayerId())) {
+                    throw new ArgumentParseException("%translatable:clan.member-not-self%");
+                }
+
                 return Collections.singletonList(clanMember);
             }
 
