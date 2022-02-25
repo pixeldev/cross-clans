@@ -13,7 +13,7 @@ commands:
         unknown-or-offline: "&c¡Ese nombre es inválido o el jugador se encuentra desconectado!"
         unknown: "&c¡Ese nombre es inválido, por favor introduce uno válido!"
         offline: "&c¡Este jugador está desconectado!"
-    clustered-player-not-found: "&cNo hay un jugador con ese nombre en el servidor!"
+    clustered-player-not-found: "&c¡No hay un jugador con ese nombre en el servidor!"
     not-self: "&c¡No puedes hacer esto contigo mismo!"
     clan:
         channel-not-found: "&c¡No existe un canal con ese nombre!"
