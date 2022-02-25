@@ -10,6 +10,7 @@ import me.fixeddev.commandflow.stack.ArgumentStack;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import net.cosmogrp.crclans.user.cluster.ClusteredUserRegistry;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
@@ -39,6 +40,19 @@ public class ClusteredUserPart implements PartFactory {
 
                 if (clusteredUser == null) {
                     throw new ArgumentParseException("%translatable:clustered-player-not-found%");
+                }
+
+                CommandSender commandSender = commandContext.getObject(
+                        CommandSender.class,
+                        BukkitCommandManager.SENDER_NAMESPACE
+                );
+
+                if (!(commandSender instanceof Player player)) {
+                    throw new ArgumentParseException("%translatable:sender.only-player%");
+                }
+
+                if (clusteredUser.getPlayerId().equals(player.getUniqueId())) {
+                    throw new ArgumentParseException("%translatable:not-self%");
                 }
 
                 return Collections.singletonList(clusteredUser);
