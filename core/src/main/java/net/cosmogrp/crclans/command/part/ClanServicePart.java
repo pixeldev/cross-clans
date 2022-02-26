@@ -1,48 +1,64 @@
 package net.cosmogrp.crclans.command.part;
 
 import me.fixeddev.commandflow.CommandContext;
-import me.fixeddev.commandflow.annotated.part.PartFactory;
 import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import net.cosmogrp.crclans.clan.service.ClanService;
+import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 
-import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
-public record ClanServicePart<T extends Model & DocumentCodec>
-        (ClanService<T> clanService)
-        implements PartFactory {
+public class ClanServicePart<T extends Model & DocumentCodec>
+        implements ArgumentPart {
+
+    private final String name;
+    protected final ClanService<T> clanService;
+
+    public ClanServicePart(
+            String name,
+            ClanService<T> clanService
+    ) {
+        this.name = name;
+        this.clanService = clanService;
+    }
 
     @Override
-    public CommandPart createPart(
-            String name,
-            List<? extends Annotation> list) {
-        return new ArgumentPart() {
-            @Override
-            public List<T> parseValue(
-                    CommandContext commandContext,
-                    ArgumentStack argumentStack,
-                    CommandPart commandPart
-            ) throws ArgumentParseException {
-                T recruitmentData = clanService
-                        .getData(argumentStack.next());
+    public List<T> parseValue(
+            CommandContext commandContext,
+            ArgumentStack argumentStack,
+            CommandPart commandPart
+    ) throws ArgumentParseException {
+        User user = commandContext.getObject(
+                User.class,
+                UserSenderPart.USER_CONTEXT_KEY
+        );
 
-                if (recruitmentData == null) {
-                    throw new ArgumentParseException("%translatable:clan.not-found%");
-                }
+        if (user == null) {
+            throw new ArgumentParseException("%translatable:command.error%");
+        }
 
-                return Collections.singletonList(recruitmentData);
-            }
+        T data = clanService
+                .getData(argumentStack.next());
 
-            @Override
-            public String getName() {
-                return name;
-            }
-        };
+        if (data == null) {
+            throw new ArgumentParseException("%translatable:clan.not-found%");
+        }
+
+        String tag = user.getClanTag();
+        if (tag != null && tag.equals(data.getId())) {
+            throw new ArgumentParseException("%translatable:clan.not-self%");
+        }
+
+        return Collections.singletonList(data);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

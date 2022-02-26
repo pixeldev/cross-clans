@@ -17,6 +17,7 @@ commands:
     not-self: "&c¡No puedes hacer esto contigo mismo!"
     clan:
         channel-not-found: "&c¡No existe un canal con ese nombre!"
+        not-self: "&c¡No puedes hacer esto con tu mismo clan!"
         not-found: "&c¡No se encontró el clan!"
         not-in-clan: "&cDebes pertenecer a un clan para hacer esto"
         self-not-found: "&c¡No se encontró tu clan!"

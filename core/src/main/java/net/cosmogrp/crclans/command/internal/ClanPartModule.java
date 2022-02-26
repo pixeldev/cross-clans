@@ -12,10 +12,10 @@ import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
-import net.cosmogrp.crclans.command.part.ClanAllyDataPart;
+import net.cosmogrp.crclans.command.part.ClanAllyDataPartFactory;
 import net.cosmogrp.crclans.command.part.ClanChannelPart;
 import net.cosmogrp.crclans.command.part.ClanMemberPart;
-import net.cosmogrp.crclans.command.part.ClanServicePart;
+import net.cosmogrp.crclans.command.part.ClanServicePartFactory;
 import net.cosmogrp.crclans.command.part.ClusteredUserPart;
 import net.cosmogrp.crclans.command.part.UserPart;
 import net.cosmogrp.crclans.command.part.UserSenderPart;
@@ -31,7 +31,7 @@ public class ClanPartModule extends AbstractModule {
     @Inject private UserSenderPart userSenderPart;
     @Inject private ClanChannelPart clanChannelPart;
     @Inject private ClanMemberPart clanMemberPart;
-    @Inject private ClanAllyDataPart allyDataPart;
+    @Inject private ClanAllyDataPartFactory allyDataPart;
 
     @Inject private ClanRecruitmentService recruitmentService;
     @Inject private ClanAllyRequestService allyRequestService;
@@ -42,9 +42,9 @@ public class ClanPartModule extends AbstractModule {
         bindFactory(ClusteredUser.class, clusteredUserPart);
         bindFactory(User.class, userPart);
         bindFactory(ClanAllyData.class, allyDataPart);
-        bindFactory(ClanMemberData.class, new ClanServicePart<>(memberService));
-        bindFactory(ClanRecruitmentData.class, new ClanServicePart<>(recruitmentService));
-        bindFactory(ClanAllyRequestData.class, new ClanServicePart<>(allyRequestService));
+        bindFactory(ClanMemberData.class, new ClanServicePartFactory<>(memberService));
+        bindFactory(ClanRecruitmentData.class, new ClanServicePartFactory<>(recruitmentService));
+        bindFactory(ClanAllyRequestData.class, new ClanServicePartFactory<>(allyRequestService));
         bindFactory(ClanMember.class, clanMemberPart);
         bindFactory(ClanChannel.class, clanChannelPart);
         bindFactory(new Key(User.class, Sender.class), userSenderPart);
