@@ -1,7 +1,7 @@
 package net.cosmogrp.crclans.clan.chat;
 
 import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.clan.channel.ClanChannel;
+import net.cosmogrp.crclans.clan.channel.GlobalClanChannel;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 
@@ -16,7 +16,7 @@ public class SimpleClanChatService implements ClanChatService {
             Player player, User user,
             String channelId
     ) {
-        if (channelId.equals("global")) {
+        if (channelId.equals(GlobalClanChannel.ID)) {
             user.setChannelId(null);
             messageHandler.send(player, "user.exit-channel");
             return;
@@ -50,7 +50,7 @@ public class SimpleClanChatService implements ClanChatService {
 
         if (currentChannel != null &&
                 currentChannel.equals(channelId)) {
-            setChannel(player, user, "global");
+            setChannel(player, user, GlobalClanChannel.ID);
             return;
         }
 
