@@ -14,5 +14,6 @@ public class DefaultChannelLoader implements Loader {
     public void load() {
         channelRegistry.registerChannel(injector.getInstance(MemberClanChannel.class));
         channelRegistry.registerChannel(injector.getInstance(GlobalClanChannel.class));
+        channelRegistry.registerChannel(injector.getInstance(AllyClanChannel.class));
     }
 }
