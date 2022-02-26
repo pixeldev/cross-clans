@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import javax.inject.Inject;
 
 @Command(names = {"clan", "clans"})
-@SubCommandClasses({ClanAllyCommand.class})
+@SubCommandClasses({ClanAllyCommand.class, ClanEnemyCommand.class})
 public class ClanCommand implements CommandClass {
 
     @Inject private ClanRecruitmentService recruitmentService;
