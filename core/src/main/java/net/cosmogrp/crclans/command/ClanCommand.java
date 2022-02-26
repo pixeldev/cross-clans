@@ -43,7 +43,7 @@ public class ClanCommand implements CommandClass {
             @Sender Player sender, @Sender User user,
             ClanChannel clanChannel
     ) {
-        clanChatService.setChannel(sender, user, clanChannel);
+        clanChatService.setChannel(sender, user, clanChannel.getId());
     }
 
     @Command(names = "changeleader", permission = "clans.changeleader")

@@ -14,10 +14,8 @@ public class SimpleClanChatService implements ClanChatService {
     @Override
     public void setChannel(
             Player player, User user,
-            ClanChannel clanChannel
+            String channelId
     ) {
-        String channelId = clanChannel.getId();
-
         if (channelId.equals("global")) {
             user.setChannelId(null);
             messageHandler.send(player, "user.exit-channel");
@@ -32,7 +30,7 @@ public class SimpleClanChatService implements ClanChatService {
             return;
         }
 
-        user.setChannelId(clanChannel.getId());
+        user.setChannelId(channelId);
         messageHandler.sendReplacing(
                 player, "user.change-channel",
                 "%channel%",
@@ -41,6 +39,22 @@ public class SimpleClanChatService implements ClanChatService {
                         "channels." + channelId
                 )
         );
+    }
+
+    @Override
+    public void toggleChannel(
+            Player player, User user,
+            String channelId
+    ) {
+        String currentChannel = user.getChannelId();
+
+        if (currentChannel != null &&
+                currentChannel.equals(channelId)) {
+            setChannel(player, user, "global");
+            return;
+        }
+
+        setChannel(player, user, channelId);
     }
 
 }
