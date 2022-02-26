@@ -80,7 +80,13 @@ public class SimpleClanHomeService
 
     @Override
     public void teleportToHome(Player player, User user) {
-        ClanHomeData homeData = getData(player, user.getClanTag());
+        String tag = memberService.getClanTag(player, user);
+
+        if (tag == null) {
+            return;
+        }
+
+        ClanHomeData homeData = getData(player, tag);
 
         if (homeData == null) {
             return;
