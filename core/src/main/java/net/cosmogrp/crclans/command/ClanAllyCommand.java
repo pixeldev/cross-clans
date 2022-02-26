@@ -20,7 +20,7 @@ public class ClanAllyCommand implements CommandClass {
 
     @Command(names = "list")
     public void runList(@Sender Player sender, @Sender User user) {
-        allyService.sendAllies(sender, user);
+        allyService.sendList(sender, user);
     }
 
     @Command(names = "accept")
