@@ -8,6 +8,8 @@ import net.cosmogrp.crclans.clan.ally.ClanAllyRequestData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestService;
 import net.cosmogrp.crclans.clan.channel.ClanChannel;
 import net.cosmogrp.crclans.clan.member.ClanMember;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.command.part.ClanAllyDataPart;
@@ -33,12 +35,14 @@ public class ClanPartModule extends AbstractModule {
 
     @Inject private ClanRecruitmentService recruitmentService;
     @Inject private ClanAllyRequestService allyRequestService;
+    @Inject private ClanMemberService memberService;
 
     @Override
     public void configure() {
         bindFactory(ClusteredUser.class, clusteredUserPart);
         bindFactory(User.class, userPart);
         bindFactory(ClanAllyData.class, allyDataPart);
+        bindFactory(ClanMemberData.class, new ClanServicePart<>(memberService));
         bindFactory(ClanRecruitmentData.class, new ClanServicePart<>(recruitmentService));
         bindFactory(ClanAllyRequestData.class, new ClanServicePart<>(allyRequestService));
         bindFactory(ClanMember.class, clanMemberPart);
