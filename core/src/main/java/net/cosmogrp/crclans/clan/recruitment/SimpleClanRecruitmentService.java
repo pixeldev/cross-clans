@@ -206,6 +206,7 @@ public class SimpleClanRecruitmentService
         if (request.isExpired()) {
             data.removeRequest(request);
             messageHandler.send(sender, "clan.invite-expired");
+            save(sender, data);
             return null;
         }
 
