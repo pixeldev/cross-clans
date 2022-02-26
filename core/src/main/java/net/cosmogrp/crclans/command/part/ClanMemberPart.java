@@ -88,16 +88,7 @@ public class ClanMemberPart implements PartFactory {
                     CommandContext commandContext,
                     ArgumentStack stack
             ) {
-                CommandSender commandSender = commandContext.getObject(
-                        CommandSender.class,
-                        BukkitCommandManager.SENDER_NAMESPACE
-                );
-
-                if (!(commandSender instanceof Player player)) {
-                    return Collections.emptyList();
-                }
-
-                User user = userService.getUser(player.getUniqueId());
+                User user = PartHelper.getUser(userService, commandContext);
 
                 if (user == null) {
                     return Collections.emptyList();
@@ -121,10 +112,11 @@ public class ClanMemberPart implements PartFactory {
 
                 List<String> suggestions = new ArrayList<>();
                 for (ClanMember member : memberData.getMembers()) {
-                    String name = member.getPlayerName();
-                    if (commandSender.getName().equals(name)) {
+                    if (user.getPlayerId().equals(member.getPlayerId())) {
                         continue;
                     }
+
+                    String name = member.getPlayerName();
 
                     if (name.toLowerCase(Locale.ROOT).startsWith(next)) {
                         suggestions.add(name);
