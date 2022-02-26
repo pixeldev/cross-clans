@@ -110,6 +110,7 @@ public class SimpleClanAllyRequestService
 
                     globalNotifier.singleNotifyIn(
                             owner.getPlayerId(),
+                            "minimessage",
                             "clan.ally-request-target",
                             "%tag%", tag,
                             "%time%", time
