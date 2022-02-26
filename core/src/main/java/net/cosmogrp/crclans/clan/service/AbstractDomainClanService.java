@@ -45,14 +45,14 @@ public abstract class AbstractDomainClanService
         Collection<String> allies = enemyData.getAll();
 
         if (allies.isEmpty()) {
-            messageHandler.send(player, "clan." + key + ".no-allies");
+            messageHandler.send(player, "clan." + key + ".empty");
         } else {
             StringBuilder formattedAllies = new StringBuilder();
             int i = 0;
 
             for (String ally : allies) {
                 formattedAllies.append(messageHandler.replacing(
-                        player, "clan." + key + ".ally-format",
+                        player, "clan." + key + ".format",
                         "%tag%", ally
                 ));
 
