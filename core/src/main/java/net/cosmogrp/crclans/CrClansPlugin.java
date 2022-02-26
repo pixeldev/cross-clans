@@ -7,7 +7,7 @@ import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilderImpl;
 import me.fixeddev.commandflow.annotated.builder.AnnotatedCommandBuilder;
 import me.fixeddev.commandflow.annotated.part.PartInjector;
 import me.fixeddev.commandflow.annotated.part.defaults.DefaultsModule;
-import me.fixeddev.commandflow.brigadier.BrigadierCommandManager;
+import me.fixeddev.commandflow.bukkit.BukkitCommandManager;
 import me.fixeddev.commandflow.bukkit.factory.BukkitModule;
 import me.fixeddev.commandflow.translator.DefaultTranslator;
 import me.yushust.inject.Injector;
@@ -75,7 +75,7 @@ public class CrClansPlugin extends JavaPlugin
             getServer().getPluginManager().registerEvents(listener, this);
         }
 
-        CommandManager commandManager = new BrigadierCommandManager(this);
+        CommandManager commandManager = new BukkitCommandManager("crclans");
         commandManager.setTranslator(new DefaultTranslator(translatorProvider));
         commandManager.setUsageBuilder(usageBuilder);
 
