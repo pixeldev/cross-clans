@@ -13,12 +13,12 @@ public interface ClanAllyRequestService
     );
 
     void acceptAlly(
-            Player player, String target,
+            Player player, User user,
             ClanAllyRequestData data
     );
 
     void denyAlly(
-            Player player, String target,
+            Player player, User user,
             ClanAllyRequestData data
     );
 
