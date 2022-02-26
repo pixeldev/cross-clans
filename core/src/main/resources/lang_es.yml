@@ -37,8 +37,10 @@ clan:
         ally-format: "&a * &f%tag%"
         message:
             - " "
+            - "&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
             - " &fLista de aliados:"
             - "%allies%"
+            - "&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
             - " "
     ally-no-request: "&c¡No has recibido ninguna solicitud de alianza con este clan!"
     ally-accept-target-members: "&f¡Tu clan se ha aliado con el clan &a%tag%&f!"
