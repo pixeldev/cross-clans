@@ -3,6 +3,10 @@ package net.cosmogrp.crclans.clan.service;
 import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ClanData;
 import net.cosmogrp.crclans.clan.ClanDataService;
+import net.cosmogrp.crclans.clan.ally.ClanAllyData;
+import net.cosmogrp.crclans.clan.ally.ClanAllyRequestData;
+import net.cosmogrp.crclans.clan.ally.ClanAllyRequestService;
+import net.cosmogrp.crclans.clan.ally.ClanAllyService;
 import net.cosmogrp.crclans.clan.home.ClanHomeData;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
@@ -23,5 +27,7 @@ public class ClanServicesLoader implements Loader {
         plugin.registerService(ClanMemberData.class, ClanMemberService.class);
         plugin.registerService(ClanRecruitmentData.class, ClanRecruitmentService.class);
         plugin.registerService(ClanHomeData.class, ClanHomeService.class);
+        plugin.registerService(ClanAllyRequestData.class, ClanAllyRequestService.class);
+        plugin.registerService(ClanAllyData.class, ClanAllyService.class);
     }
 }
