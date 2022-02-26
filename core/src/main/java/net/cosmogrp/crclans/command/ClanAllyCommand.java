@@ -18,12 +18,12 @@ public class ClanAllyCommand implements CommandClass {
     @Inject private ClanAllyRequestService allyRequestService;
     @Inject private ClanAllyService allyService;
 
-    @Command(names = "list")
+    @Command(names = "list", permission = "clans.ally.list")
     public void runList(@Sender Player sender, @Sender User user) {
         allyService.sendList(sender, user);
     }
 
-    @Command(names = "accept")
+    @Command(names = "accept", permission = "clans.ally.accept")
     public void runAccept(
             @Sender Player sender, @Sender User user,
             ClanAllyRequestData requestData
@@ -31,7 +31,7 @@ public class ClanAllyCommand implements CommandClass {
         allyRequestService.acceptAlly(sender, user, requestData);
     }
 
-    @Command(names = "remove")
+    @Command(names = "remove", permission = "clans.ally.remove")
     public void runRemove(
             @Sender Player sender, @Sender User user,
             ClanAllyData allyData
@@ -39,7 +39,7 @@ public class ClanAllyCommand implements CommandClass {
         allyService.removeAlly(sender, user, allyData);
     }
 
-    @Command(names = "deny")
+    @Command(names = "deny", permission = "clans.ally.deny")
     public void runDeny(
             @Sender Player sender, @Sender User user,
             ClanAllyRequestData requestData
@@ -47,7 +47,7 @@ public class ClanAllyCommand implements CommandClass {
         allyRequestService.denyAlly(sender, user, requestData);
     }
 
-    @Command(names = "add")
+    @Command(names = "add", permission = "clans.ally.add")
     public void runAdd(
             @Sender Player sender, @Sender User user,
             String targetTag
