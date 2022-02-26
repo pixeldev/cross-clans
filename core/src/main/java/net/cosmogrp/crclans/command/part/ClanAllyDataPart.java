@@ -61,7 +61,7 @@ public class ClanAllyDataPart implements PartFactory {
                     return Collections.emptyList();
                 }
 
-                String next = stack.hasNext() ? "" :
+                String next = !stack.hasNext() ? "" :
                         stack.next().toLowerCase(Locale.ROOT);
                 List<String> suggestions = new ArrayList<>();
 
