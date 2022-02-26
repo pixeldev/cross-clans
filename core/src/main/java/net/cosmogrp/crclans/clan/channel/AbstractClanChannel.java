@@ -47,5 +47,12 @@ abstract class AbstractClanChannel implements ClanChannel {
         return true;
     }
 
+    /**
+     * This method is going to be called from
+     * an async thread since receiving targets
+     * is a potentially long operation.
+     * @param clanTag The clan tag to get targets for.
+     * @return The targets for the message.
+     */
     protected abstract @Nullable Set<UUID> makeTargets(String clanTag);
 }
