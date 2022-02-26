@@ -30,7 +30,16 @@ public class AllyClanChannel extends AbstractClanChannel {
             return null;
         }
 
-        Set<UUID> targets = new HashSet<>();
+        ClanMemberData currentMemberData = memberService.getData(clanTag);
+
+        if (currentMemberData == null) {
+            return null;
+        }
+
+        Set<UUID> targets = new HashSet<>(
+                currentMemberData.getOnlineIdMembers()
+        );
+
         Collection<String> allies = allyData.getAllies();
 
         for (String allyTag : allies) {
