@@ -32,6 +32,12 @@ clan:
 
     already-ally: "&c¡Ya estás aliado con este clan!"
     already-ally-request: "&c¡Ya has enviado una solicitud de alianza con este clan!"
+    ally-no-request: "&c¡No has recibido ninguna solicitud de alianza con este clan!"
+    ally-accepted-target-members: "&f¡Tu clan se ha aliado con el clan &a%tag%&f!"
+    ally-accepted-members: "&f¡El clan &a%tag%&f se ha aliado con tu clan!"
+    ally-deny-target-members: "&f¡Tu clan ha denegado la solicitud de alianza con el clan &a%tag%&f!"
+    ally-deny-members: "&f¡El clan &a%tag%&f ha denegado la solicitud de alianza con tu clan!"
+    ally-request-expired: "&c¡La solicitud de alianza con este clan ha expirado!"
     ally-request-offline: "&c¡No se puede enviar una solicitud de alianza ya que el dueño del otro clan está desconectado!"
     ally-request-self: "&c¡No puedes enviar una solicitud de alianza a ti mismo!"
     ally-request-sender: "&f¡Has enviado una solicitud de alianza al clan &a%tag%&f!"
