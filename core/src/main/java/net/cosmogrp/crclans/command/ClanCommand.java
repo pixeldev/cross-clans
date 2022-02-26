@@ -6,7 +6,9 @@ import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.clan.ClanDataService;
+import net.cosmogrp.crclans.clan.channel.AllyClanChannel;
 import net.cosmogrp.crclans.clan.channel.ClanChannel;
+import net.cosmogrp.crclans.clan.channel.MemberClanChannel;
 import net.cosmogrp.crclans.clan.chat.ClanChatService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
@@ -44,6 +46,16 @@ public class ClanCommand implements CommandClass {
             ClanChannel clanChannel
     ) {
         clanChatService.setChannel(sender, user, clanChannel.getId());
+    }
+
+    @Command(names = "chat", permission = "clans.chat")
+    public void runChat(@Sender Player sender, @Sender User user) {
+        clanChatService.toggleChannel(sender, user, MemberClanChannel.ID);
+    }
+
+    @Command(names = "chatally", permission = "clans.allychat")
+    public void runChatAlly(@Sender Player sender, @Sender User user) {
+        clanChatService.toggleChannel(sender, user, AllyClanChannel.ID);
     }
 
     @Command(names = "changeleader", permission = "clans.changeleader")
