@@ -9,11 +9,13 @@ import java.util.UUID;
 
 public class MemberClanChannel extends AbstractClanChannel {
 
+    public static String ID = "member";
+
     @Inject private ClanMemberService memberService;
 
     @Override
     public String getId() {
-        return "members";
+        return ID;
     }
 
     @Override

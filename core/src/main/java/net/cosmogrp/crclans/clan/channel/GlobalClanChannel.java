@@ -7,9 +7,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public class GlobalClanChannel extends AbstractClanChannel {
+    public static String ID = "global";
+
     @Override
     public String getId() {
-        return "global";
+        return ID;
     }
 
     @Override

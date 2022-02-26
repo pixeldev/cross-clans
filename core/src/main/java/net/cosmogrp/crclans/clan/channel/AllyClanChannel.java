@@ -14,12 +14,14 @@ import java.util.UUID;
 
 public class AllyClanChannel extends AbstractClanChannel {
 
+    public static String ID = "allies";
+
     @Inject private ClanAllyService allyService;
     @Inject private ClanMemberService memberService;
 
     @Override
     public String getId() {
-        return "allies";
+        return ID;
     }
 
     @Override
