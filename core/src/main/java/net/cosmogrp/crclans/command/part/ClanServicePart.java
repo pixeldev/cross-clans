@@ -6,17 +6,17 @@ import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
-import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
-import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
+import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.storage.model.Model;
+import net.cosmogrp.storage.mongo.DocumentCodec;
 
-import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
-public class ClanRecruitmentPart implements PartFactory {
-
-    @Inject private ClanRecruitmentService recruitmentService;
+public record ClanServicePart<T extends Model & DocumentCodec>
+        (ClanService<T> clanService)
+        implements PartFactory {
 
     @Override
     public CommandPart createPart(
@@ -24,13 +24,13 @@ public class ClanRecruitmentPart implements PartFactory {
             List<? extends Annotation> list) {
         return new ArgumentPart() {
             @Override
-            public List<ClanRecruitmentData> parseValue(
+            public List<T> parseValue(
                     CommandContext commandContext,
                     ArgumentStack argumentStack,
                     CommandPart commandPart
             ) throws ArgumentParseException {
-                ClanRecruitmentData recruitmentData =
-                        recruitmentService.getData(argumentStack.next());
+                T recruitmentData = clanService
+                        .getData(argumentStack.next());
 
                 if (recruitmentData == null) {
                     throw new ArgumentParseException("%translatable:clan.not-found%");
