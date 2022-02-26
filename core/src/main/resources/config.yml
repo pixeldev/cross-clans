@@ -18,6 +18,8 @@ clans:
 
     # expiry time in seconds
     invite-expiry: 600
+    ally-request-expiry: 600
+
     create-cost: 100
 
     # default pattern with allow a-z and 0-9

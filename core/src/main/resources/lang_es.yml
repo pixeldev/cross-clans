@@ -26,8 +26,22 @@ clan:
     already-exists: "&c¡Ya existe un clan con ese tag!"
     already-in-clan: "&c¡Ya estás en un clan, para poder hacer esto debes deshacer o salir del actual!"
     not-in-clan: "&c¡No estás en un clan!"
+    save-failed: "&c¡Ha ocurrido un error al actualizar la información del clan!"
 
     error-sending-message: "&c¡Ha ocurrido un error al enviar el mensaje, intenta de nuevo!"
+
+    already-ally: "&c¡Ya estás aliado con este clan!"
+    already-ally-request: "&c¡Ya has enviado una solicitud de alianza con este clan!"
+    ally-request-offline: "&c¡No se puede enviar una solicitud de alianza ya que el dueño del otro clan está desconectado!"
+    ally-request-self: "&c¡No puedes enviar una solicitud de alianza a ti mismo!"
+    ally-request-sender: "&f¡Has enviado una solicitud de alianza al clan &a%tag%&f!"
+    ally-request-members: "&f¡Se ha envíado una solicitud de alianza al clan &a%tag%&f!"
+    ally-request-target:
+        - " "
+        - " <white>Solicitud de alianza del clan <green>%tag%"
+        - " <white>¡Esta solicitud expirará en <green>%time% <white>segundos!"
+        - " <click:run_command:/clan ally accept %tag%><hover:show_text:'<green>¡Clic para aceptar!'><green>Aceptar</hover></click>  <gray>|  <click:run_command:/clan ally deny %tag%><hover:show_text:'<red>¡Clic para denegar!'><red>Denegar</hover></click>"
+        - " "
 
     set-home-sender: "&f¡Has establecido la localización de la casa de tu clan!"
     set-home-members: "&f¡Se ha establecido la localización de la casa de tu clan!"
