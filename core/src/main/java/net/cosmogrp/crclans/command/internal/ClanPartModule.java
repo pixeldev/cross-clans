@@ -3,12 +3,14 @@ package net.cosmogrp.crclans.command.internal;
 import me.fixeddev.commandflow.annotated.part.AbstractModule;
 import me.fixeddev.commandflow.annotated.part.Key;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.cosmogrp.crclans.clan.ally.ClanAllyData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestService;
 import net.cosmogrp.crclans.clan.channel.ClanChannel;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
+import net.cosmogrp.crclans.command.part.ClanAllyDataPart;
 import net.cosmogrp.crclans.command.part.ClanChannelPart;
 import net.cosmogrp.crclans.command.part.ClanMemberPart;
 import net.cosmogrp.crclans.command.part.ClanServicePart;
@@ -27,6 +29,7 @@ public class ClanPartModule extends AbstractModule {
     @Inject private UserSenderPart userSenderPart;
     @Inject private ClanChannelPart clanChannelPart;
     @Inject private ClanMemberPart clanMemberPart;
+    @Inject private ClanAllyDataPart allyDataPart;
 
     @Inject private ClanRecruitmentService recruitmentService;
     @Inject private ClanAllyRequestService allyRequestService;
@@ -35,6 +38,7 @@ public class ClanPartModule extends AbstractModule {
     public void configure() {
         bindFactory(ClusteredUser.class, clusteredUserPart);
         bindFactory(User.class, userPart);
+        bindFactory(ClanAllyData.class, allyDataPart);
         bindFactory(ClanRecruitmentData.class, new ClanServicePart<>(recruitmentService));
         bindFactory(ClanAllyRequestData.class, new ClanServicePart<>(allyRequestService));
         bindFactory(ClanMember.class, clanMemberPart);
