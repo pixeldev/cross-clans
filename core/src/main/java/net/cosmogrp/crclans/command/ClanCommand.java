@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.command;
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.clan.ClanDataService;
 import net.cosmogrp.crclans.clan.channel.ClanChannel;
@@ -22,6 +23,7 @@ import org.bukkit.entity.Player;
 import javax.inject.Inject;
 
 @Command(names = {"clan", "clans"})
+@SubCommandClasses({ClanAllyCommand.class})
 public class ClanCommand implements CommandClass {
 
     @Inject private ClanRecruitmentService recruitmentService;
