@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 public interface ClanEnemyService extends DomainClanService<ClanEnemyData> {
 
+    String KEY = "clan-enemy";
+
     void addEnemy(
             Player sender, User user,
             ClanMemberData targetMemberData

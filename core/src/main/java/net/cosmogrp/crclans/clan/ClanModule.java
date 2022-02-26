@@ -19,6 +19,9 @@ import net.cosmogrp.crclans.clan.disband.ClanDisbandChannelListener;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandMessage;
 import net.cosmogrp.crclans.clan.disband.ClanDisbandService;
 import net.cosmogrp.crclans.clan.disband.SimpleClanDisbandService;
+import net.cosmogrp.crclans.clan.enemy.ClanEnemyData;
+import net.cosmogrp.crclans.clan.enemy.ClanEnemyService;
+import net.cosmogrp.crclans.clan.enemy.SimpleClanEnemyService;
 import net.cosmogrp.crclans.clan.home.ClanHomeData;
 import net.cosmogrp.crclans.clan.home.ClanHomeService;
 import net.cosmogrp.crclans.clan.home.SimpleClanHomeService;
@@ -64,12 +67,17 @@ public class ClanModule extends AbstractModule {
                 new ClanServiceModule<>(
                         ClanAllyRequestService.KEY,
                         ClanAllyRequestData::fromDocument, ClanAllyRequestData.class
+                ),
+                new ClanServiceModule<>(
+                        ClanEnemyService.KEY,
+                        ClanEnemyData::fromDocument, ClanEnemyData.class
                 )
         );
 
         bind(ClanChannelRegistry.class).to(SimpleClanChannelRegistry.class).singleton();
 
         bind(ClanChatService.class).to(SimpleClanChatService.class).singleton();
+        bind(ClanEnemyService.class).to(SimpleClanEnemyService.class).singleton();
         bind(ClanAllyService.class).to(SimpleClanAllyService.class).singleton();
         bind(ClanAllyRequestService.class).to(SimpleClanAllyRequestService.class).singleton();
         bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
