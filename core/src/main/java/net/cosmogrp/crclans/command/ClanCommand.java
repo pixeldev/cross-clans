@@ -5,7 +5,7 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
-import net.cosmogrp.crclans.clan.ClanDataService;
+import net.cosmogrp.crclans.clan.data.ClanDataService;
 import net.cosmogrp.crclans.clan.channel.AllyClanChannel;
 import net.cosmogrp.crclans.clan.channel.ClanChannel;
 import net.cosmogrp.crclans.clan.channel.MemberClanChannel;

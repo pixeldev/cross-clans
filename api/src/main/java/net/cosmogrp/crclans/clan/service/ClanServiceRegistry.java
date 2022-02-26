@@ -1,4 +1,4 @@
-package net.cosmogrp.crclans.clan;
+package net.cosmogrp.crclans.clan.service;
 
 import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.mongo.DocumentCodec;

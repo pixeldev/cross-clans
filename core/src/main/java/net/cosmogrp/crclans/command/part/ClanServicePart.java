@@ -6,7 +6,7 @@ import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 

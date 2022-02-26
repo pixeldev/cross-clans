@@ -1,6 +1,7 @@
-package net.cosmogrp.crclans.clan;
+package net.cosmogrp.crclans.clan.service;
 
 import me.yushust.message.MessageHandler;
+import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.storage.dist.CachedRemoteModelService;
 import net.cosmogrp.storage.model.Model;

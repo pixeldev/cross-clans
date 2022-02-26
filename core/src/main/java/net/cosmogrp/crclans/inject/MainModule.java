@@ -4,7 +4,6 @@ import me.yushust.inject.AbstractModule;
 import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.adapt.AdaptionModuleFactory;
 import net.cosmogrp.crclans.clan.ClanModule;
-import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.channel.DefaultChannelLoader;
 import net.cosmogrp.crclans.clan.service.ClanServicesLoader;
 import net.cosmogrp.crclans.loader.Loader;

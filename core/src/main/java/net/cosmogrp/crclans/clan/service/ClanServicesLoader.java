@@ -1,8 +1,8 @@
 package net.cosmogrp.crclans.clan.service;
 
 import net.cosmogrp.crclans.CrClansPlugin;
-import net.cosmogrp.crclans.clan.ClanData;
-import net.cosmogrp.crclans.clan.ClanDataService;
+import net.cosmogrp.crclans.clan.data.ClanData;
+import net.cosmogrp.crclans.clan.data.ClanDataService;
 import net.cosmogrp.crclans.clan.ally.ClanAllyData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestService;

@@ -1,6 +1,6 @@
 package net.cosmogrp.crclans.clan.member;
 
-import net.cosmogrp.crclans.clan.AbstractClanService;
+import net.cosmogrp.crclans.clan.service.AbstractClanService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;

@@ -1,6 +1,8 @@
-package net.cosmogrp.crclans.clan;
+package net.cosmogrp.crclans.clan.service;
 
 import me.yushust.inject.Injector;
+import net.cosmogrp.crclans.clan.service.ClanService;
+import net.cosmogrp.crclans.clan.service.ClanServiceRegistry;
 import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.mongo.DocumentCodec;
 

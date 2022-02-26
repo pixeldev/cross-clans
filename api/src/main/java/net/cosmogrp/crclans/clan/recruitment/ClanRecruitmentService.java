@@ -1,6 +1,6 @@
 package net.cosmogrp.crclans.clan.recruitment;
 
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.cluster.ClusteredUser;
 import org.bukkit.entity.Player;

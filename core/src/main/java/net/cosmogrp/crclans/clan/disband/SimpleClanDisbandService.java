@@ -5,7 +5,7 @@ import net.cosmogrp.crclans.CrClansPlugin;
 import net.cosmogrp.crclans.clan.ally.ClanAllyData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
-import net.cosmogrp.crclans.clan.ClanService;
+import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.log.LogHandler;

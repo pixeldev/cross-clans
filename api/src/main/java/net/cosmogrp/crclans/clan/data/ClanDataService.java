@@ -1,5 +1,6 @@
-package net.cosmogrp.crclans.clan;
+package net.cosmogrp.crclans.clan.data;
 
+import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 

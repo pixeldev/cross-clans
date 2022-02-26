@@ -1,6 +1,10 @@
-package net.cosmogrp.crclans.clan;
+package net.cosmogrp.crclans.clan.data;
 
 import net.cosmogrp.crclans.CrClansPlugin;
+import net.cosmogrp.crclans.clan.data.ClanData;
+import net.cosmogrp.crclans.clan.data.ClanDataService;
+import net.cosmogrp.crclans.clan.service.AbstractClanService;
+import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;

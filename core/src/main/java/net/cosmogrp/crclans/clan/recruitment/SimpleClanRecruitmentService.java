@@ -1,8 +1,7 @@
 package net.cosmogrp.crclans.clan.recruitment;
 
 import me.yushust.message.MessageHandler;
-import net.cosmogrp.crclans.CrClansPlugin;
-import net.cosmogrp.crclans.clan.AbstractClanService;
+import net.cosmogrp.crclans.clan.service.AbstractClanService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
