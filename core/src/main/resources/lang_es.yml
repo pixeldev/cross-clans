@@ -30,12 +30,23 @@ clan:
 
     error-sending-message: "&c¡Ha ocurrido un error al enviar el mensaje, intenta de nuevo!"
 
+    enemy-list:
+        empty: "&c¡No tienes ningún clan enemigo!"
+        format: "&c * &f%tag%"
+        message:
+            - " "
+            - "&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+            - " &fLista de aliados:"
+            - "%allies%"
+            - "&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+            - " "
+
     already-ally: "&c¡Ya estás aliado con este clan!"
     already-ally-request: "&c¡Ya has enviado una solicitud de alianza con este clan!"
     not-ally: "&c¡No estás aliado con este clan!"
     ally-list:
-        no-allies: "&c¡No tienes ningún clan aliado!"
-        ally-format: "&a * &f%tag%"
+        empty: "&c¡No tienes ningún clan aliado!"
+        format: "&a * &f%tag%"
         message:
             - " "
             - "&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
