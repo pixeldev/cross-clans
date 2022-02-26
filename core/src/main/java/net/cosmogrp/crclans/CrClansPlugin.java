@@ -4,6 +4,7 @@ import com.mongodb.client.MongoClient;
 import me.fixeddev.commandflow.CommandManager;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilderImpl;
+import me.fixeddev.commandflow.annotated.builder.AnnotatedCommandBuilder;
 import me.fixeddev.commandflow.annotated.part.PartInjector;
 import me.fixeddev.commandflow.annotated.part.defaults.DefaultsModule;
 import me.fixeddev.commandflow.brigadier.BrigadierCommandManager;
@@ -84,7 +85,10 @@ public class CrClansPlugin extends JavaPlugin
         partInjector.install(clanPartModule);
 
         AnnotatedCommandTreeBuilder builder =
-                new AnnotatedCommandTreeBuilderImpl(partInjector);
+                new AnnotatedCommandTreeBuilderImpl(
+                        AnnotatedCommandBuilder.create(partInjector),
+                        (clazz, parent) -> injector.getInstance(clazz)
+                );
 
         commandManager.registerCommands(builder.fromClass(clanCommand));
 
