@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 public interface ClanAllyRequestService
         extends ClanService<ClanAllyRequestData> {
 
+    String KEY = "clan-ally-request";
+
     void sendAllyRequest(
             Player player, User user,
             String target

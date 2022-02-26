@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 
 public interface ClanAllyService extends ClanService<ClanAllyData> {
 
+    String KEY = "clan-ally";
+
     void sendAllies(Player sender, User user);
 
 }

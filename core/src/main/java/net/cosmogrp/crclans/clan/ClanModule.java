@@ -2,6 +2,12 @@ package net.cosmogrp.crclans.clan;
 
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.Provides;
+import net.cosmogrp.crclans.clan.ally.ClanAllyData;
+import net.cosmogrp.crclans.clan.ally.ClanAllyRequestData;
+import net.cosmogrp.crclans.clan.ally.ClanAllyRequestService;
+import net.cosmogrp.crclans.clan.ally.ClanAllyService;
+import net.cosmogrp.crclans.clan.ally.SimpleClanAllyRequestService;
+import net.cosmogrp.crclans.clan.ally.SimpleClanAllyService;
 import net.cosmogrp.crclans.clan.channel.ClanChannelRegistry;
 import net.cosmogrp.crclans.clan.channel.SimpleClanChannelRegistry;
 import net.cosmogrp.crclans.clan.chat.ClanChatService;
@@ -47,12 +53,22 @@ public class ClanModule extends AbstractModule {
                 new ClanServiceModule<>(
                         ClanMemberService.KEY,
                         ClanMemberData::fromDocument, ClanMemberData.class
+                ),
+                new ClanServiceModule<>(
+                        ClanAllyService.KEY,
+                        ClanAllyData::fromDocument, ClanAllyData.class
+                ),
+                new ClanServiceModule<>(
+                        ClanAllyRequestService.KEY,
+                        ClanAllyRequestData::fromDocument, ClanAllyRequestData.class
                 )
         );
 
         bind(ClanChannelRegistry.class).to(SimpleClanChannelRegistry.class).singleton();
 
         bind(ClanChatService.class).to(SimpleClanChatService.class).singleton();
+        bind(ClanAllyService.class).to(SimpleClanAllyService.class).singleton();
+        bind(ClanAllyRequestService.class).to(SimpleClanAllyRequestService.class).singleton();
         bind(ClanDisbandService.class).to(SimpleClanDisbandService.class).singleton();
         bind(ClanRecruitmentService.class).to(SimpleClanRecruitmentService.class).singleton();
         bind(ClanHomeService.class).to(SimpleClanHomeService.class).singleton();
