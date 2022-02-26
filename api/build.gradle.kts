@@ -14,7 +14,7 @@ dependencies {
     api("me.yushust.inject:core:0.4.6-SNAPSHOT")
     api("me.yushust.message:core:6.0.17")
     api("me.yushust.message:sourcetype-bukkit-yml:6.0.17")
-    api("me.fixeddev:commandflow-brigadier:0.5.0-SNAPSHOT")
+    api("me.fixeddev:commandflow-bukkit:0.5.0-SNAPSHOT")
 
     api("io.papermc:paperlib:1.0.7")
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
