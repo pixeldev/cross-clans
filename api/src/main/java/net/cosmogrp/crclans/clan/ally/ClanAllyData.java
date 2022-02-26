@@ -9,15 +9,13 @@ import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ClanAllyData extends AbstractModel
         implements DocumentCodec, Domain {
 
     private final Domain data;
 
-    public ClanAllyData(String id, Domain data) {
+    private ClanAllyData(String id, Domain data) {
         super(id);
         this.data = data;
     }
