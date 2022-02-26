@@ -1,5 +1,7 @@
 package net.cosmogrp.crclans.clan.ally;
 
+import net.cosmogrp.crclans.clan.enemy.ClanEnemyData;
+import net.cosmogrp.crclans.clan.enemy.ClanEnemyService;
 import net.cosmogrp.crclans.clan.service.AbstractClanService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
@@ -19,6 +21,7 @@ public class SimpleClanAllyRequestService
 
     @Inject private ClanMemberService memberService;
     @Inject private ClanAllyService allyService;
+    @Inject private ClanEnemyService enemyService;
 
     @Inject private FileConfiguration configuration;
     @Inject private GlobalNotifier globalNotifier;
@@ -171,6 +174,15 @@ public class SimpleClanAllyRequestService
 
                     clanAllyData.add(targetTag);
                     targetAllyData.add(senderTag);
+
+                    ClanEnemyData senderEnemyData = enemyService
+                            .getData(player, senderTag);
+
+                    if (senderEnemyData != null) {
+                        if (senderEnemyData.remove(targetTag)) {
+                            enemyService.save(player, senderEnemyData);
+                        }
+                    }
 
                     save(player, requestData);
                     allyService.save(player, clanAllyData);
