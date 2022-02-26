@@ -51,7 +51,7 @@ public class SimpleClanAllyService
                 }
             }
 
-            messageHandler.send(
+            messageHandler.sendReplacing(
                     sender, "clan.ally-list.message",
                     "%allies%", formattedAllies.toString()
             );
