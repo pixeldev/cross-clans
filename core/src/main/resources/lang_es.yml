@@ -32,6 +32,14 @@ clan:
 
     already-ally: "&c¡Ya estás aliado con este clan!"
     already-ally-request: "&c¡Ya has enviado una solicitud de alianza con este clan!"
+    ally-list:
+        no-allies: "&c¡No tienes ningún clan aliado!"
+        ally-format: "&a * &f%tag%"
+        message:
+            - " "
+            - " &aLista de aliados:"
+            - "%allies%"
+            - " "
     ally-no-request: "&c¡No has recibido ninguna solicitud de alianza con este clan!"
     ally-accepted-target-members: "&f¡Tu clan se ha aliado con el clan &a%tag%&f!"
     ally-accepted-members: "&f¡El clan &a%tag%&f se ha aliado con tu clan!"

@@ -6,6 +6,7 @@ import net.cosmogrp.storage.mongo.DocumentCodec;
 import net.cosmogrp.storage.mongo.DocumentReader;
 import org.bson.Document;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class ClanAllyData extends AbstractModel
         this.allies = allies;
     }
 
-    public Iterable<String> getAllies() {
+    public Collection<String> getAllies() {
         return allies;
     }
 
