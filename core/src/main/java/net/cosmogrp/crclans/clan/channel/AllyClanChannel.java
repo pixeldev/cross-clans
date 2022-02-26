@@ -19,7 +19,7 @@ public class AllyClanChannel extends AbstractClanChannel {
 
     @Override
     public String getId() {
-        return "ally";
+        return "allies";
     }
 
     @Override

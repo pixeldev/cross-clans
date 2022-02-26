@@ -135,7 +135,7 @@ clan:
 
 channels:
     prefix: "%path_channels.%channel%% >> %message%"
-    member: "&9Miembros"
+    members: "&9Miembros"
     allies: "&bAliados"
 
 user:

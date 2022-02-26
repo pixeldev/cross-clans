@@ -13,7 +13,7 @@ public class MemberClanChannel extends AbstractClanChannel {
 
     @Override
     public String getId() {
-        return "member";
+        return "members";
     }
 
     @Override
