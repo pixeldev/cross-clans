@@ -30,6 +30,8 @@ clan:
 
     error-sending-message: "&c¡Ha ocurrido un error al enviar el mensaje, intenta de nuevo!"
 
+    already-enemy: "&c¡Este clan ya es enemigo!"
+    not-enemy: "&c¡Este clan no es enemigo!"
     enemy-list:
         empty: "&c¡No tienes ningún clan enemigo!"
         format: "&c * &f%tag%"
@@ -40,6 +42,10 @@ clan:
             - "%allies%"
             - "&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
             - " "
+    enemy-added-members: "&f¡Ahora el clan &a%tag% &fes enemigo de tu clan!"
+    enemy-added-target-members: "&f¡El clan &a%tag% &flos ha añadido como clan enemigo!"
+    enemy-removed-members: "&f¡El clan &a%tag% &fya no es enemigo de tu clan!"
+    enemy-removed-target-members: "&f¡El clan &a%tag% &flos ha quitado como clan enemigo!"
 
     already-ally: "&c¡Ya estás aliado con este clan!"
     already-ally-request: "&c¡Ya has enviado una solicitud de alianza con este clan!"
