@@ -10,4 +10,9 @@ public interface ClanAllyService extends ClanService<ClanAllyData> {
 
     void sendAllies(Player sender, User user);
 
+    void removeAlly(
+            Player sender, User user,
+            ClanAllyData allyData
+    );
+
 }

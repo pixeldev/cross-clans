@@ -1,7 +1,9 @@
 package net.cosmogrp.crclans.clan.ally;
 
 import net.cosmogrp.crclans.clan.AbstractClanService;
+import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.member.ClanMemberService;
+import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 
@@ -13,6 +15,7 @@ public class SimpleClanAllyService
         implements ClanAllyService {
 
     @Inject private ClanMemberService memberService;
+    @Inject private GlobalNotifier globalNotifier;
 
     public SimpleClanAllyService() {
         super(ClanAllyData::create);
@@ -56,5 +59,55 @@ public class SimpleClanAllyService
                     "%allies%", formattedAllies.toString()
             );
         }
+    }
+
+    @Override
+    public void removeAlly(
+            Player sender, User user,
+            ClanAllyData targetAllyData
+    ) {
+        memberService.computeAsOwner(
+                sender, user,
+                memberData -> {
+                    String senderTag = memberData.getId();
+                    if (!targetAllyData.isAlly(senderTag)) {
+                        messageHandler.send(sender, "clan.not-ally");
+                        return;
+                    }
+
+                    ClanAllyData senderAllyData = getData(sender, senderTag);
+
+                    if (senderAllyData == null) {
+                        return;
+                    }
+
+                    String targetTag = targetAllyData.getId();
+
+                    ClanMemberData targetMemberData = memberService
+                            .getData(sender, targetTag);
+
+                    if (targetMemberData == null) {
+                        return;
+                    }
+
+                    globalNotifier.notify(
+                            targetMemberData.getOnlineIdMembers(),
+                            "clan.ally-remove-target-members",
+                            "%tag%", senderTag
+                    );
+
+                    globalNotifier.notify(
+                            memberData.getOnlineIdMembers(),
+                            "clan.ally-remove-members",
+                            "%tag%", targetTag
+                    );
+
+                    senderAllyData.removeAlly(targetTag);
+                    targetAllyData.removeAlly(senderTag);
+
+                    save(sender, senderAllyData);
+                    save(sender, targetAllyData);
+                }
+        );
     }
 }
