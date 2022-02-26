@@ -5,6 +5,7 @@ import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestService;
+import net.cosmogrp.crclans.clan.ally.ClanAllyService;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 
@@ -14,6 +15,12 @@ import javax.inject.Inject;
 public class ClanAllyCommand implements CommandClass {
 
     @Inject private ClanAllyRequestService allyRequestService;
+    @Inject private ClanAllyService allyService;
+
+    @Command(names = "list")
+    public void runList(@Sender Player sender, @Sender User user) {
+        allyService.sendAllies(sender, user);
+    }
 
     @Command(names = "accept")
     public void runAccept(
