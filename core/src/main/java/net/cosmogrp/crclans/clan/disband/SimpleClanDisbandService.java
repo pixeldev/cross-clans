@@ -2,6 +2,8 @@ package net.cosmogrp.crclans.clan.disband;
 
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.CrClansPlugin;
+import net.cosmogrp.crclans.clan.ally.ClanAllyData;
+import net.cosmogrp.crclans.clan.ally.ClanAllyService;
 import net.cosmogrp.crclans.clan.member.ClanMember;
 import net.cosmogrp.crclans.clan.ClanService;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
@@ -33,6 +35,7 @@ public class SimpleClanDisbandService
 
     @Inject private ClanMemberService memberService;
     @Inject private UserService userService;
+    @Inject private ClanAllyService allyService;
 
     @Inject private Channel<ClanDisbandMessage> disbandChannel;
 
@@ -67,6 +70,16 @@ public class SimpleClanDisbandService
                                             "clan.disband-failed"
                                     );
                                     return;
+                                }
+
+                                ClanAllyData allyData = allyService.getData(tag);
+
+                                if (allyData == null) {
+                                    return;
+                                }
+
+                                for (String ally : allyData.getAllies()) {
+                                    allyService.removeAlly(tag, ally);
                                 }
 
                                 user.setClan(null);

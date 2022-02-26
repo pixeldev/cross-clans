@@ -15,4 +15,6 @@ public interface ClanAllyService extends ClanService<ClanAllyData> {
             ClanAllyData allyData
     );
 
+    void removeAlly(String source, String target);
+
 }

@@ -110,4 +110,30 @@ public class SimpleClanAllyService
                 }
         );
     }
+
+    @Override
+    public void removeAlly(String source, String target) {
+        ClanAllyData senderAllyData = getData(source);
+
+        if (senderAllyData == null) {
+            return;
+        }
+
+        ClanMemberData targetMemberData = memberService
+                .getData(target);
+
+        if (targetMemberData == null) {
+            return;
+        }
+
+        globalNotifier.notify(
+                targetMemberData.getOnlineIdMembers(),
+                "clan.ally-remove-target-members",
+                "%tag%", source
+        );
+
+
+        senderAllyData.removeAlly(target);
+        save(senderAllyData);
+    }
 }
