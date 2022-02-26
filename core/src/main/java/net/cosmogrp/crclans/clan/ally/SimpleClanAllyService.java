@@ -35,7 +35,7 @@ public class SimpleClanAllyService
             return;
         }
 
-        Collection<String> allies = allyData.getAllies();
+        Collection<String> allies = allyData.getAll();
 
         if (allies.isEmpty()) {
             messageHandler.send(sender, "clan.ally-list.no-allies");
@@ -70,7 +70,7 @@ public class SimpleClanAllyService
                 sender, user,
                 memberData -> {
                     String senderTag = memberData.getId();
-                    if (!targetAllyData.isAlly(senderTag)) {
+                    if (!targetAllyData.contains(senderTag)) {
                         messageHandler.send(sender, "clan.not-ally");
                         return;
                     }
@@ -102,8 +102,8 @@ public class SimpleClanAllyService
                             "%tag%", targetTag
                     );
 
-                    senderAllyData.removeAlly(targetTag);
-                    targetAllyData.removeAlly(senderTag);
+                    senderAllyData.remove(targetTag);
+                    targetAllyData.remove(senderTag);
 
                     save(sender, senderAllyData);
                     save(sender, targetAllyData);
@@ -132,8 +132,7 @@ public class SimpleClanAllyService
                 "%tag%", source
         );
 
-
-        senderAllyData.removeAlly(target);
+        senderAllyData.remove(target);
         save(senderAllyData);
     }
 }

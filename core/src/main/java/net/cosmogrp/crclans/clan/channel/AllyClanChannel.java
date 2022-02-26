@@ -42,7 +42,7 @@ public class AllyClanChannel extends AbstractClanChannel {
                 currentMemberData.getOnlineIdMembers()
         );
 
-        Collection<String> allies = allyData.getAllies();
+        Collection<String> allies = allyData.getAll();
 
         for (String allyTag : allies) {
             ClanMemberData memberData = memberService.getData(allyTag);

@@ -1,5 +1,7 @@
 package net.cosmogrp.crclans.clan.ally;
 
+import net.cosmogrp.crclans.domain.Domain;
+import net.cosmogrp.crclans.domain.SetDomain;
 import net.cosmogrp.storage.model.AbstractModel;
 import net.cosmogrp.storage.mongo.DocumentBuilder;
 import net.cosmogrp.storage.mongo.DocumentCodec;
@@ -11,46 +13,50 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ClanAllyData extends AbstractModel
-        implements DocumentCodec {
+        implements DocumentCodec, Domain {
 
-    private final Set<String> allies;
+    private final Domain data;
 
-    public ClanAllyData(String id, Set<String> allies) {
+    public ClanAllyData(String id, Domain data) {
         super(id);
-        this.allies = allies;
+        this.data = data;
     }
 
-    public Collection<String> getAllies() {
-        return allies;
+    @Override
+    public Collection<String> getAll() {
+        return data.getAll();
     }
 
-    public void addAlly(String ally) {
-        allies.add(ally);
+    @Override
+    public boolean add(String id) {
+        return data.add(id);
     }
 
-    public void removeAlly(String ally) {
-        allies.remove(ally);
+    @Override
+    public boolean remove(String id) {
+        return data.remove(id);
     }
 
-    public boolean isAlly(String ally) {
-        return allies.contains(ally);
+    @Override
+    public boolean contains(String id) {
+        return data.contains(id);
     }
 
     public static ClanAllyData create(String tag) {
-        return new ClanAllyData(tag, new HashSet<>());
+        return new ClanAllyData(tag, SetDomain.create());
     }
 
     public static ClanAllyData fromDocument(DocumentReader reader) {
         return new ClanAllyData(
                 reader.readString("_id"),
-                reader.readSet("allies", String.class)
+                reader.readChild("allies", SetDomain::fromDocument)
         );
     }
 
     @Override
     public Document toDocument() {
         return DocumentBuilder.create(this)
-                .write("allies", allies)
+                .write("allies", data)
                 .build();
     }
 }

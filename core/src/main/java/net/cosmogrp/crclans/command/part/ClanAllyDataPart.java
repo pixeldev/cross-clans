@@ -65,7 +65,7 @@ public class ClanAllyDataPart implements PartFactory {
                         stack.next().toLowerCase(Locale.ROOT);
                 List<String> suggestions = new ArrayList<>();
 
-                for (String allyTag : allyData.getAllies()) {
+                for (String allyTag : allyData.getAll()) {
                     if (allyTag.toLowerCase(Locale.ROOT).startsWith(next)) {
                         suggestions.add(allyTag);
                     }

@@ -48,7 +48,7 @@ public class SimpleClanAllyRequestService
                         return;
                     }
 
-                    if (allyData.isAlly(target)) {
+                    if (allyData.contains(target)) {
                         messageHandler.send(player, "clan.already-ally");
                         return;
                     }
@@ -169,8 +169,8 @@ public class SimpleClanAllyRequestService
                         return;
                     }
 
-                    clanAllyData.addAlly(targetTag);
-                    targetAllyData.addAlly(senderTag);
+                    clanAllyData.add(targetTag);
+                    targetAllyData.add(senderTag);
 
                     save(player, requestData);
                     allyService.save(player, clanAllyData);

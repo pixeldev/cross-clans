@@ -78,7 +78,7 @@ public class SimpleClanDisbandService
                                     return;
                                 }
 
-                                for (String ally : allyData.getAllies()) {
+                                for (String ally : allyData.getAll()) {
                                     allyService.removeAlly(tag, ally);
                                 }
 
