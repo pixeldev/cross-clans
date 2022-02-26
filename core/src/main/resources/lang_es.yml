@@ -32,6 +32,7 @@ clan:
 
     already-ally: "&c¡Ya estás aliado con este clan!"
     already-ally-request: "&c¡Ya has enviado una solicitud de alianza con este clan!"
+    not-ally: "&c¡No estás aliado con este clan!"
     ally-list:
         no-allies: "&c¡No tienes ningún clan aliado!"
         ally-format: "&a * &f%tag%"
@@ -43,6 +44,8 @@ clan:
             - "&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
             - " "
     ally-no-request: "&c¡No has recibido ninguna solicitud de alianza con este clan!"
+    ally-remove-target-members: "&f¡El clan &a%tag% &fha roto la alianza con tu clan!"
+    ally-remove-members: "&f¡El líder ha roto la alianza con el clan &a%tag%!"
     ally-accept-target-members: "&f¡Tu clan se ha aliado con el clan &a%tag%&f!"
     ally-accept-members: "&f¡El clan &a%tag%&f se ha aliado con tu clan!"
     ally-deny-target-members: "&f¡Tu clan ha denegado la solicitud de alianza con el clan &a%tag%&f!"

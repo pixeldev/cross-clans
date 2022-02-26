@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.command;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.cosmogrp.crclans.clan.ally.ClanAllyData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestData;
 import net.cosmogrp.crclans.clan.ally.ClanAllyRequestService;
 import net.cosmogrp.crclans.clan.ally.ClanAllyService;
@@ -28,6 +29,14 @@ public class ClanAllyCommand implements CommandClass {
             ClanAllyRequestData requestData
     ) {
         allyRequestService.acceptAlly(sender, user, requestData);
+    }
+
+    @Command(names = "remove")
+    public void runRemove(
+            @Sender Player sender, @Sender User user,
+            ClanAllyData allyData
+    ) {
+        allyService.removeAlly(sender, user, allyData);
     }
 
     @Command(names = "deny")
