@@ -31,7 +31,7 @@ public abstract class AbstractClanService<T extends Model & DocumentCodec>
             T data = modelService.getSync(tag);
 
             if (data == null) {
-                messageHandler.send(player, "clan.error-finding-data");
+                messageHandler.send(player, "clan.not-found");
             }
 
             return data;
