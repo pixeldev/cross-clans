@@ -16,6 +16,13 @@ public class SimpleClanChatService implements ClanChatService {
             Player player, User user,
             String channelId
     ) {
+        String tag = user.getClanTag();
+
+        if (tag == null) {
+            messageHandler.send(player, "clan.not-in-clan");
+            return;
+        }
+
         if (channelId.equals(GlobalClanChannel.ID)) {
             user.setChannelId(null);
             messageHandler.send(player, "user.exit-channel");
