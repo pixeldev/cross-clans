@@ -1,5 +1,7 @@
 package net.cosmogrp.crclans.clan.enemy;
 
+import net.cosmogrp.crclans.clan.ally.ClanAllyData;
+import net.cosmogrp.crclans.clan.ally.ClanAllyService;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.clan.service.AbstractDomainClanService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
@@ -13,6 +15,7 @@ public class SimpleClanEnemyService
         implements ClanEnemyService {
 
     @Inject private GlobalNotifier globalNotifier;
+    @Inject private ClanAllyService allyService;
 
     public SimpleClanEnemyService() {
         super(ClanEnemyData::create, "enemy-list");
@@ -27,13 +30,26 @@ public class SimpleClanEnemyService
                 sender, user,
                 memberData -> {
                     String tag = memberData.getId();
+
+                    ClanAllyData allyData = allyService
+                            .getData(sender, tag);
+
+                    if (allyData == null) {
+                        return;
+                    }
+
+                    String targetTag = targetMemberData.getId();
+
+                    if (allyData.contains(targetTag)) {
+                        messageHandler.send(sender, "clan.ally-enemy");
+                        return;
+                    }
+
                     ClanEnemyData enemyData = getData(sender, tag);
 
                     if (enemyData == null) {
                         return;
                     }
-
-                    String targetTag = targetMemberData.getId();
 
                     if (enemyData.contains(targetTag)) {
                         messageHandler.send(sender, "clan.already-enemy");
