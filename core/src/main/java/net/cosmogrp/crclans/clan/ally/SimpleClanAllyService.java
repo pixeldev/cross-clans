@@ -70,9 +70,9 @@ public class SimpleClanAllyService
 
     @Override
     public void removeAlly(String source, String target) {
-        ClanAllyData senderAllyData = getData(source);
+        ClanAllyData targetAllyData = getData(target);
 
-        if (senderAllyData == null) {
+        if (targetAllyData == null) {
             return;
         }
 
@@ -89,7 +89,7 @@ public class SimpleClanAllyService
                 "%tag%", source
         );
 
-        senderAllyData.remove(target);
-        save(senderAllyData);
+        targetAllyData.remove(source);
+        save(targetAllyData);
     }
 }
