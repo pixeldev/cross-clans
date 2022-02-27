@@ -110,4 +110,23 @@ public class SimpleUserService implements UserService {
 
         return user;
     }
+
+    @Override
+    public User forcedSave(Player player) {
+        UUID playerId = player.getUniqueId();
+        String playerIdString = playerId.toString();
+        User user = modelService.getSync(playerIdString);
+
+        if (user == null) {
+            logHandler.reportError(
+                    "Failed to get user '%s' from cache",
+                    playerIdString
+            );
+
+            return null;
+        }
+
+        modelService.uploadSync(user);
+        return user;
+    }
 }

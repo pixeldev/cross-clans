@@ -16,4 +16,6 @@ public interface UserService {
 
     User saveUser(Player player);
 
+    User forcedSave(Player player);
+
 }
