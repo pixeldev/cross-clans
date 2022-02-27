@@ -16,7 +16,7 @@ public interface ClanEnemyService extends DomainClanService<ClanEnemyData> {
 
     void removeEnemy(
             Player sender, User user,
-            ClanMemberData targetMemberData
+            String targetClan
     );
 
 }

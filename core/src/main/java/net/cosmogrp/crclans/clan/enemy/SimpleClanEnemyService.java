@@ -78,7 +78,7 @@ public class SimpleClanEnemyService
     @Override
     public void removeEnemy(
             Player sender, User user,
-            ClanMemberData targetMemberData
+            String targetClan
     ) {
         memberService.computeAsOwner(
                 sender, user,
@@ -90,26 +90,29 @@ public class SimpleClanEnemyService
                         return;
                     }
 
-                    String targetTag = targetMemberData.getId();
-
-                    if (!enemyData.contains(targetTag)) {
+                    if (!enemyData.contains(targetClan)) {
                         messageHandler.send(sender, "clan.not-enemy");
                         return;
                     }
 
-                    enemyData.remove(targetTag);
+                    enemyData.remove(targetClan);
 
                     globalNotifier.notify(
                             memberData.getOnlineIdMembers(),
                             "clan.enemy-removed-members",
-                            "%tag%", targetTag
+                            "%tag%", targetClan
                     );
 
-                    globalNotifier.notify(
-                            targetMemberData.getOnlineIdMembers(),
-                            "clan.enemy-removed-target-members",
-                            "%tag%", tag
-                    );
+                    ClanMemberData targetMemberData = memberService
+                            .getData(targetClan);
+
+                    if (targetMemberData != null) {
+                        globalNotifier.notify(
+                                targetMemberData.getOnlineIdMembers(),
+                                "clan.enemy-removed-target-members",
+                                "%tag%", tag
+                        );
+                    }
 
                     save(sender, enemyData);
                 }
