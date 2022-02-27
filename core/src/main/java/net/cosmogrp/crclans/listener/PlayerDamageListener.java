@@ -47,13 +47,13 @@ public class PlayerDamageListener implements Listener {
         ClanData sourceClanData = dataService
                 .getData(sourceClan);
 
-        if (sourceClanData == null ||
-                sourceClanData.isFriendlyFire()) {
+        if (sourceClanData == null) {
             // this mustn't happen
             return;
         }
 
-        if (sourceClan.equals(targetClan)) {
+        if (sourceClan.equals(targetClan) &&
+                !sourceClanData.isFriendlyFire()) {
             event.setCancelled(true);
             return;
         }
@@ -66,8 +66,10 @@ public class PlayerDamageListener implements Listener {
                 ClanData targetClanData = dataService
                         .getData(targetClan);
 
-                if (targetClanData == null ||
-                        targetClanData.isFriendlyFire()) {
+                if (targetClanData != null &&
+                        targetClanData.isFriendlyFire()
+                        && sourceClanData.isFriendlyFire()
+                ) {
                     return;
                 }
 
