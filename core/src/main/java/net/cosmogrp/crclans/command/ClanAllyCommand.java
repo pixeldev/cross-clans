@@ -33,33 +33,33 @@ public class ClanAllyCommand implements CommandClass {
     @Command(names = "accept", permission = "clans.ally.accept")
     public void runAccept(
             @Sender Player sender, @Sender User user,
-            ClanAllyRequestData requestData
+            ClanAllyRequestData clan
     ) {
-        allyRequestService.acceptAlly(sender, user, requestData);
+        allyRequestService.acceptAlly(sender, user, clan);
     }
 
     @Command(names = "remove", permission = "clans.ally.remove")
     public void runRemove(
             @Sender Player sender, @Sender User user,
-            ClanAllyData allyData
+            ClanAllyData clan
     ) {
-        allyService.removeAlly(sender, user, allyData);
+        allyService.removeAlly(sender, user, clan);
     }
 
     @Command(names = "deny", permission = "clans.ally.deny")
     public void runDeny(
             @Sender Player sender, @Sender User user,
-            ClanAllyRequestData requestData
+            ClanAllyRequestData clan
     ) {
-        allyRequestService.denyAlly(sender, user, requestData);
+        allyRequestService.denyAlly(sender, user, clan);
     }
 
     @Command(names = "add", permission = "clans.ally.add")
     public void runAdd(
             @Sender Player sender, @Sender User user,
-            String targetTag
+            String clan
     ) {
-        allyRequestService.sendAllyRequest(sender, user, targetTag);
+        allyRequestService.sendAllyRequest(sender, user, clan);
     }
 
 }

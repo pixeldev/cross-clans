@@ -55,9 +55,9 @@ public class ClanCommand implements CommandClass {
     @Command(names = "channel", permission = "clans.channel")
     public void runChannel(
             @Sender Player sender, @Sender User user,
-            ClanChannel clanChannel
+            ClanChannel channel
     ) {
-        clanChatService.setChannel(sender, user, clanChannel.getId());
+        clanChatService.setChannel(sender, user, channel.getId());
     }
 
     @Command(names = "chat", permission = "clans.chat")
@@ -102,12 +102,12 @@ public class ClanCommand implements CommandClass {
     public void runKick(
             CommandContext commandContext,
             @Sender Player sender, @Sender User user,
-            ClanMember clanMember
+            ClanMember target
     ) {
         memberService.kick(
                 sender, user,
                 commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
-                clanMember
+                target
         );
     }
 
@@ -115,12 +115,12 @@ public class ClanCommand implements CommandClass {
     public void runPromote(
             CommandContext commandContext,
             @Sender Player sender, @Sender User user,
-            ClanMember clanMember
+            ClanMember target
     ) {
         memberService.promote(
                 sender, user,
                 commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
-                clanMember
+                target
         );
     }
 
@@ -128,12 +128,12 @@ public class ClanCommand implements CommandClass {
     public void runDemote(
             CommandContext commandContext,
             @Sender Player sender, @Sender User user,
-            ClanMember clanMember
+            ClanMember target
     ) {
         memberService.demote(
                 sender, user,
                 commandContext.getObject(ClanMemberData.class, ClanMemberPart.MEMBER_CONTEXT_KEY),
-                clanMember
+                target
         );
     }
 
@@ -153,14 +153,14 @@ public class ClanCommand implements CommandClass {
     @Command(names = "accept", permission = "clans.accept")
     public void runAccept(
             @Sender Player sender, @Sender User user,
-            ClanRecruitmentData data
+            ClanRecruitmentData clan
     ) {
-        recruitmentService.acceptRecruitment(sender, user, data);
+        recruitmentService.acceptRecruitment(sender, user, clan);
     }
 
     @Command(names = "deny", permission = "clans.deny")
-    public void runDeny(@Sender Player sender, ClanRecruitmentData data) {
-        recruitmentService.denyRecruitment(sender, data);
+    public void runDeny(@Sender Player sender, ClanRecruitmentData clan) {
+        recruitmentService.denyRecruitment(sender, clan);
     }
 
 }

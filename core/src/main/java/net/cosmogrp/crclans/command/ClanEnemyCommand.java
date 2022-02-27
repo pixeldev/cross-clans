@@ -30,17 +30,17 @@ public class ClanEnemyCommand implements CommandClass {
     @Command(names = "add", permission = "clans.enemy.add")
     public void runAdd(
             @Sender Player sender, @Sender User user,
-            ClanMemberData memberData
+            ClanMemberData clan
     ) {
-        enemyService.addEnemy(sender, user, memberData);
+        enemyService.addEnemy(sender, user, clan);
     }
 
     @Command(names = "remove", permission = "clans.enemy.remove")
     public void runRemove(
             @Sender Player sender, @Sender User user,
-            ClanMemberData memberData
+            ClanMemberData clan
     ) {
-        enemyService.removeEnemy(sender, user, memberData);
+        enemyService.removeEnemy(sender, user, clan);
     }
 
 }
