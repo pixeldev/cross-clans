@@ -52,6 +52,7 @@ public class SimpleClanDisbandService
                 player, user,
                 memberData -> {
                     String tag = memberData.getId();
+                    ClanAllyData allyData = allyService.getData(tag);
 
                     CompletableFuture.runAsync(() -> {
                                 for (ClanService<?> service : services) {
@@ -72,14 +73,10 @@ public class SimpleClanDisbandService
                                     return;
                                 }
 
-                                ClanAllyData allyData = allyService.getData(tag);
-
-                                if (allyData == null) {
-                                    return;
-                                }
-
-                                for (String ally : allyData.getAll()) {
-                                    allyService.removeAlly(tag, ally);
+                                if (allyData != null) {
+                                    for (String ally : allyData.getAll()) {
+                                        allyService.removeAlly(tag, ally);
+                                    }
                                 }
 
                                 user.setClan(null);
