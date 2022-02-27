@@ -97,8 +97,9 @@ public class ClanPlaceholderProvider extends PlaceholderExpansion
                     return messageHandler.get(player, "placeholder.no-clan");
                 }
 
-                new SimpleDateFormat(messageHandler.get(player, "placeholder.time-format"))
-                        .format(clanData.getCreation());
+                return new SimpleDateFormat(messageHandler.get(
+                        player, "placeholder.time-format"
+                )).format(clanData.getCreation());
             }
             default:
                 return null;
