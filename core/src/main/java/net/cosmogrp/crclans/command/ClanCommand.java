@@ -40,6 +40,11 @@ public class ClanCommand implements CommandClass {
         dataService.createClan(user, sender, tag);
     }
 
+    @Command(names = "ff", permission = "clans.ff")
+    public void runFF(@Sender Player sender, @Sender User user) {
+        dataService.toggleFriendlyFire(sender, user);
+    }
+
     @Command(names = "channel", permission = "clans.channel")
     public void runChannel(
             @Sender Player sender, @Sender User user,
