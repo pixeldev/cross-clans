@@ -159,7 +159,10 @@ public class ClanCommand implements CommandClass {
     }
 
     @Command(names = "deny", permission = "clans.deny")
-    public void runDeny(@Sender Player sender, ClanRecruitmentData clan) {
+    public void runDeny(
+            @Sender Player sender, @Sender User user,
+            ClanRecruitmentData clan
+    ) {
         recruitmentService.denyRecruitment(sender, clan);
     }
 
