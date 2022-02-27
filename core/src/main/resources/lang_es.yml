@@ -76,7 +76,7 @@ clan:
 
     already-enemy: "&c¡Este clan ya es enemigo!"
     not-enemy: "&c¡Este clan no es enemigo!"
-    ally-enemy: "&c¡Este clan es enemigo de tu clan!"
+    ally-enemy: "&c¡Este clan es aliado de tu clan!"
     enemy-list:
         empty: "&c¡No tienes ningún clan enemigo!"
         format: "&c * &f%tag%"
