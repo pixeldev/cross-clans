@@ -19,4 +19,6 @@ public interface ClanService<T extends Model & DocumentCodec> {
 
     void save(T data);
 
+    void saveSync(T data);
+
 }

@@ -95,4 +95,9 @@ public abstract class AbstractClanService<T extends Model & DocumentCodec>
                     }
                 });
     }
+
+    @Override
+    public void saveSync(T data) {
+        modelService.saveSync(data);
+    }
 }
