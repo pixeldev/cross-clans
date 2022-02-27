@@ -14,14 +14,16 @@ public class ClanData extends AbstractModel
 
     private final Date creation;
     private String description;
+    private boolean friendlyFire;
 
     private ClanData(
             String id, Date creation,
-            String description
+            String description, boolean friendlyFire
     ) {
         super(id);
         this.creation = creation;
         this.description = description;
+        this.friendlyFire = friendlyFire;
     }
 
     public Date getCreation() {
@@ -36,10 +38,19 @@ public class ClanData extends AbstractModel
         this.description = description;
     }
 
+    public boolean isFriendlyFire() {
+        return friendlyFire;
+    }
+
+    public void setFriendlyFire(boolean friendlyFire) {
+        this.friendlyFire = friendlyFire;
+    }
+
     public static ClanData create(String tag) {
         return new ClanData(
                 tag, new Date(),
-                null
+                null,
+                false
         );
     }
 
@@ -47,7 +58,8 @@ public class ClanData extends AbstractModel
         return new ClanData(
                 reader.readString("_id"),
                 reader.readDate("creation"),
-                reader.readString("description")
+                reader.readString("description"),
+                reader.readBoolean("friendlyFire")
         );
     }
 
@@ -56,6 +68,7 @@ public class ClanData extends AbstractModel
         return DocumentBuilder.create(this)
                 .write("creation", creation)
                 .write("description", description)
+                .write("friendlyFire", friendlyFire)
                 .build();
     }
 }
