@@ -78,8 +78,10 @@ public class SimpleClanRecruitmentService
                 .create(target, time);
 
         recruitmentData.addRequest(request);
-        messageHandler.sendReplacing(
-                sender, "clan.invited-sender",
+
+        globalNotifier.notify(
+                memberData.getOnlineIdMembers(),
+                "clan.invited-members",
                 "%target%", target.asPlayer().getName()
         );
 
@@ -122,12 +124,6 @@ public class SimpleClanRecruitmentService
                 "%tag%", tag
         );
 
-        globalNotifier.singleNotify(
-                memberData.getOwner().getPlayerId(),
-                "clan.invite-accepted-sender",
-                "%target%", sender.getName()
-        );
-
         globalNotifier.notify(
                 memberData.getOnlineIdMembers(),
                 "clan.invite-accepted-members",
@@ -167,15 +163,11 @@ public class SimpleClanRecruitmentService
                 "%tag%", tag
         );
 
-        ClanMember owner = memberData.getOwner();
-
-        if (owner.isOnline()) {
-            globalNotifier.singleNotify(
-                    owner.getPlayerId(),
-                    "clan.invite-deny-sender",
-                    "%target%", sender.getName()
-            );
-        }
+        globalNotifier.notify(
+                memberData.getOnlineIdMembers(),
+                "clan.invite-deny-members",
+                "%target%", sender.getName()
+        );
 
         save(sender, data);
     }
