@@ -175,14 +175,8 @@ public class SimpleClanAllyRequestService
                     clanAllyData.add(targetTag);
                     targetAllyData.add(senderTag);
 
-                    ClanEnemyData targetEnemyData = enemyService
-                            .getData(player, targetTag);
-
-                    if (targetEnemyData != null) {
-                        if (targetEnemyData.remove(senderTag)) {
-                            enemyService.save(player, targetEnemyData);
-                        }
-                    }
+                    removeEnemy(senderTag, targetTag);
+                    removeEnemy(targetTag, senderTag);
 
                     save(player, requestData);
                     allyService.save(player, clanAllyData);
@@ -254,5 +248,16 @@ public class SimpleClanAllyRequestService
         }
 
         return timeStamp;
+    }
+
+    private void removeEnemy(String targetTag, String senderTag) {
+        ClanEnemyData targetEnemyData = enemyService
+                .getData(targetTag);
+
+        if (targetEnemyData != null) {
+            if (targetEnemyData.remove(senderTag)) {
+                enemyService.save(targetEnemyData);
+            }
+        }
     }
 }
