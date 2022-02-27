@@ -15,6 +15,10 @@ public interface ClanMemberService
 
     @Nullable String getClanTag(Player player, User user);
 
+    boolean checkModerator(Player player, ClanMemberData memberData);
+
+    boolean checkModerator(Player player, User user);
+
     void transferOwner(
             Player player, User user,
             ClanMember target

@@ -54,6 +54,40 @@ public class SimpleClanMemberService
     }
 
     @Override
+    public boolean checkModerator(Player player, ClanMemberData memberData) {
+        ClanMember member = memberData.getMember(player.getUniqueId());
+
+        if (member == null) {
+            // this should never happen
+            return false;
+        }
+
+        if (!member.isModerator()) {
+            messageHandler.send(player, "clan.not-mod");
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean checkModerator(Player player, User user) {
+        String clanTag = getClanTag(player, user);
+
+        if (clanTag == null) {
+            return false;
+        }
+
+        ClanMemberData memberData = getData(player, clanTag);
+
+        if (memberData == null) {
+            return false;
+        }
+
+        return checkModerator(player, memberData);
+    }
+
+    @Override
     public void transferOwner(
             Player player, User user,
             ClanMember target
