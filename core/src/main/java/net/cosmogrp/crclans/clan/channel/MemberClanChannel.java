@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class MemberClanChannel extends AbstractClanChannel {
 
-    public static String ID = "member";
+    public static String ID = "members";
 
     @Inject private ClanMemberService memberService;
 
