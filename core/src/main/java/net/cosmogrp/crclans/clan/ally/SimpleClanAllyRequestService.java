@@ -175,12 +175,12 @@ public class SimpleClanAllyRequestService
                     clanAllyData.add(targetTag);
                     targetAllyData.add(senderTag);
 
-                    ClanEnemyData senderEnemyData = enemyService
-                            .getData(player, senderTag);
+                    ClanEnemyData targetEnemyData = enemyService
+                            .getData(player, targetTag);
 
-                    if (senderEnemyData != null) {
-                        if (senderEnemyData.remove(targetTag)) {
-                            enemyService.save(player, senderEnemyData);
+                    if (targetEnemyData != null) {
+                        if (targetEnemyData.remove(senderTag)) {
+                            enemyService.save(player, targetEnemyData);
                         }
                     }
 
