@@ -9,4 +9,6 @@ public interface ClanUserService {
 
     void disconnect(User user);
 
+    void forceDisconnect(User user);
+
 }

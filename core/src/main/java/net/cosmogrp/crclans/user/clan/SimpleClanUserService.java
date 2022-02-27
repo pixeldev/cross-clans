@@ -7,6 +7,7 @@ import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.log.LogHandler;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 
@@ -53,16 +54,31 @@ public class SimpleClanUserService
 
     @Override
     public void disconnect(User user) {
+        ClanMemberData memberData = internalDisconnect(user);
+        if (memberData != null) {
+            memberService.save(memberData);
+        }
+    }
+
+    @Override
+    public void forceDisconnect(User user) {
+        ClanMemberData memberData = internalDisconnect(user);
+        if (memberData != null) {
+            memberService.saveSync(memberData);
+        }
+    }
+
+    private @Nullable ClanMemberData internalDisconnect(User user) {
         String clanTag = user.getClanTag();
 
         if (clanTag == null) {
-            return;
+            return null;
         }
 
         ClanMemberData memberData = memberService.getData(clanTag);
 
         if (memberData == null) {
-            return;
+            return null;
         }
 
         ClanMember member = memberData.getMember(user.getPlayerId());
@@ -73,10 +89,10 @@ public class SimpleClanUserService
                     "Failed to find member '%s' in clan '%s'",
                     user.getPlayerId().toString(), clanTag
             );
-            return;
+            return null;
         }
 
         member.setOnline(false);
-        memberService.save(memberData);
+        return memberData;
     }
 }
