@@ -62,6 +62,22 @@ commands:
         self-not-found: "&c¡No se encontró tu clan!"
         member-not-found: "&c¡No se encontró un miembro en tu clan con ese nombre!"
 
+placeholder:
+    time-format: "dd/MM/yyyy HH:mm:ss"
+    relation:
+        ally:
+            color: "&d"
+            text: "[Aliado]"
+        enemy:
+            color: "&c"
+            text: "[Enemigo]"
+        neutral:
+            color: "&e"
+            text: "[Neutral]"
+        member:
+            color: "&a"
+            text: ""
+
 clan:
     not-found: "&c¡No se encontró el/tú clan!"
     already-exists: "&c¡Ya existe un clan con ese tag!"
