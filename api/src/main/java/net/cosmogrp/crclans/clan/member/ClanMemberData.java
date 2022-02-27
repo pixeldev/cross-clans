@@ -77,9 +77,12 @@ public class ClanMemberData extends AbstractModel
     }
 
     public void addMember(Player player) {
+        ClanMember member = ClanMember.fromPlayer(player);
+        member.setOnline(true);
+
         members.put(
                 player.getUniqueId(),
-                ClanMember.fromPlayer(player)
+                member
         );
     }
 
