@@ -25,6 +25,7 @@ public class UserModule extends AbstractModule {
         bind(UserService.class).to(SimpleUserService.class).singleton();
         bind(ClanUserService.class).to(SimpleClanUserService.class).singleton();
         bind(ClusteredUserRegistry.class).to(SimpleClusteredUserRegistry.class).singleton();
+        bind(PlayerService.class).to(SimplePlayerService.class).singleton();
     }
 
     @Provides
