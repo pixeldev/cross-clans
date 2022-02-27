@@ -55,7 +55,7 @@ public class SimplePlayerService implements PlayerService {
             clusteredUserRegistry.delete(player);
 
             if (user != null) {
-                clanUserService.disconnect(user);
+                clanUserService.forceDisconnect(user);
             }
         }
     }
