@@ -5,6 +5,7 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.data.ClanDataService;
 import net.cosmogrp.crclans.clan.channel.AllyClanChannel;
 import net.cosmogrp.crclans.clan.channel.ClanChannel;
@@ -34,6 +35,12 @@ public class ClanCommand implements CommandClass {
     @Inject private ClanDisbandService disbandService;
     @Inject private ClanDataService dataService;
     @Inject private ClanChatService clanChatService;
+    @Inject private MessageHandler messageHandler;
+
+    @Command(names = {"", "help"}, permission = "clans.help")
+    public void runHelp(@Sender Player sender) {
+        messageHandler.send(sender, "commands.main-help");
+    }
 
     @Command(names = "create", permission = "clans.create")
     public void create(@Sender Player sender, @Sender User user, String tag) {

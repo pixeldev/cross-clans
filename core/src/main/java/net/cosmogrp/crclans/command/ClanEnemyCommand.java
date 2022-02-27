@@ -3,6 +3,7 @@ package net.cosmogrp.crclans.command;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.enemy.ClanEnemyService;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
 import net.cosmogrp.crclans.user.User;
@@ -14,6 +15,12 @@ import javax.inject.Inject;
 public class ClanEnemyCommand implements CommandClass {
 
     @Inject private ClanEnemyService enemyService;
+    @Inject private MessageHandler messageHandler;
+
+    @Command(names = {"", "help"}, permission = "clans.help")
+    public void runHelp(@Sender Player sender) {
+        messageHandler.send(sender, "commands.enemy-help");
+    }
 
     @Command(names = "list", permission = "clans.enemy.list")
     public void runList(@Sender Player sender, @Sender User user) {
