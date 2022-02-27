@@ -97,7 +97,7 @@ public class SimpleUserService implements UserService {
         // get it from database when we load it again
         redisModelService.saveSync(user);
 
-        modelService.save(user)
+        modelService.upload(user)
                 .whenComplete((savedUser, throwable) -> {
                     if (throwable != null) {
                         // just report the error, don't care if it fails
