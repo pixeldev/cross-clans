@@ -57,13 +57,13 @@ public class ClanPlaceholderProvider extends PlaceholderExpansion
             @NotNull String placeholder
     ) {
         if (!(offlinePlayer instanceof Player player)) {
-            return null;
+            return "";
         }
 
         User user = userService.getUser(player.getUniqueId());
 
         if (user == null) {
-            return null;
+            return "";
         }
 
         if (placeholder.equals("hasclan")) {
@@ -73,18 +73,19 @@ public class ClanPlaceholderProvider extends PlaceholderExpansion
         String tag = user.getClanTag();
 
         if (tag == null) {
-            return null;
+            return messageHandler.get(player, "placeholder.no-clan");
         }
 
         switch (placeholder) {
             case "tag":
             case "name":
-            case "id": return user.getClanTag();
+            case "id":
+                return user.getClanTag();
             case "owner": {
                 ClanMemberData memberData = memberService.getData(tag);
 
                 if (memberData == null) {
-                    return null;
+                    return messageHandler.get(player, "placeholder.no-clan");
                 }
 
                 return memberData.getOwner().getPlayerName();
@@ -93,7 +94,7 @@ public class ClanPlaceholderProvider extends PlaceholderExpansion
                 ClanData clanData = dataService.getData(tag);
 
                 if (clanData == null) {
-                    return null;
+                    return messageHandler.get(player, "placeholder.no-clan");
                 }
 
                 new SimpleDateFormat(messageHandler.get(player, "placeholder.time-format"))
@@ -107,7 +108,7 @@ public class ClanPlaceholderProvider extends PlaceholderExpansion
     @Override
     public String onPlaceholderRequest(Player one, Player two, String identifier) {
         if (one == null || two == null) {
-            return null;
+            return "";
         }
 
         User userOne = userService.getUser(one.getUniqueId());
@@ -132,27 +133,31 @@ public class ClanPlaceholderProvider extends PlaceholderExpansion
             ClanAllyData allyData = allyService.getData(tagOne);
 
             if (allyData == null) {
-                return null;
-            }
-
-            if (allyData.contains(tagTwo)) {
-                relationPath += "ally";
+                relationPath += "neutral";
             } else {
-                ClanEnemyData enemyData = enemyService.getData(tagOne);
+                if (allyData.contains(tagTwo)) {
+                    relationPath += "ally";
+                } else {
+                    ClanEnemyData enemyData = enemyService.getData(tagOne);
 
-                if (enemyData != null) {
-                    if (enemyData.contains(tagTwo)) {
-                        relationPath += "enemy";
-                    } else {
-                        relationPath += "neutral";
+                    if (enemyData != null) {
+                        if (enemyData.contains(tagTwo)) {
+                            relationPath += "enemy";
+                        } else {
+                            relationPath += "neutral";
+                        }
                     }
                 }
             }
         }
 
+        String color = messageHandler.get(one, relationPath + ".color");
+        String text = messageHandler.get(one, relationPath + ".text");
+
         return switch (identifier) {
-            case "color" -> messageHandler.get(one, relationPath + ".color");
-            case "text" -> messageHandler.get(one, relationPath + ".text");
+            case "full" -> color + text;
+            case "color" -> color;
+            case "text" -> text;
             default -> null;
         };
     }

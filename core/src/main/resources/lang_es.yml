@@ -64,6 +64,7 @@ commands:
 
 placeholder:
     time-format: "dd/MM/yyyy HH:mm:ss"
+    no-clan: "&cSin clan"
     relation:
         ally:
             color: "&d"
