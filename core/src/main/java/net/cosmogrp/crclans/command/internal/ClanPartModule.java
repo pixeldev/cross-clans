@@ -14,6 +14,8 @@ import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentData;
 import net.cosmogrp.crclans.clan.recruitment.ClanRecruitmentService;
 import net.cosmogrp.crclans.command.part.ClanAllyDataPartFactory;
 import net.cosmogrp.crclans.command.part.ClanChannelPart;
+import net.cosmogrp.crclans.command.part.ClanEnemy;
+import net.cosmogrp.crclans.command.part.ClanEnemyPart;
 import net.cosmogrp.crclans.command.part.ClanMemberPart;
 import net.cosmogrp.crclans.command.part.ClanServicePartFactory;
 import net.cosmogrp.crclans.command.part.ClusteredUserPart;
@@ -32,6 +34,7 @@ public class ClanPartModule extends AbstractModule {
     @Inject private ClanChannelPart clanChannelPart;
     @Inject private ClanMemberPart clanMemberPart;
     @Inject private ClanAllyDataPartFactory allyDataPart;
+    @Inject private ClanEnemyPart enemyPart;
 
     @Inject private ClanRecruitmentService recruitmentService;
     @Inject private ClanAllyRequestService allyRequestService;
@@ -48,5 +51,6 @@ public class ClanPartModule extends AbstractModule {
         bindFactory(ClanMember.class, clanMemberPart);
         bindFactory(ClanChannel.class, clanChannelPart);
         bindFactory(new Key(User.class, Sender.class), userSenderPart);
+        bindFactory(new Key(String.class, ClanEnemy.class), enemyPart);
     }
 }

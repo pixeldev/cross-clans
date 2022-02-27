@@ -6,6 +6,7 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.message.MessageHandler;
 import net.cosmogrp.crclans.clan.enemy.ClanEnemyService;
 import net.cosmogrp.crclans.clan.member.ClanMemberData;
+import net.cosmogrp.crclans.command.part.ClanEnemy;
 import net.cosmogrp.crclans.user.User;
 import org.bukkit.entity.Player;
 
@@ -38,7 +39,7 @@ public class ClanEnemyCommand implements CommandClass {
     @Command(names = "remove", permission = "clans.enemy.remove")
     public void runRemove(
             @Sender Player sender, @Sender User user,
-            ClanMemberData clan
+            @ClanEnemy String clan
     ) {
         enemyService.removeEnemy(sender, user, clan);
     }
