@@ -71,20 +71,27 @@ public class SimpleClanMemberService
     }
 
     @Override
-    public boolean checkModerator(Player player, User user) {
+    public void computeAsModerator(
+            Player player, User user,
+            Consumer<ClanMemberData> consumer
+    ) {
         String clanTag = getClanTag(player, user);
 
         if (clanTag == null) {
-            return false;
+            return;
         }
 
         ClanMemberData memberData = getData(player, clanTag);
 
         if (memberData == null) {
-            return false;
+            return;
         }
 
-        return checkModerator(player, memberData);
+        if (!checkModerator(player, memberData)) {
+            return;
+        }
+
+        consumer.accept(memberData);
     }
 
     @Override

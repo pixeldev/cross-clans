@@ -17,7 +17,10 @@ public interface ClanMemberService
 
     boolean checkModerator(Player player, ClanMemberData memberData);
 
-    boolean checkModerator(Player player, User user);
+    void computeAsModerator(
+            Player player, User user,
+            Consumer<ClanMemberData> consumer
+    );
 
     void transferOwner(
             Player player, User user,
