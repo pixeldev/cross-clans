@@ -21,6 +21,7 @@ import net.cosmogrp.crclans.command.internal.CustomUsageBuilder;
 import net.cosmogrp.crclans.inject.MainModule;
 import net.cosmogrp.crclans.loader.Loader;
 import net.cosmogrp.crclans.placeholder.ClanPlaceholderProvider;
+import net.cosmogrp.crclans.user.PlayerService;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.mongo.DocumentCodec;
@@ -59,6 +60,7 @@ public class CrClansPlugin extends JavaPlugin
     @Inject private Redis redis;
 
     @Inject private ClanPlaceholderProvider placeholderProvider;
+    @Inject private PlayerService playerService;
 
     @Override
     public void onLoad() {
@@ -102,6 +104,7 @@ public class CrClansPlugin extends JavaPlugin
 
     @Override
     public void onDisable() {
+        playerService.saveAll();
         Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
         mongoClient.close();
 
