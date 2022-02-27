@@ -100,10 +100,6 @@ public class SimpleClanAllyRequestService
                     );
 
                     requestData.bind(target, time);
-                    messageHandler.sendReplacing(
-                            player, "clan.ally-request-sender",
-                            "%tag%", tag
-                    );
 
                     globalNotifier.notify(
                             memberData.getOnlineIdMembers(),

@@ -115,7 +115,6 @@ clan:
     ally-request-expired: "&c¡La solicitud de alianza con este clan ha expirado!"
     ally-request-offline: "&c¡No se puede enviar una solicitud de alianza ya que el dueño del otro clan está desconectado!"
     ally-request-self: "&c¡No puedes enviar una solicitud de alianza a ti mismo!"
-    ally-request-sender: "&f¡Has enviado una solicitud de alianza al clan &a%tag%&f!"
     ally-request-members: "&f¡Se ha envíado una solicitud de alianza al clan &a%tag%&f!"
     ally-request-target:
         - " "
@@ -124,25 +123,20 @@ clan:
         - " <click:run_command:/clan ally accept %tag%><hover:show_text:'<green>¡Clic para aceptar!'><green>Aceptar</hover></click>  <gray>|  <click:run_command:/clan ally deny %tag%><hover:show_text:'<red>¡Clic para denegar!'><red>Denegar</hover></click>"
         - " "
 
-    set-home-sender: "&f¡Has establecido la localización de la casa de tu clan!"
     set-home-members: "&f¡Se ha establecido la localización de la casa de tu clan!"
     no-home: "&c¡La casa del clan no ha sido establecida aún!"
     teleport-home: "&f¡Has sido teletransportado a la casa del clan!"
-    del-home-sender: "&f¡Has borrado la localización de la casa de tu clan!"
     del-home-members: "&f¡Se ha borrado la localización de la casa de tu clan!"
 
-    transfer-owner-sender: "&f¡Has transferido el clan a &a%target%&f!"
     transfer-owner-target: "&f¡Ahora eres el dueño del clan!"
     transfer-owner-members: "&f¡Se ha transferido el clan a &a%target%&f!"
 
     already-mod: "&c¡Ese jugador ya es moderador!"
-    promote-success-sender: "&f¡Has ascendido a &a%target% &fa moderador!"
     promote-success-members: "&f¡&a%target% &ffue ascendido por &a%sender% &fa moderador!"
     promote-success-target: "&f¡Has sido ascendido por &a%sender% &fa moderador!"
     not-mod: "&c¡Debes ser moderador del clan para poder hacer esto!"
 
     demote-not-mod: "&c¡Ese miembro no es moderador!"
-    demote-success-sender: "&f¡Has quitado a &a%target% &fde moderador!"
     demote-success-members: "&f¡&a%target% &ffue descendido por &a%sender%&f!"
     demote-success-target: "&f¡Has sido descendido por &a%sender%&f!"
     cannot-demote-owner: "&c¡No puedes quitarte el lider del clan!"
@@ -179,7 +173,6 @@ clan:
     kick-offline-notify: "&f¡Fuiste expulsado del clan al que pertenecías!"
     kick-mod: "&cNo puedes expulsar a un moderador del clan"
     kick-success-target: "&f¡Has sido expulsado del clan &a%tag%&f!"
-    kick-success-sender: "&f¡Has expulsado a &a%target% &fcorrectamente!"
     kick-success-members: "&f¡&a%target% &fha sido expulsado del clan por &a%sender%&f!"
 
     disband-success: "&c¡Has disuelto tu clan correctamente!"

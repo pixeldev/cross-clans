@@ -103,17 +103,10 @@ public class SimpleClanMemberService
             data.setOwner(target);
             target.setModerator(true);
 
-            Object[] replacements = {"%target%", target.getPlayerName()};
-
-            messageHandler.sendReplacing(
-                    player, "clan.transfer-owner-sender",
-                    replacements
-            );
-
             globalNotifier.notify(
                     data.getOnlineIdMembers(),
                     "clan.transfer-owner-members",
-                    replacements
+                    "%target%", target.getPlayerName()
             );
 
             if (target.isOnline()) {
@@ -153,10 +146,6 @@ public class SimpleClanMemberService
         String targetName = target.getPlayerName();
 
         data.removeMember(targetId);
-        messageHandler.sendReplacing(
-                player, "clan.kick-success-sender",
-                "%target%", targetName
-        );
 
         globalNotifier.notify(
                 data.getOnlineIdMembers(),
@@ -198,10 +187,6 @@ public class SimpleClanMemberService
         }
 
         target.setModerator(true);
-        messageHandler.sendReplacing(
-                player, "clan.promote-success-sender",
-                "%target%", target.getPlayerName()
-        );
 
         globalNotifier.notify(
                 data.getOnlineIdMembers(),
@@ -239,10 +224,6 @@ public class SimpleClanMemberService
         }
 
         target.setModerator(false);
-        messageHandler.sendReplacing(
-                player, "clan.demote-success-sender",
-                "%target%", target.getPlayerName()
-        );
 
         globalNotifier.notify(
                 data.getOnlineIdMembers(),

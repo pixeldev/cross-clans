@@ -42,8 +42,6 @@ public class SimpleClanHomeService
                             player
                     ));
 
-                    messageHandler.send(player, "clan.set-home-sender");
-
                     globalNotifier.notify(
                             memberData.getOnlineIdMembers(),
                             "clan.set-home-members"
@@ -66,8 +64,6 @@ public class SimpleClanHomeService
                     }
 
                     homeData.setHome(null);
-
-                    messageHandler.send(player, "clan.del-home-sender");
 
                     globalNotifier.notify(
                             memberData.getOnlineIdMembers(),
