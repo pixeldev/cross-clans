@@ -11,4 +11,6 @@ public interface ClanDataService
 
     void createClan(User user, Player owner, String tag);
 
+    void toggleFriendlyFire(Player player, User user);
+
 }

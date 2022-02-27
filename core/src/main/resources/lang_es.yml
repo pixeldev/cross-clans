@@ -32,6 +32,9 @@ clan:
 
     error-sending-message: "&c¡Ha ocurrido un error al enviar el mensaje, intenta de nuevo!"
 
+    enable-friendly-fire: "&c¡El clan ha habilitado el fuego amistoso!"
+    disable-friendly-fire: "&c¡El clan ha deshabilitado el fuego amistoso!"
+
     already-enemy: "&c¡Este clan ya es enemigo!"
     not-enemy: "&c¡Este clan no es enemigo!"
     enemy-list:

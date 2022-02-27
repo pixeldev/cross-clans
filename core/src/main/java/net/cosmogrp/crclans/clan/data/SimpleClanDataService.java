@@ -1,8 +1,7 @@
 package net.cosmogrp.crclans.clan.data;
 
 import net.cosmogrp.crclans.CrClansPlugin;
-import net.cosmogrp.crclans.clan.data.ClanData;
-import net.cosmogrp.crclans.clan.data.ClanDataService;
+import net.cosmogrp.crclans.clan.member.ClanMemberService;
 import net.cosmogrp.crclans.clan.service.AbstractClanService;
 import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.crclans.notifier.global.GlobalNotifier;
@@ -24,6 +23,8 @@ public class SimpleClanDataService
         implements ClanDataService {
 
     @Inject private Executor executor;
+
+    @Inject private ClanMemberService memberService;
 
     @Inject private GlobalNotifier globalNotifier;
     @Inject private VaultEconomyHandler vaultEconomyHandler;
@@ -109,6 +110,30 @@ public class SimpleClanDataService
                             "%tag%", tag,
                             "%creator%", owner.getName()
                     );
+                });
+    }
+
+    @Override
+    public void toggleFriendlyFire(Player player, User user) {
+        memberService.computeAsModerator(
+                player, user,
+                memberData -> {
+                    ClanData clanData = getData(player, user.getClanTag());
+
+                    if (clanData == null) {
+                        return;
+                    }
+
+                    boolean friendlyFire = !clanData.isFriendlyFire();
+                    clanData.setFriendlyFire(friendlyFire);
+
+                    globalNotifier.notify(
+                            memberData.getOnlineIdMembers(),
+                            "clan." + (friendlyFire ? "enable" : "disable")
+                                    + "-friendly-fire"
+                    );
+
+                    save(player, clanData);
                 });
     }
 }
