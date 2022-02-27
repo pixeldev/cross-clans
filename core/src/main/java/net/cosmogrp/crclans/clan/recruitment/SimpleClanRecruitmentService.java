@@ -43,19 +43,8 @@ public class SimpleClanRecruitmentService
         ClanMemberData memberData =
                 memberService.getData(sender, tag);
 
-        if (memberData == null) {
-            return;
-        }
-
-        ClanMember clanMember = memberData.getMember(sender.getUniqueId());
-
-        if (clanMember == null) {
-            // this should never happen
-            return;
-        }
-
-        if (!clanMember.isModerator()) {
-            messageHandler.send(sender, "clan.not-mod");
+        if (memberData == null ||
+                !memberService.checkModerator(sender, memberData)) {
             return;
         }
 
