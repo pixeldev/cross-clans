@@ -1,3 +1,7 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version("7.1.2")
+}
+
 dependencies {
     api("org.jetbrains:annotations:22.0.0")
 
