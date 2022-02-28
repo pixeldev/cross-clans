@@ -6,6 +6,7 @@ import net.cosmogrp.crclans.clan.data.ClanData;
 import net.cosmogrp.crclans.clan.data.ClanDataService;
 import net.cosmogrp.crclans.user.User;
 import net.cosmogrp.crclans.user.UserService;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,12 +14,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import javax.inject.Inject;
+import java.util.List;
 
 public class PlayerDamageListener implements Listener {
 
     @Inject private UserService userService;
     @Inject private ClanDataService dataService;
     @Inject private ClanAllyService allyService;
+    @Inject private FileConfiguration configuration;
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
@@ -27,6 +30,13 @@ public class PlayerDamageListener implements Listener {
 
         if (!(target instanceof Player targetPlayer) ||
                 !(source instanceof Player sourcePlayer)) {
+            return;
+        }
+
+        List<String> forcedPvpWorlds = configuration
+                .getStringList("forced-pvp-worlds");
+
+        if (forcedPvpWorlds.contains(targetPlayer.getWorld().getName())) {
             return;
         }
 

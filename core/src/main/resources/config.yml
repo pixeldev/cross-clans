@@ -8,6 +8,10 @@ redis:
     password: ""
     timeout: 2000
 
+forced-pvp-worlds:
+    - "mundo2"
+    - "mundo5"
+
 database:
     connection: "mongodb://127.0.0.1:27017"
     name: "clans"
