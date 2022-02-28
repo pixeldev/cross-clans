@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public class CrClansPlugin extends JavaPlugin
-        implements ClanServiceRegistry {
+        implements ClansAPI {
 
     private final Injector injector;
     private final ClanServiceRegistry clanServiceRegistry;
@@ -124,10 +124,12 @@ public class CrClansPlugin extends JavaPlugin
         return JavaPlugin.getPlugin(CrClansPlugin.class);
     }
 
-    public ClanChannelRegistry getClanChannelRegistry() {
+    @Override
+    public ClanChannelRegistry getChannelRegistry() {
         return clanChannelRegistry;
     }
 
+    @Override
     public UserService getUserService() {
         return userService;
     }
