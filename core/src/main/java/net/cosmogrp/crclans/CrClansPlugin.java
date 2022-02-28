@@ -11,6 +11,7 @@ import me.fixeddev.commandflow.bukkit.BukkitCommandManager;
 import me.fixeddev.commandflow.bukkit.factory.BukkitModule;
 import me.fixeddev.commandflow.translator.DefaultTranslator;
 import me.yushust.inject.Injector;
+import net.cosmogrp.crclans.clan.channel.ClanChannelRegistry;
 import net.cosmogrp.crclans.clan.service.ClanService;
 import net.cosmogrp.crclans.clan.service.ClanServiceRegistry;
 import net.cosmogrp.crclans.clan.service.SimpleClanServiceRegistry;
@@ -22,6 +23,7 @@ import net.cosmogrp.crclans.inject.MainModule;
 import net.cosmogrp.crclans.loader.Loader;
 import net.cosmogrp.crclans.placeholder.ClanPlaceholderProvider;
 import net.cosmogrp.crclans.user.PlayerService;
+import net.cosmogrp.crclans.user.UserService;
 import net.cosmogrp.crclans.vault.VaultEconomyHandler;
 import net.cosmogrp.storage.model.Model;
 import net.cosmogrp.storage.mongo.DocumentCodec;
@@ -61,6 +63,9 @@ public class CrClansPlugin extends JavaPlugin
 
     @Inject private ClanPlaceholderProvider placeholderProvider;
     @Inject private PlayerService playerService;
+
+    @Inject private ClanChannelRegistry clanChannelRegistry;
+    @Inject private UserService userService;
 
     @Override
     public void onLoad() {
@@ -117,6 +122,14 @@ public class CrClansPlugin extends JavaPlugin
 
     public static CrClansPlugin getInstance() {
         return JavaPlugin.getPlugin(CrClansPlugin.class);
+    }
+
+    public ClanChannelRegistry getClanChannelRegistry() {
+        return clanChannelRegistry;
+    }
+
+    public UserService getUserService() {
+        return userService;
     }
 
     @Override
