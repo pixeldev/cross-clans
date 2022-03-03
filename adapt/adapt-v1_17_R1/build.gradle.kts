@@ -1,7 +1,7 @@
 dependencies {
     compileOnly(project(":adapt"))
 
-    implementation("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT") {
+    implementation("net.kyori:adventure-text-minimessage:4.11.0-SNAPSHOT") {
         exclude("net.kyori", "adventure-api")
     }
 
